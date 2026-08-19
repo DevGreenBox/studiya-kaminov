@@ -16,7 +16,8 @@
 | Репозиторий | https://github.com/DevGreenBox/studiya-kaminov (приватный) |
 
 Репозиторий подключён к Netlify: каждый `git push` в ветку `main`
-автоматически пересобирает и публикует сайт.
+автоматически пересобирает и публикует сайт. Связка сделана через build hook
+Netlify и webhook GitHub — приложение Netlify в организацию ставить не нужно.
 
 Переменная `NEXT_PUBLIC_SITE_URL` уже задана — `sitemap.xml`, `robots.txt` и
 мета-теги ссылаются на боевой домен.
