@@ -1,0 +1,174 @@
+{
+  "products": {
+    "dublin-white": [
+      "/images/products/dublin-white/01.webp",
+      "/images/products/dublin-white/02.webp",
+      "/images/products/dublin-white/03.webp",
+      "/images/products/dublin-white/04.webp",
+      "/images/products/dublin-white/05.webp",
+      "/images/products/dublin-white/06.webp",
+      "/images/products/dublin-white/07.webp"
+    ],
+    "dublin-wenge": [
+      "/images/products/dublin-wenge/01.webp",
+      "/images/products/dublin-wenge/02.webp",
+      "/images/products/dublin-wenge/03.webp",
+      "/images/products/dublin-wenge/04.webp",
+      "/images/products/dublin-wenge/05.webp",
+      "/images/products/dublin-wenge/06.webp",
+      "/images/products/dublin-wenge/07.webp",
+      "/images/products/dublin-wenge/08.webp"
+    ],
+    "dublin-votan": [
+      "/images/products/dublin-votan/01.webp",
+      "/images/products/dublin-votan/02.webp",
+      "/images/products/dublin-votan/03.webp",
+      "/images/products/dublin-votan/04.webp",
+      "/images/products/dublin-votan/05.webp",
+      "/images/products/dublin-votan/06.webp",
+      "/images/products/dublin-votan/07.webp",
+      "/images/products/dublin-votan/08.webp"
+    ],
+    "dublin-italian-nut": [
+      "/images/products/dublin-italian-nut/01.webp",
+      "/images/products/dublin-italian-nut/02.webp",
+      "/images/products/dublin-italian-nut/03.webp",
+      "/images/products/dublin-italian-nut/04.webp",
+      "/images/products/dublin-italian-nut/05.webp",
+      "/images/products/dublin-italian-nut/06.webp"
+    ],
+    "dublin-ivory": [
+      "/images/products/dublin-ivory/01.webp",
+      "/images/products/dublin-ivory/02.webp",
+      "/images/products/dublin-ivory/03.webp",
+      "/images/products/dublin-ivory/04.webp",
+      "/images/products/dublin-ivory/05.webp",
+      "/images/products/dublin-ivory/06.webp"
+    ],
+    "dublin-shimo": [
+      "/images/products/dublin-shimo/01.webp",
+      "/images/products/dublin-shimo/02.webp",
+      "/images/products/dublin-shimo/03.webp",
+      "/images/products/dublin-shimo/04.webp",
+      "/images/products/dublin-shimo/05.webp",
+      "/images/products/dublin-shimo/06.webp",
+      "/images/products/dublin-shimo/07.webp",
+      "/images/products/dublin-shimo/08.webp"
+    ],
+    "malta-bleached-oak": [
+      "/images/products/malta-bleached-oak/01.webp",
+      "/images/products/malta-bleached-oak/02.webp",
+      "/images/products/malta-bleached-oak/03.webp",
+      "/images/products/malta-bleached-oak/04.webp",
+      "/images/products/malta-bleached-oak/05.webp"
+    ],
+    "malta-white": [
+      "/images/products/malta-white/01.webp",
+      "/images/products/malta-white/02.webp",
+      "/images/products/malta-white/03.webp",
+      "/images/products/malta-white/04.webp",
+      "/images/products/malta-white/05.webp",
+      "/images/products/malta-white/06.webp"
+    ],
+    "malta-wenge": [
+      "/images/products/malta-wenge/01.webp",
+      "/images/products/malta-wenge/02.webp",
+      "/images/products/malta-wenge/03.webp",
+      "/images/products/malta-wenge/04.webp",
+      "/images/products/malta-wenge/05.webp"
+    ],
+    "malta-votan": [
+      "/images/products/malta-votan/01.webp",
+      "/images/products/malta-votan/02.webp",
+      "/images/products/malta-votan/03.webp",
+      "/images/products/malta-votan/04.webp",
+      "/images/products/malta-votan/05.webp",
+      "/images/products/malta-votan/06.webp",
+      "/images/products/malta-votan/07.webp",
+      "/images/products/malta-votan/08.webp"
+    ],
+    "malta-italian-nut": [
+      "/images/products/malta-italian-nut/01.webp",
+      "/images/products/malta-italian-nut/02.webp",
+      "/images/products/malta-italian-nut/03.webp",
+      "/images/products/malta-italian-nut/04.webp",
+      "/images/products/malta-italian-nut/05.webp",
+      "/images/products/malta-italian-nut/06.webp"
+    ],
+    "stone-cabinets-wenge": [
+      "/images/products/stone-cabinets-wenge/01.webp",
+      "/images/products/stone-cabinets-wenge/02.webp",
+      "/images/products/stone-cabinets-wenge/03.webp",
+      "/images/products/stone-cabinets-wenge/04.webp",
+      "/images/products/stone-cabinets-wenge/05.webp",
+      "/images/products/stone-cabinets-wenge/06.webp"
+    ],
+    "verona-white": [
+      "/images/products/verona-white/01.webp",
+      "/images/products/verona-white/02.webp",
+      "/images/products/verona-white/03.webp",
+      "/images/products/verona-white/04.webp",
+      "/images/products/verona-white/05.webp",
+      "/images/products/verona-white/06.webp",
+      "/images/products/verona-white/07.webp"
+    ],
+    "versal-ivory": [
+      "/images/products/versal-ivory/01.webp",
+      "/images/products/versal-ivory/02.webp",
+      "/images/products/versal-ivory/03.webp",
+      "/images/products/versal-ivory/04.webp",
+      "/images/products/versal-ivory/05.webp",
+      "/images/products/versal-ivory/06.webp",
+      "/images/products/versal-ivory/07.webp",
+      "/images/products/versal-ivory/08.webp"
+    ],
+    "dublin-premium-white-grey": [
+      "/images/products/dublin-premium-white-grey/01.webp",
+      "/images/products/dublin-premium-white-grey/02.webp",
+      "/images/products/dublin-premium-white-grey/03.webp",
+      "/images/products/dublin-premium-white-grey/04.webp",
+      "/images/products/dublin-premium-white-grey/05.webp",
+      "/images/products/dublin-premium-white-grey/06.webp",
+      "/images/products/dublin-premium-white-grey/07.webp"
+    ],
+    "modern-white": [
+      "/images/products/modern-white/01.webp",
+      "/images/products/modern-white/02.webp",
+      "/images/products/modern-white/03.webp",
+      "/images/products/modern-white/04.webp"
+    ],
+    "chester-white": [
+      "/images/products/chester-white/01.webp",
+      "/images/products/chester-white/02.webp",
+      "/images/products/chester-white/03.webp",
+      "/images/products/chester-white/04.webp",
+      "/images/products/chester-white/05.webp",
+      "/images/products/chester-white/06.webp"
+    ],
+    "malta-corner-votan": [
+      "/images/products/malta-corner-votan/01.webp",
+      "/images/products/malta-corner-votan/02.webp",
+      "/images/products/malta-corner-votan/03.webp",
+      "/images/products/malta-corner-votan/04.webp",
+      "/images/products/malta-corner-votan/05.webp",
+      "/images/products/malta-corner-votan/06.webp"
+    ]
+  },
+  "categories": {
+    "kaminy-s-kamnem": "/images/categories/kaminy-s-kamnem.webp",
+    "klassicheskie": "/images/categories/klassicheskie.webp",
+    "s-bokovymi-tumbami": "/images/categories/s-bokovymi-tumbami.webp",
+    "sovremennye": "/images/categories/sovremennye.webp",
+    "tumby-pod-tv": "/images/categories/tumby-pod-tv.webp",
+    "uglovye": "/images/categories/uglovye.webp"
+  },
+  "shared": {
+    "fobos-hearth": "/images/content/fobos-hearth.webp",
+    "modes": "/images/content/modes.webp",
+    "remote": "/images/content/remote.webp",
+    "control-panel": "/images/content/control-panel.webp",
+    "packaging-2": "/images/content/packaging-2.webp",
+    "packaging-3": "/images/content/packaging-3.webp"
+  },
+  "hero": "/images/hero/hero.webp"
+}

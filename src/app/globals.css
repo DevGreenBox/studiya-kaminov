@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Дизайн-токены проекта.
+   Все цвета, радиусы и тени задаются только здесь. В компонентах используются
+   семантические классы Tailwind (bg-surface, text-ink, border-line и т.д.),
+   hex-коды по проекту не разбрасываются.
+   ========================================================================== */
+@theme {
+  /* Фон и поверхности — светлые, тёплые */
+  --color-canvas: #ffffff;
+  --color-surface: #fbf8f4;
+  --color-surface-strong: #f3ede4;
+  --color-surface-warm: #fdf3e9;
+
+  /* Текст */
+  --color-ink: #1c1917;
+  --color-ink-soft: #57534e;
+  --color-ink-muted: #8a827a;
+  --color-ink-inverse: #ffffff;
+
+  /* Границы */
+  --color-line: #e9e2d8;
+  --color-line-strong: #d8cec0;
+
+  /* Акцент — тёплый огонь */
+  --color-primary: #e97821;
+  --color-primary-hover: #d2650f;
+  --color-primary-active: #b95709;
+  --color-primary-soft: #fdefe1;
+  --color-primary-ring: #f6b47a;
+
+  /* Фирменные цвета логотипа «Студия каминов» */
+  --color-brand-red: #a23131;
+  --color-brand-grey: #9b9b9b;
+
+  /* Служебные состояния */
+  --color-success: #1f7a4d;
+  --color-success-soft: #e7f4ed;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+  --color-info-soft: #eef2f6;
+
+  /* Скругления */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Тени — мягкие, тёплые */
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
+  --shadow-raised: 0 2px 4px rgb(28 25 23 / 0.05), 0 16px 40px -16px rgb(28 25 23 / 0.18);
+  --shadow-header: 0 1px 0 rgb(233 226 216 / 1), 0 6px 20px -14px rgb(28 25 23 / 0.25);
+
+  /* Типографика */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Ширина контейнера */
+  --container-site: 1320px;
+
+  /* Тайминги анимаций */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   База
+   -------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    /* Высоту сообщает CookieBanner: пока баннер виден, он не должен
+       перекрывать кнопки внизу страницы. */
+    padding-bottom: var(--ef-cookie-h, 0px);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Фокус виден всегда — отключать нельзя (см. ТЗ, п. 47 и 50) */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Резервируем место под скроллбар, чтобы при открытии модалок не было сдвига */
+  @media (min-width: 1024px) {
+    html {
+      scrollbar-gutter: stable;
+    }
+  }
+
+  /* Блокировка прокрутки фона при открытых модалках и drawer'ах */
+  body[data-scroll-locked='true'] {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Утилиты проекта
+   -------------------------------------------------------------------------- */
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: 16px;
+
+  @media (min-width: 768px) {
+    padding-inline: 24px;
+  }
+
+  @media (min-width: 1024px) {
+    padding-inline: 40px;
+  }
+}
+
+/* Обрезка длинных названий, чтобы карточки не ломали сетку */
+@utility line-clamp-2-fixed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Анимации. Все — спокойные и функциональные.
+   -------------------------------------------------------------------------- */
+@keyframes ef-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ef-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ef-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ef-slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ef-skeleton {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Живое пламя: медленное дыхание свечения и лёгкое дрожание.
+   Накладывается поверх реального фото горящего очага. */
+@keyframes ef-flame-breathe {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(1) translateY(0);
+  }
+  35% {
+    opacity: 0.72;
+    transform: scale(1.06) translateY(-1.5%);
+  }
+  65% {
+    opacity: 0.5;
+    transform: scale(0.98) translateY(0.5%);
+  }
+}
+
+@keyframes ef-flame-flicker {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  20% {
+    opacity: 0.42;
+  }
+  40% {
+    opacity: 0.26;
+  }
+  55% {
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0.3;
+  }
+}
+
+.ef-animate-fade-in {
+  animation: ef-fade-in 220ms var(--ease-out-soft) both;
+}
+
+.ef-animate-slide-up {
+  animation: ef-slide-up 240ms var(--ease-out-soft) both;
+}
+
+.ef-animate-slide-in-right {
+  animation: ef-slide-in-right 260ms var(--ease-out-soft) both;
+}
+
+.ef-animate-slide-in-bottom {
+  animation: ef-slide-in-bottom 260ms var(--ease-out-soft) both;
+}
+
+.ef-animate-skeleton {
+  animation: ef-skeleton 1.6s ease-in-out infinite;
+}
+
+/* Уважаем системную настройку «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Печать накладной
+   -------------------------------------------------------------------------- */
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  .print-page {
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}

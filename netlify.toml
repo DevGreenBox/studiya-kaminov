@@ -1,0 +1,42 @@
+# Деплой сайта «Студия каминов» на Netlify.
+#
+# Сайт — не статика: есть API-роуты (расчёт доставки, заявка продавцу,
+# создание заказа), поэтому используется официальный Next.js Runtime,
+# а не `output: export`.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js 16 требует Node 20.9+; берём 22 LTS
+  NODE_VERSION = "22"
+  # Не блокируем сборку предупреждениями npm
+  NPM_FLAGS = "--no-audit --no-fund"
+  # Playwright на сервере сборки не нужен — браузеры не качаем
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Заголовки безопасности. Ключи интеграций живут только в переменных окружения
+# Netlify и в клиентский бандл не попадают.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Логотип и знак бренда между релизами не меняются
+[[headers]]
+  for = "/brand/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Фотографии товаров обновляются только вместе с каталогом
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
