@@ -1,7 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = Number(process.env.E2E_PORT ?? 3100);
-const baseURL = `http://127.0.0.1:${PORT}`;
+
+/**
+ * По умолчанию тесты сами собирают проект и поднимают сервер.
+ * Если задан E2E_BASE_URL — гоняем по уже развёрнутому адресу, например:
+ *   E2E_BASE_URL=https://studiya-kaminov.netlify.app npm run test:e2e
+ */
+const externalURL = process.env.E2E_BASE_URL;
+const baseURL = externalURL ?? `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
   testDir: './e2e',
@@ -19,10 +26,14 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
-  webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
-  },
+  ...(externalURL
+    ? {}
+    : {
+        webServer: {
+          command: `npm run build && npx next start -p ${PORT}`,
+          url: baseURL,
+          reuseExistingServer: !process.env.CI,
+          timeout: 180_000,
+        },
+      }),
 });
