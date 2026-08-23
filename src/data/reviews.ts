@@ -1,4 +1,5 @@
 import type { Review } from '@/types';
+import { typo } from '@/lib/typography';
 
 /**
  * Реальных отзывов в материалах заказчика нет.
@@ -6,7 +7,7 @@ import type { Review } from '@/types';
  * Все помечены `demo: true` и подписаны в интерфейсе как демонстрационные.
  * Заменяются на настоящие отзывы без изменения компонентов.
  */
-export const reviews: Review[] = [
+const rawReviews: Review[] = [
   {
     id: 'r1',
     name: 'Демо-отзыв',
@@ -29,3 +30,8 @@ export const reviews: Review[] = [
     demo: true,
   },
 ];
+
+export const reviews: Review[] = rawReviews.map((review) => ({
+  ...review,
+  text: typo(review.text),
+}));

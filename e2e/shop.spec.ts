@@ -52,7 +52,10 @@ test('пустая выдача показывает понятное состо
 test('поиск находит товар и открывает его', async ({ page }) => {
   await page.goto('/search?q=честер');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('честер');
-  await page.getByRole('link', { name: /Честер/ }).first().click();
+  await page
+    .getByRole('link', { name: /Честер/ })
+    .first()
+    .click();
   await expect(page).toHaveURL(/\/catalog\/chester-white/);
 });
 
@@ -69,6 +72,32 @@ test('избранное добавляется и переживает пере
   await expect(page.getByRole('link', { name: /Дублин, белый/ }).first()).toBeVisible();
 });
 
+test('карточка каталога кликабельна целиком', async ({ page }) => {
+  await page.goto('/catalog');
+  const card = page.locator('main article').first();
+  const href = await card.getByRole('link').first().getAttribute('href');
+
+  // Клик по области с характеристиками — не по заголовку и не по кнопке
+  const box = await card.boundingBox();
+  if (!box) throw new Error('карточка не отрисована');
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height * 0.62);
+
+  await expect(page).toHaveURL(new RegExp(`${href}$`));
+});
+
+test('кнопки внутри карточки не открывают товар', async ({ page }) => {
+  await page.goto('/catalog');
+  const card = page.locator('main article').first();
+
+  await card.getByRole('button', { name: /^Добавить в корзину/ }).click();
+  await expect(page).toHaveURL(/\/catalog$/);
+  await expect(page.getByRole('link', { name: /^Корзина, 1$/ })).toBeVisible();
+
+  await card.getByRole('button', { name: /избранное/ }).click();
+  await expect(page).toHaveURL(/\/catalog$/);
+  await expect(page.getByRole('link', { name: /^Избранное, 1$/ })).toBeVisible();
+});
+
 test('корзина: добавление, количество, промокод, удаление', async ({ page }) => {
   await page.goto('/catalog/malta-white');
   await page.locator('#purchase-block').getByRole('button', { name: 'В корзину' }).click();
@@ -83,7 +112,10 @@ test('корзина: добавление, количество, промоко
   await expect(page.locator('aside')).toContainText('−6 980 ₽');
   await expect(page.locator('aside')).toContainText('62 820 ₽');
 
-  await page.getByPlaceholder('Промокод').isVisible().catch(() => false);
+  await page
+    .getByPlaceholder('Промокод')
+    .isVisible()
+    .catch(() => false);
   await page.getByRole('button', { name: /Удалить .* из корзины/ }).click();
   await expect(page.getByText('Корзина пока пуста')).toBeVisible();
 });
@@ -153,7 +185,16 @@ test('404 показывает страницу с выходами', async ({ p
 });
 
 test('ни одна страница не даёт горизонтальный скролл', async ({ page }) => {
-  for (const path of ['/', '/catalog', '/catalog/dublin-white', '/cart', '/checkout', '/about', '/delivery', '/contacts']) {
+  for (const path of [
+    '/',
+    '/catalog',
+    '/catalog/dublin-white',
+    '/cart',
+    '/checkout',
+    '/about',
+    '/delivery',
+    '/contacts',
+  ]) {
     await page.goto(path);
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth > window.innerWidth,

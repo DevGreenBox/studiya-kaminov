@@ -7,6 +7,7 @@ import { formatPrice, pluralize } from '@/lib/format';
 import { deliveryConfig } from '@/config/site';
 import type { CartItem, DeliveryQuote } from '@/types';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 interface Props {
   city: string;
@@ -32,7 +33,8 @@ export function DeliveryCalculator({ city, items, quote, onQuote, disabled }: Pr
         body: JSON.stringify({ city, items }),
       });
       const data = (await response.json()) as { quote?: DeliveryQuote; error?: string };
-      if (!response.ok || !data.quote) throw new Error(data.error ?? 'Не удалось рассчитать доставку');
+      if (!response.ok || !data.quote)
+        throw new Error(data.error ?? 'Не удалось рассчитать доставку');
       onQuote(data.quote);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Не удалось рассчитать доставку');
@@ -58,11 +60,16 @@ export function DeliveryCalculator({ city, items, quote, onQuote, disabled }: Pr
       </div>
 
       {city.trim().length < 2 && !quote && (
-        <p className="mt-2 text-sm text-ink-muted">Укажите город получателя, чтобы рассчитать доставку.</p>
+        <p className="mt-2 text-sm text-ink-muted">
+          {typo('Укажите город получателя, чтобы рассчитать доставку.')}
+        </p>
       )}
 
       {error && (
-        <p className="mt-3 rounded-[var(--radius-xs)] bg-danger-soft px-3 py-2 text-sm text-danger" role="alert">
+        <p
+          className="mt-3 rounded-[var(--radius-xs)] bg-danger-soft px-3 py-2 text-sm text-danger"
+          role="alert"
+        >
           {error}
         </p>
       )}
@@ -71,13 +78,16 @@ export function DeliveryCalculator({ city, items, quote, onQuote, disabled }: Pr
         <div className={cn('mt-3 flex flex-col gap-1')} role="status">
           <p className="text-xl font-bold">{formatPrice(quote.price)}</p>
           <p className="text-sm text-ink-soft">
-            Срок: {quote.minDays === quote.maxDays ? quote.minDays : `${quote.minDays}–${quote.maxDays}`}{' '}
+            Срок:{' '}
+            {quote.minDays === quote.maxDays ? quote.minDays : `${quote.minDays}–${quote.maxDays}`}{' '}
             {pluralize(quote.maxDays, ['день', 'дня', 'дней'])}
           </p>
           {quote.isEstimate && (
             <p className="mt-1 flex items-start gap-2 text-sm text-ink-muted">
               <Info size={15} className="mt-0.5 shrink-0" aria-hidden />
-              Предварительный расчёт по весу, объёму и городу. Точную сумму подтверждает менеджер.
+              {typo(
+                'Предварительный расчёт по весу, объёму и городу. Точную сумму подтверждает менеджер.',
+              )}
             </p>
           )}
           {quote.note && <p className="text-sm text-ink-muted">{quote.note}</p>}

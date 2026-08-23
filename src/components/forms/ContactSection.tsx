@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Textarea, Checkbox } from '@/components/ui/Field';
 import { formatPhone, isValidEmail, isValidPhone } from '@/lib/format';
 import { contacts, legal } from '@/config/site';
+import { typo } from '@/lib/typography';
 
 interface Errors {
   name?: string;
@@ -59,7 +60,9 @@ export function ContactSection({
       setStatus('success');
     } catch (error) {
       setStatus('idle');
-      setErrors({ form: error instanceof Error ? error.message : 'Не удалось отправить сообщение' });
+      setErrors({
+        form: error instanceof Error ? error.message : 'Не удалось отправить сообщение',
+      });
     }
   };
 
@@ -68,13 +71,20 @@ export function ContactSection({
       <div className="rounded-[var(--radius-lg)] border border-line bg-surface p-6 sm:p-9 lg:p-11">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-14">
           <div>
-            <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">{title}</h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">{text}</p>
+            <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
+              {typo(title)}
+            </h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">
+              {typo(text)}
+            </p>
             <dl className="mt-7 flex flex-col gap-3 text-[15px]">
               <div>
                 <dt className="text-ink-muted">Телефон</dt>
                 <dd>
-                  <a href={contacts.phoneHref} className="text-lg font-bold transition-colors hover:text-primary">
+                  <a
+                    href={contacts.phoneHref}
+                    className="text-lg font-bold transition-colors hover:text-primary"
+                  >
                     {contacts.phone}
                   </a>
                 </dd>
@@ -82,14 +92,17 @@ export function ContactSection({
               <div>
                 <dt className="text-ink-muted">Email</dt>
                 <dd>
-                  <a href={`mailto:${contacts.email}`} className="font-semibold transition-colors hover:text-primary">
+                  <a
+                    href={`mailto:${contacts.email}`}
+                    className="font-semibold transition-colors hover:text-primary"
+                  >
                     {contacts.email}
                   </a>
                 </dd>
               </div>
               <div>
                 <dt className="text-ink-muted">Время работы</dt>
-                <dd className="font-medium">{contacts.workHours}</dd>
+                <dd className="font-medium">{typo(contacts.workHours)}</dd>
               </div>
             </dl>
           </div>
@@ -161,14 +174,20 @@ export function ContactSection({
                 label={
                   <>
                     Согласен на обработку персональных данных в соответствии с{' '}
-                    <a href={legal.privacyUrl} className="font-medium text-primary underline underline-offset-2">
-                      политикой конфиденциальности
+                    <a
+                      href={legal.privacyUrl}
+                      className="font-medium text-primary underline underline-offset-2"
+                    >
+                      {typo('политикой конфиденциальности')}
                     </a>
                   </>
                 }
               />
               {errors.form && (
-                <p className="rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger" role="alert">
+                <p
+                  className="rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger"
+                  role="alert"
+                >
                   {errors.form}
                 </p>
               )}

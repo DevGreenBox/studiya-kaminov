@@ -65,12 +65,15 @@ export function PromoCarousel({ items }: { items: Promotion[] }) {
     track.scrollTo({ left: slide.offsetLeft - base, behavior: 'smooth' });
   };
 
-  const step = (direction: -1 | 1) => scrollTo(Math.min(items.length - 1, Math.max(0, active + direction)));
+  const step = (direction: -1 | 1) =>
+    scrollTo(Math.min(items.length - 1, Math.max(0, active + direction)));
 
   return (
     <section aria-label="Акции и новости" className="container-site py-12 sm:py-16">
       <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
-        <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">Акции и новости</h2>
+        <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
+          Акции и новости
+        </h2>
         <div className="flex shrink-0 gap-2">
           <button
             type="button"
@@ -142,7 +145,11 @@ export function PromoCarousel({ items }: { items: Promotion[] }) {
                   className="mt-auto inline-flex items-center gap-1.5 pt-4 font-semibold text-primary transition-colors hover:text-primary-hover"
                 >
                   {item.cta}
-                  <ArrowRight size={17} aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <ArrowRight
+                    size={17}
+                    aria-hidden
+                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                  />
                 </Link>
               </div>
             </article>
@@ -150,7 +157,11 @@ export function PromoCarousel({ items }: { items: Promotion[] }) {
         ))}
       </ul>
 
-      <div className="mt-4 flex justify-center gap-1.5" role="tablist" aria-label="Навигация по слайдам">
+      <div
+        className="mt-4 flex justify-center gap-1.5"
+        role="tablist"
+        aria-label="Навигация по слайдам"
+      >
         {items.map((item, index) => (
           <button
             key={item.id}

@@ -7,6 +7,7 @@ import { Input, Textarea, Checkbox } from '@/components/ui/Field';
 import { formatPhone, isValidEmail, isValidPhone } from '@/lib/format';
 import { legal } from '@/config/site';
 import { CheckCircle2 } from 'lucide-react';
+import { typo } from '@/lib/typography';
 
 interface Props {
   onClose: () => void;
@@ -75,11 +76,15 @@ export function ContactSellerModal({ onClose, productName }: Props) {
   };
 
   return (
-    <Modal open onClose={reset} title={status === 'success' ? 'Заявка отправлена' : 'Связаться с продавцом'}>
+    <Modal
+      open
+      onClose={reset}
+      title={status === 'success' ? 'Заявка отправлена' : 'Связаться с продавцом'}
+    >
       {status === 'success' ? (
         <div className="flex flex-col items-center py-6 text-center">
           <CheckCircle2 size={44} className="text-success" aria-hidden />
-          <p className="mt-4 text-lg font-bold">Спасибо, заявка отправлена</p>
+          <p className="mt-4 text-lg font-bold">{typo('Спасибо, заявка отправлена')}</p>
           <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-ink-soft">
             {productName
               ? `Мы получили вопрос по товару «${productName}» и свяжемся с вами по указанному телефону.`
@@ -139,15 +144,20 @@ export function ContactSellerModal({ onClose, productName }: Props) {
             label={
               <>
                 Согласен на обработку персональных данных в соответствии с{' '}
-                <a href={legal.privacyUrl} className="font-medium text-primary underline underline-offset-2">
-                  политикой конфиденциальности
+                <a
+                  href={legal.privacyUrl}
+                  className="font-medium text-primary underline underline-offset-2"
+                >
+                  {typo('политикой конфиденциальности')}
                 </a>
               </>
             }
           />
 
           {errors.form && (
-            <p className="rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger">{errors.form}</p>
+            <p className="rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger">
+              {errors.form}
+            </p>
           )}
 
           <Button type="submit" size="lg" fullWidth loading={status === 'loading'}>

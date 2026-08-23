@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { site, contacts, legal } from '@/config/site';
 import { formatPrice, formatDateTime } from '@/lib/format';
 import type { Order } from '@/types';
+import { typo } from '@/lib/typography';
 
 /**
  * Накладная к заказу.
@@ -22,7 +23,7 @@ export function Invoice({ order }: { order: Order }) {
         </h2>
         <Button variant="secondary" onClick={() => window.print()}>
           <Printer size={17} aria-hidden />
-          Распечатать или сохранить в PDF
+          {typo('Распечатать или сохранить в PDF')}
         </Button>
       </div>
 
@@ -51,7 +52,9 @@ export function Invoice({ order }: { order: Order }) {
             <p className="text-sm text-ink-soft">{order.customer.email}</p>
             {order.recipient && (
               <>
-                <p className="mt-3 text-sm font-bold uppercase tracking-wide text-ink-muted">Получатель</p>
+                <p className="mt-3 text-sm font-bold uppercase tracking-wide text-ink-muted">
+                  Получатель
+                </p>
                 <p className="mt-1 font-medium">{order.recipient.name}</p>
                 <p className="text-sm text-ink-soft">{order.recipient.phone}</p>
               </>
@@ -73,7 +76,7 @@ export function Invoice({ order }: { order: Order }) {
                 )}
                 {order.delivery.isEstimate && (
                   <p className="mt-1 text-sm text-ink-muted">
-                    Стоимость доставки предварительная, подтверждается перевозчиком.
+                    {typo('Стоимость доставки предварительная, подтверждается перевозчиком.')}
                   </p>
                 )}
               </>
@@ -85,11 +88,21 @@ export function Invoice({ order }: { order: Order }) {
           <table className="w-full min-w-[520px] border-collapse text-sm">
             <thead>
               <tr className="border-b border-line text-left text-ink-muted">
-                <th scope="col" className="py-2 pr-3 font-medium">№</th>
-                <th scope="col" className="py-2 pr-3 font-medium">Наименование</th>
-                <th scope="col" className="py-2 pr-3 text-right font-medium whitespace-nowrap">Кол-во</th>
-                <th scope="col" className="py-2 pr-3 text-right font-medium whitespace-nowrap">Цена</th>
-                <th scope="col" className="py-2 text-right font-medium whitespace-nowrap">Сумма</th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  №
+                </th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Наименование
+                </th>
+                <th scope="col" className="py-2 pr-3 text-right font-medium whitespace-nowrap">
+                  Кол-во
+                </th>
+                <th scope="col" className="py-2 pr-3 text-right font-medium whitespace-nowrap">
+                  Цена
+                </th>
+                <th scope="col" className="py-2 text-right font-medium whitespace-nowrap">
+                  Сумма
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -98,11 +111,17 @@ export function Invoice({ order }: { order: Order }) {
                   <td className="py-3 pr-3 text-ink-muted">{index + 1}</td>
                   <td className="py-3 pr-3">
                     <span className="font-medium">{line.name}</span>
-                    {line.sku && <span className="block text-xs text-ink-muted">арт. {line.sku}</span>}
+                    {line.sku && (
+                      <span className="block text-xs text-ink-muted">арт. {line.sku}</span>
+                    )}
                   </td>
                   <td className="py-3 pr-3 text-right whitespace-nowrap">{line.quantity}</td>
-                  <td className="py-3 pr-3 text-right whitespace-nowrap">{formatPrice(line.price)}</td>
-                  <td className="py-3 text-right font-medium whitespace-nowrap">{formatPrice(line.total)}</td>
+                  <td className="py-3 pr-3 text-right whitespace-nowrap">
+                    {formatPrice(line.price)}
+                  </td>
+                  <td className="py-3 text-right font-medium whitespace-nowrap">
+                    {formatPrice(line.total)}
+                  </td>
                 </tr>
               ))}
             </tbody>

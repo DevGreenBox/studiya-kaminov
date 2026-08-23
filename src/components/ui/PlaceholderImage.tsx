@@ -1,5 +1,6 @@
 import { ImageOff } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 /**
  * Честная заглушка вместо отсутствующей фотографии.
@@ -20,7 +21,7 @@ export function PlaceholderImage({ label, className }: { label: string; classNam
     >
       <ImageOff size={26} className="text-ink-muted" aria-hidden />
       <span className="text-sm font-medium text-ink-soft">{label}</span>
-      <span className="text-xs text-ink-muted">Заглушка — заменить реальным фото</span>
+      <span className="text-xs text-ink-muted">{typo('Заглушка — заменить реальным фото')}</span>
     </div>
   );
 }

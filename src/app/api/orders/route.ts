@@ -45,7 +45,8 @@ export async function POST(request: Request) {
   if (name.length < 2) return NextResponse.json({ error: 'Укажите имя' }, { status: 400 });
   if (phone.replace(/\D/g, '').length !== 11)
     return NextResponse.json({ error: 'Укажите телефон полностью' }, { status: 400 });
-  if (!isValidEmail(email)) return NextResponse.json({ error: 'Проверьте адрес почты' }, { status: 400 });
+  if (!isValidEmail(email))
+    return NextResponse.json({ error: 'Проверьте адрес почты' }, { status: 400 });
   if (body.consent !== true)
     return NextResponse.json({ error: 'Нужно согласие на обработку данных' }, { status: 400 });
 
@@ -65,8 +66,10 @@ export async function POST(request: Request) {
   const address = str(body.delivery?.address, 300);
 
   if (method === 'carrier') {
-    if (city.length < 2) return NextResponse.json({ error: 'Укажите город доставки' }, { status: 400 });
-    if (address.length < 4) return NextResponse.json({ error: 'Укажите адрес доставки' }, { status: 400 });
+    if (city.length < 2)
+      return NextResponse.json({ error: 'Укажите город доставки' }, { status: 400 });
+    if (address.length < 4)
+      return NextResponse.json({ error: 'Укажите адрес доставки' }, { status: 400 });
   }
 
   // Цены и скидка считаются на сервере — клиентским суммам не доверяем.

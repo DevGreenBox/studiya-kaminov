@@ -7,6 +7,7 @@ import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatDate } from '@/lib/format';
 import { site } from '@/config/site';
+import { typo } from '@/lib/typography';
 
 export const metadata: Metadata = {
   title: 'Отзывы',
@@ -24,13 +25,14 @@ export default function ReviewsPage() {
 
       <h1 className="mt-4 text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight">Отзывы</h1>
       <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-        Здесь публикуются отзывы покупателей о моделях, доставке и сборке.
+        {typo('Здесь публикуются отзывы покупателей о моделях, доставке и сборке.')}
       </p>
 
       {allDemo && (
         <p className="mt-6 rounded-[var(--radius-sm)] border border-line bg-surface px-4 py-3 text-sm leading-relaxed text-ink-soft">
-          Реальных отзывов в исходных материалах нет. Ниже — демонстрационные карточки: они
-          показывают вёрстку раздела и заменяются настоящими отзывами в{' '}
+          {typo(
+            'Реальных отзывов в исходных материалах нет. Ниже — демонстрационные карточки: они показывают вёрстку раздела и заменяются настоящими отзывами в ',
+          )}
           <code className="rounded bg-white px-1.5 py-0.5 text-[13px]">src/data/reviews.ts</code>.
         </p>
       )}
@@ -52,7 +54,9 @@ export default function ReviewsPage() {
               <li key={review.id} className="flex">
                 <article className="flex h-full flex-col rounded-[var(--radius-md)] border border-line bg-white p-5">
                   <Quote size={22} className="text-primary" aria-hidden />
-                  <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-soft">{review.text}</p>
+                  <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-soft">
+                    {review.text}
+                  </p>
                   <footer className="mt-5 border-t border-line pt-4">
                     <p className="font-semibold">{review.name}</p>
                     {review.date && (

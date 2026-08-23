@@ -14,7 +14,10 @@ interface ToastItem {
 }
 
 interface ToastApi {
-  show: (message: string, options?: { tone?: 'success' | 'error'; action?: ToastItem['action'] }) => void;
+  show: (
+    message: string,
+    options?: { tone?: 'success' | 'error'; action?: ToastItem['action'] },
+  ) => void;
 }
 
 const ToastContext = createContext<ToastApi | null>(null);
@@ -25,7 +28,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const show = useCallback<ToastApi['show']>((message, options) => {
     const id = Date.now() + Math.random();
-    setItems((prev) => [...prev.slice(-2), { id, message, tone: options?.tone ?? 'success', action: options?.action }]);
+    setItems((prev) => [
+      ...prev.slice(-2),
+      { id, message, tone: options?.tone ?? 'success', action: options?.action },
+    ]);
     window.setTimeout(() => setItems((prev) => prev.filter((t) => t.id !== id)), 4000);
   }, []);
 
@@ -46,13 +52,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 key={item.id}
                 className={cn(
                   'pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-[var(--radius-sm)] border px-4 py-3 shadow-raised ef-animate-slide-up',
-                  item.tone === 'success' ? 'border-line bg-white' : 'border-danger/30 bg-danger-soft',
+                  item.tone === 'success'
+                    ? 'border-line bg-white'
+                    : 'border-danger/30 bg-danger-soft',
                 )}
               >
                 <span
                   className={cn(
                     'flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-                    item.tone === 'success' ? 'bg-success-soft text-success' : 'bg-white text-danger',
+                    item.tone === 'success'
+                      ? 'bg-success-soft text-success'
+                      : 'bg-white text-danger',
                   )}
                   aria-hidden
                 >

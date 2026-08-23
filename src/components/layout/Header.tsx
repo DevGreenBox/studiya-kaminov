@@ -72,12 +72,18 @@ export function Header() {
       <header
         className={cn(
           'sticky top-0 z-40 border-b transition-[background-color,border-color,box-shadow] duration-200',
-          scrolled ? 'border-line bg-white/95 shadow-header backdrop-blur' : 'border-transparent bg-white',
+          scrolled
+            ? 'border-line bg-white/95 shadow-header backdrop-blur'
+            : 'border-transparent bg-white',
         )}
       >
         {/* Высота фиксирована, чтобы при скролле не было скачка макета */}
         <div className="container-site flex h-16 items-center gap-3 lg:h-20 lg:gap-6">
-          <Link href="/" className="flex shrink-0 items-center" aria-label={`${site.name} — на главную`}>
+          <Link
+            href="/"
+            className="flex shrink-0 items-center"
+            aria-label={`${site.name} — на главную`}
+          >
             <Image
               src={site.logo}
               alt={site.name}
@@ -104,7 +110,10 @@ export function Header() {
                   >
                     {item.label}
                     {isActive(item.href) && (
-                      <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" aria-hidden />
+                      <span
+                        className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary"
+                        aria-hidden
+                      />
                     )}
                   </Link>
                 </li>
@@ -170,7 +179,11 @@ export function Header() {
       {/* Мобильное меню: полноэкранное, со всеми разделами */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-ink/45 ef-animate-fade-in" onClick={() => setMenuOpen(false)} aria-hidden />
+          <div
+            className="absolute inset-0 bg-ink/45 ef-animate-fade-in"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden
+          />
           <div
             role="dialog"
             aria-modal="true"
@@ -178,7 +191,13 @@ export function Header() {
             className="relative ml-auto flex h-full w-full max-w-sm flex-col bg-white ef-animate-slide-in-right"
           >
             <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
-              <Image src={site.logo} alt={site.name} width={1002} height={436} className="h-8 w-auto" />
+              <Image
+                src={site.logo}
+                alt={site.name}
+                width={1002}
+                height={436}
+                className="h-8 w-auto"
+              />
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
@@ -189,7 +208,10 @@ export function Header() {
               </button>
             </div>
 
-            <nav aria-label="Меню" className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3">
+            <nav
+              aria-label="Меню"
+              className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3"
+            >
               <ul className="flex flex-col">
                 {mainNav.map((item) => (
                   <li key={item.href}>
@@ -198,7 +220,9 @@ export function Header() {
                       aria-current={isActive(item.href) ? 'page' : undefined}
                       className={cn(
                         'flex min-h-12 items-center rounded-[var(--radius-sm)] px-4 text-[17px] font-medium transition-colors',
-                        isActive(item.href) ? 'bg-primary-soft text-primary' : 'text-ink hover:bg-surface',
+                        isActive(item.href)
+                          ? 'bg-primary-soft text-primary'
+                          : 'text-ink hover:bg-surface',
                       )}
                     >
                       {item.label}
@@ -217,7 +241,9 @@ export function Header() {
                   >
                     <Heart size={19} className="text-ink-muted" aria-hidden />
                     Избранное
-                    {favCount > 0 && <span className="ml-auto text-sm text-ink-muted">{favCount}</span>}
+                    {favCount > 0 && (
+                      <span className="ml-auto text-sm text-ink-muted">{favCount}</span>
+                    )}
                   </Link>
                 </li>
                 <li>
@@ -227,7 +253,9 @@ export function Header() {
                   >
                     <ShoppingCart size={19} className="text-ink-muted" aria-hidden />
                     Корзина
-                    {cartCount > 0 && <span className="ml-auto text-sm text-ink-muted">{cartCount}</span>}
+                    {cartCount > 0 && (
+                      <span className="ml-auto text-sm text-ink-muted">{cartCount}</span>
+                    )}
                   </Link>
                 </li>
               </ul>

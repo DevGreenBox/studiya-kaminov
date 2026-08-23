@@ -1,6 +1,7 @@
 import type { Product, Specification } from '@/types';
 import images from './image-index.json';
 import { prices } from './prices';
+import { typo } from '@/lib/typography';
 
 /**
  * Каталог собран из материалов заказчика (архив «Для сайта.rar» с Яндекс.Диска):
@@ -388,7 +389,9 @@ const drafts: Draft[] = [
       { label: 'Габариты одной тумбы (В×Ш×Г)', value: '831 × 470 × 400 мм' },
       { label: 'Сборка', value: 'Около 10 минут на тумбу, крепёж в комплекте' },
     ],
-    dataNotes: ['Позиция без очага и обогрева — фильтры по очагу и площади обогрева к ней не применяются.'],
+    dataNotes: [
+      'Позиция без очага и обогрева — фильтры по очагу и площади обогрева к ней не применяются.',
+    ],
   },
 
   // -------------------------------------------------- Классические камины
@@ -614,7 +617,18 @@ export const products: Product[] = drafts.map((draft) => {
       `Нет изображений для товара «${draft.slug}». Запустите: node scripts/prepare-images.mjs <путь к материалам>`,
     );
   }
-  return { ...draft, images: gallery, price: price.price, oldPrice: price.oldPrice };
+  return {
+    ...draft,
+    // Типографика применяется один раз здесь — компонентам достаётся готовый текст
+    name: typo(draft.name),
+    shortDescription: typo(draft.shortDescription),
+    description: typo(draft.description),
+    specifications: draft.specifications.map((spec) => ({ ...spec, value: typo(spec.value) })),
+    dataNotes: draft.dataNotes?.map(typo),
+    images: gallery,
+    price: price.price,
+    oldPrice: price.oldPrice,
+  };
 });
 
 export const productBySlug = new Map(products.map((p) => [p.slug, p]));
@@ -631,9 +645,7 @@ export const getSimilar = (product: Product, limit = 4) => {
   const sameCategory = products.filter(
     (p) => p.id !== product.id && p.category === product.category && p.model !== product.model,
   );
-  const rest = products.filter(
-    (p) => p.id !== product.id && p.category !== product.category,
-  );
+  const rest = products.filter((p) => p.id !== product.id && p.category !== product.category);
   const byPrice = [...rest].sort(
     (a, b) => Math.abs(a.price - product.price) - Math.abs(b.price - product.price),
   );

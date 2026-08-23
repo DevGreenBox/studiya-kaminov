@@ -46,7 +46,7 @@ export class DellinDeliveryProvider implements DeliveryProvider {
           weight: input.weight,
           totalVolume: input.volume,
           totalWeight: input.weight,
-insurance: input.declaredValue,
+          insurance: input.declaredValue,
         },
       }),
     });
@@ -56,7 +56,10 @@ insurance: input.declaredValue,
     }
 
     const data = (await response.json()) as {
-      data?: { price?: number; orderDates?: { derivalToOsplGiver?: string; arrivalToOspReceiver?: string } };
+      data?: {
+        price?: number;
+        orderDates?: { derivalToOsplGiver?: string; arrivalToOspReceiver?: string };
+      };
     };
 
     const price = data.data?.price;

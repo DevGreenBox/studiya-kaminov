@@ -54,7 +54,9 @@ export function FavoriteButton({ productId, productName, variant = 'overlay', cl
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      aria-label={active ? `Убрать «${productName}» из избранного` : `Добавить «${productName}» в избранное`}
+      aria-label={
+        active ? `Убрать «${productName}» из избранного` : `Добавить «${productName}» в избранное`
+      }
       className={cn(
         'flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-150',
         active

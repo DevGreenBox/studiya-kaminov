@@ -5,7 +5,10 @@ import type { EmailMessage } from '@/lib/notifications/email';
 
 const linesTable = (order: Order) =>
   order.lines
-    .map((l) => `  • ${l.name}${l.sku ? ` (арт. ${l.sku})` : ''} — ${l.quantity} шт. × ${formatPrice(l.price)} = ${formatPrice(l.total)}`)
+    .map(
+      (l) =>
+        `  • ${l.name}${l.sku ? ` (арт. ${l.sku})` : ''} — ${l.quantity} шт. × ${formatPrice(l.price)} = ${formatPrice(l.total)}`,
+    )
     .join('\n');
 
 /** Строка стоимости доставки: 0 ₽ у перевозчика означает «ещё не рассчитана». */
@@ -18,7 +21,9 @@ const deliveryLine = (order: Order) => {
 const totals = (order: Order) =>
   [
     `Товары: ${formatPrice(order.itemsTotal)}`,
-    order.discount > 0 ? `Скидка${order.promo ? ` (${order.promo.code})` : ''}: −${formatPrice(order.discount)}` : null,
+    order.discount > 0
+      ? `Скидка${order.promo ? ` (${order.promo.code})` : ''}: −${formatPrice(order.discount)}`
+      : null,
     `Доставка: ${deliveryLine(order)}`,
     `Итого: ${formatPrice(order.total)}${order.delivery.method === 'carrier' && order.delivery.price === 0 ? ' (без доставки)' : ''}`,
   ]

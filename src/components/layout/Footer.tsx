@@ -4,11 +4,14 @@ import { Mail, MapPin, Phone, Clock } from 'lucide-react';
 import { site, contacts, legal } from '@/config/site';
 import { footerNav } from '@/config/navigation';
 import { categories } from '@/data/categories';
+import { typo } from '@/lib/typography';
 
 const year = new Date().getFullYear();
 
 export function Footer() {
-  const messengers = contacts.messengers.flatMap((m) => (m.href ? [{ label: m.label, href: m.href }] : []));
+  const messengers = contacts.messengers.flatMap((m) =>
+    m.href ? [{ label: m.label, href: m.href }] : [],
+  );
 
   return (
     <footer className="mt-20 border-t border-line bg-surface sm:mt-24">
@@ -16,13 +19,24 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-8">
           <div>
             <Link href="/" className="inline-flex" aria-label={`${site.name} — на главную`}>
-              <Image src={site.logo} alt={site.name} width={1002} height={436} className="h-10 w-auto" />
+              <Image
+                src={site.logo}
+                alt={site.name}
+                width={1002}
+                height={436}
+                className="h-10 w-auto"
+              />
             </Link>
-            <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-soft">{site.tagline}. Продажа напрямую с производства.</p>
+            <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-soft">
+              {site.tagline}. Продажа напрямую с производства.
+            </p>
           </div>
 
           <nav aria-labelledby="footer-catalog">
-            <h2 id="footer-catalog" className="text-sm font-bold uppercase tracking-wide text-ink-muted">
+            <h2
+              id="footer-catalog"
+              className="text-sm font-bold uppercase tracking-wide text-ink-muted"
+            >
               Каталог
             </h2>
             <ul className="mt-4 flex flex-col gap-2.5">
@@ -41,13 +55,19 @@ export function Footer() {
 
           <div className="flex flex-col gap-8">
             <nav aria-labelledby="footer-buyers">
-              <h2 id="footer-buyers" className="text-sm font-bold uppercase tracking-wide text-ink-muted">
+              <h2
+                id="footer-buyers"
+                className="text-sm font-bold uppercase tracking-wide text-ink-muted"
+              >
                 Покупателям
               </h2>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {footerNav.buyers.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-[15px] text-ink-soft transition-colors hover:text-primary">
+                    <Link
+                      href={item.href}
+                      className="text-[15px] text-ink-soft transition-colors hover:text-primary"
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -56,13 +76,19 @@ export function Footer() {
             </nav>
 
             <nav aria-labelledby="footer-company">
-              <h2 id="footer-company" className="text-sm font-bold uppercase tracking-wide text-ink-muted">
+              <h2
+                id="footer-company"
+                className="text-sm font-bold uppercase tracking-wide text-ink-muted"
+              >
                 Компания
               </h2>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {footerNav.company.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-[15px] text-ink-soft transition-colors hover:text-primary">
+                    <Link
+                      href={item.href}
+                      className="text-[15px] text-ink-soft transition-colors hover:text-primary"
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -75,24 +101,30 @@ export function Footer() {
             <h2 className="text-sm font-bold uppercase tracking-wide text-ink-muted">Контакты</h2>
             <ul className="mt-4 flex flex-col gap-3 text-[15px] text-ink-soft">
               <li>
-                <a href={contacts.phoneHref} className="inline-flex items-start gap-2.5 transition-colors hover:text-primary">
+                <a
+                  href={contacts.phoneHref}
+                  className="inline-flex items-start gap-2.5 transition-colors hover:text-primary"
+                >
                   <Phone size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
                   {contacts.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${contacts.email}`} className="inline-flex items-start gap-2.5 transition-colors hover:text-primary">
+                <a
+                  href={`mailto:${contacts.email}`}
+                  className="inline-flex items-start gap-2.5 transition-colors hover:text-primary"
+                >
                   <Mail size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
                   <span className="break-all">{contacts.email}</span>
                 </a>
               </li>
               <li className="inline-flex items-start gap-2.5">
                 <MapPin size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
-                {contacts.address}
+                {typo(contacts.address)}
               </li>
               <li className="inline-flex items-start gap-2.5">
                 <Clock size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
-                {contacts.workHours}
+                {typo(contacts.workHours)}
               </li>
             </ul>
 
@@ -135,12 +167,12 @@ export function Footer() {
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             <li>
               <Link href={legal.privacyUrl} className="transition-colors hover:text-primary">
-                Политика конфиденциальности
+                {typo('Политика конфиденциальности')}
               </Link>
             </li>
             <li>
               <Link href={legal.consentUrl} className="transition-colors hover:text-primary">
-                Согласие на обработку данных
+                {typo('Согласие на обработку данных')}
               </Link>
             </li>
           </ul>

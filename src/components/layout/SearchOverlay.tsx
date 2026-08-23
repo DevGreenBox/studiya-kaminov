@@ -10,6 +10,7 @@ import { categoryBySlug } from '@/data/categories';
 import { formatPrice, pluralize } from '@/lib/format';
 import { useScrollLock } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
+import { typo } from '@/lib/typography';
 
 interface Props {
   onClose: () => void;
@@ -104,13 +105,13 @@ export function SearchOverlay({ onClose }: Props) {
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
           {query.length < 2 ? (
             <p className="px-5 py-8 text-center text-sm text-ink-muted">
-              Введите минимум два символа — например, «Дублин», «венге» или «угловой».
+              {typo('Введите минимум два символа — например, «Дублин», «венге» или «угловой».')}
             </p>
           ) : results.length === 0 ? (
             <div className="px-5 py-10 text-center">
               <p className="font-semibold">Ничего не найдено</p>
               <p className="mt-1 text-sm text-ink-soft">
-                Попробуйте другой запрос или откройте каталог целиком.
+                {typo('Попробуйте другой запрос или откройте каталог целиком.')}
               </p>
               <Button
                 variant="secondary"
@@ -157,7 +158,8 @@ export function SearchOverlay({ onClose }: Props) {
               </ul>
               <div className="border-t border-line p-4 sm:p-5">
                 <Button fullWidth onClick={submit}>
-                  Показать все результаты ({total} {pluralize(total, ['товар', 'товара', 'товаров'])})
+                  Показать все результаты ({total}{' '}
+                  {pluralize(total, ['товар', 'товара', 'товаров'])})
                 </Button>
               </div>
             </>

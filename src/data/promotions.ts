@@ -1,6 +1,7 @@
 import type { Promotion } from '@/types';
 import images from './image-index.json';
 import { products } from './catalog';
+import { typo } from '@/lib/typography';
 
 const cover = (slug: string, index = 0) =>
   (images.products as Record<string, string[]>)[slug]?.[index] ?? '';
@@ -12,7 +13,7 @@ const priceOf = (slug: string) => products.find((p) => p.slug === slug);
  * Тексты опираются только на то, что реально задано в каталоге: если у товара
  * есть старая цена — это акция, если помечен как новинка — это новинка.
  */
-export const promotions: Promotion[] = [
+const rawPromotions: Promotion[] = [
   {
     id: 'sale-dublin-ivory',
     kind: 'sale',
@@ -61,3 +62,10 @@ export const promotions: Promotion[] = [
     cta: 'Перейти в каталог',
   },
 ];
+
+export const promotions: Promotion[] = rawPromotions.map((promotion) => ({
+  ...promotion,
+  title: typo(promotion.title),
+  text: typo(promotion.text),
+  cta: typo(promotion.cta),
+}));

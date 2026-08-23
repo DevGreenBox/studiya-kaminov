@@ -17,6 +17,7 @@ import { DeliveryCalculator } from './DeliveryCalculator';
 import { deliveryConfig, legal } from '@/config/site';
 import type { DeliveryQuote, Order, PromoStatus } from '@/types';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 interface Errors {
   name?: string;
@@ -118,7 +119,9 @@ export function CheckoutForm() {
     if (!consent) next.consent = 'Нужно согласие на обработку данных';
     setErrors(next);
     if (Object.keys(next).length > 0) {
-      document.querySelector('[aria-invalid="true"]')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      document
+        .querySelector('[aria-invalid="true"]')
+        ?.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
     return Object.keys(next).length === 0;
   };
@@ -177,7 +180,11 @@ export function CheckoutForm() {
   };
 
   return (
-    <form onSubmit={submit} noValidate className="mt-7 grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10">
+    <form
+      onSubmit={submit}
+      noValidate
+      className="mt-7 grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10"
+    >
       <div className="flex flex-col gap-4">
         <Section step={1} title="Контактные данные">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -243,7 +250,10 @@ export function CheckoutForm() {
           <div className="flex flex-col gap-2 sm:flex-row">
             {(
               [
-                { value: 'carrier' as const, label: `Транспортная компания «${deliveryConfig.carrier}»` },
+                {
+                  value: 'carrier' as const,
+                  label: `Транспортная компания «${deliveryConfig.carrier}»`,
+                },
                 { value: 'pickup' as const, label: 'Самовывоз со склада' },
               ] satisfies { value: 'carrier' | 'pickup'; label: string }[]
             )
@@ -267,7 +277,7 @@ export function CheckoutForm() {
                       setMethod(option.value);
                       setQuote(null);
                     }}
-                    className="h-4 w-4 accent-[var(--color-primary)]"
+                    className="ef-radio h-4 w-4"
                   />
                   <span className="font-medium">{option.label}</span>
                 </label>
@@ -301,7 +311,9 @@ export function CheckoutForm() {
             </div>
           ) : (
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
-              Самовывоз со склада бесплатный. Менеджер согласует дату и адрес после оформления заказа.
+              {typo(
+                'Самовывоз со склада бесплатный. Менеджер согласует дату и адрес после оформления заказа.',
+              )}
             </p>
           )}
         </Section>
@@ -323,14 +335,20 @@ export function CheckoutForm() {
             label={
               <>
                 Согласен на обработку персональных данных в соответствии с{' '}
-                <Link href={legal.privacyUrl} className="font-medium text-primary underline underline-offset-2">
-                  политикой конфиденциальности
+                <Link
+                  href={legal.privacyUrl}
+                  className="font-medium text-primary underline underline-offset-2"
+                >
+                  {typo('политикой конфиденциальности')}
                 </Link>
               </>
             }
           />
           {errors.form && (
-            <p className="mt-4 rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger" role="alert">
+            <p
+              className="mt-4 rounded-[var(--radius-sm)] bg-danger-soft px-4 py-3 text-sm text-danger"
+              role="alert"
+            >
               {errors.form}
             </p>
           )}
@@ -345,7 +363,13 @@ export function CheckoutForm() {
             {lines.map(({ product, quantity }) => (
               <li key={product.id} className="flex gap-3">
                 <span className="relative block h-16 w-12 shrink-0 overflow-hidden rounded-[var(--radius-xs)] bg-white">
-                  <Image src={product.images[0]} alt="" fill sizes="48px" className="object-cover" />
+                  <Image
+                    src={product.images[0]}
+                    alt=""
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
                 </span>
                 <span className="min-w-0 flex-1 text-sm">
                   <span className="block font-medium leading-snug">{product.name}</span>
@@ -379,14 +403,23 @@ export function CheckoutForm() {
                   aria-label="Промокод"
                   className="h-11 min-w-0 flex-1 rounded-[var(--radius-sm)] border border-line-strong bg-white px-3 text-[15px] uppercase outline-none placeholder:normal-case placeholder:text-ink-muted hover:border-ink-muted"
                 />
-                <Button type="button" variant="secondary" size="sm" className="shrink-0" onClick={applyPromo}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="shrink-0"
+                  onClick={applyPromo}
+                >
                   Применить
                 </Button>
               </div>
               {promoMessage && (
                 <p
                   role="status"
-                  className={cn('text-sm', promoStatus === 'applied' ? 'text-success' : 'text-danger')}
+                  className={cn(
+                    'text-sm',
+                    promoStatus === 'applied' ? 'text-success' : 'text-danger',
+                  )}
                 >
                   {promoMessage}
                 </p>
@@ -432,13 +465,15 @@ export function CheckoutForm() {
 
           {method === 'carrier' && !quote && (
             <p className="mt-3 rounded-[var(--radius-xs)] bg-surface-warm px-3 py-2 text-sm leading-relaxed text-ink-soft">
-              Доставка не рассчитана — итог показан без неё. Нажмите «Рассчитать», чтобы увидеть
-              полную сумму, либо оформляйте заказ: стоимость доставки назовёт менеджер.
+              {typo(
+                'Доставка не рассчитана — итог показан без неё. Нажмите «Рассчитать», чтобы увидеть полную сумму, либо оформляйте заказ: стоимость доставки назовёт менеджер.',
+              )}
             </p>
           )}
           <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-            После оформления менеджер свяжется с вами, чтобы подтвердить состав заказа, стоимость
-            доставки и сроки.
+            {typo(
+              'После оформления менеджер свяжется с вами, чтобы подтвердить состав заказа, стоимость доставки и сроки.',
+            )}
           </p>
         </div>
       </aside>

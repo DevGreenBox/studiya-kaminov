@@ -1,7 +1,11 @@
 import { cn } from '@/lib/cn';
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('ef-animate-skeleton rounded-[var(--radius-sm)] bg-surface-strong', className)} />;
+  return (
+    <div
+      className={cn('ef-animate-skeleton rounded-[var(--radius-sm)] bg-surface-strong', className)}
+    />
+  );
 }
 
 export function ProductCardSkeleton() {

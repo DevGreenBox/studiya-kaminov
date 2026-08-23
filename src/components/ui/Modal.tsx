@@ -35,7 +35,11 @@ interface OverlayProps {
   className?: string;
 }
 
-function useOverlayBehaviour(open: boolean, onClose: () => void, panelRef: React.RefObject<HTMLDivElement | null>) {
+function useOverlayBehaviour(
+  open: boolean,
+  onClose: () => void,
+  panelRef: React.RefObject<HTMLDivElement | null>,
+) {
   useScrollLock(open);
 
   useEffect(() => {
@@ -77,7 +81,15 @@ function useOverlayBehaviour(open: boolean, onClose: () => void, panelRef: React
   }, [open, onClose, panelRef]);
 }
 
-export function Modal({ open, onClose, title, hideTitle, children, footer, className }: OverlayProps) {
+export function Modal({
+  open,
+  onClose,
+  title,
+  hideTitle,
+  children,
+  footer,
+  className,
+}: OverlayProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   useOverlayBehaviour(open, onClose, panelRef);
 
@@ -109,8 +121,12 @@ export function Modal({ open, onClose, title, hideTitle, children, footer, class
             <X size={20} />
           </IconButton>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-6">{children}</div>
-        {footer && <div className="border-t border-line bg-surface px-5 py-4 sm:px-6">{footer}</div>}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-6">
+          {children}
+        </div>
+        {footer && (
+          <div className="border-t border-line bg-surface px-5 py-4 sm:px-6">{footer}</div>
+        )}
       </div>
     </div>,
     document.body,
@@ -121,7 +137,15 @@ interface DrawerProps extends OverlayProps {
   side?: 'right' | 'left';
 }
 
-export function Drawer({ open, onClose, title, children, footer, side = 'right', className }: DrawerProps) {
+export function Drawer({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+  side = 'right',
+  className,
+}: DrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   useOverlayBehaviour(open, onClose, panelRef);
 
@@ -129,7 +153,11 @@ export function Drawer({ open, onClose, title, children, footer, side = 'right',
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex">
-      <div className="absolute inset-0 bg-ink/45 ef-animate-fade-in" onClick={onClose} aria-hidden />
+      <div
+        className="absolute inset-0 bg-ink/45 ef-animate-fade-in"
+        onClick={onClose}
+        aria-hidden
+      />
       <div
         ref={panelRef}
         role="dialog"
@@ -148,7 +176,9 @@ export function Drawer({ open, onClose, title, children, footer, side = 'right',
             <X size={20} />
           </IconButton>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5">
+          {children}
+        </div>
         {footer && <div className="border-t border-line bg-surface px-5 py-4">{footer}</div>}
       </div>
     </div>,

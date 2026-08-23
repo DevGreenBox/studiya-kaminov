@@ -2,7 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AlertTriangle, Check, Package, Truck } from 'lucide-react';
-import { getColorVariants, getSimilar, products, productBySlug, discountPercent } from '@/data/catalog';
+import {
+  getColorVariants,
+  getSimilar,
+  products,
+  productBySlug,
+  discountPercent,
+} from '@/data/catalog';
 import { categoryBySlug } from '@/data/categories';
 import { site, deliveryConfig, contacts } from '@/config/site';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
@@ -14,6 +20,7 @@ import { MobileBuyBar } from '@/components/product/MobileBuyBar';
 import { ProductCard } from '@/components/product/ProductCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
@@ -112,7 +119,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           items={[
             { label: 'Главная', href: '/' },
             { label: 'Каталог', href: '/catalog' },
-            ...(category ? [{ label: category.name, href: `/catalog?category=${category.slug}` }] : []),
+            ...(category
+              ? [{ label: category.name, href: `/catalog?category=${category.slug}` }]
+              : []),
             { label: product.name },
           ]}
         />
@@ -136,7 +145,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               {product.sku ? `Артикул: ${product.sku}` : `Модель: ${product.model}`}
             </p>
 
-            <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">{product.shortDescription}</p>
+            <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
+              {product.shortDescription}
+            </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <Price value={product.price} oldValue={product.oldPrice} size="lg" />
@@ -193,11 +204,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <ul className="mt-7 flex flex-col gap-2.5 text-[15px] text-ink-soft">
               <li className="flex items-start gap-2.5">
                 <Truck size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
-                Доставка «{deliveryConfig.carrier}» по России, стоимость рассчитывается при оформлении
+                {typo(
+                  `Доставка «${deliveryConfig.carrier}» по России, стоимость рассчитывается при оформлении`,
+                )}
               </li>
               <li className="flex items-start gap-2.5">
                 <Package size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
-                Заводская упаковка, крепёж и инструкция в комплекте
+                {typo('Заводская упаковка, крепёж и инструкция в комплекте')}
               </li>
             </ul>
           </div>
@@ -224,8 +237,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <table className="w-full min-w-[420px] border-collapse text-[15px]">
                   <tbody>
                     {product.specifications.map((spec) => (
-                      <tr key={`${spec.label}-${spec.value}`} className="border-b border-line last:border-0">
-                        <th scope="row" className="w-1/2 py-3 pr-4 text-left font-normal text-ink-muted align-top">
+                      <tr
+                        key={`${spec.label}-${spec.value}`}
+                        className="border-b border-line last:border-0"
+                      >
+                        <th
+                          scope="row"
+                          className="w-1/2 py-3 pr-4 text-left font-normal text-ink-muted align-top"
+                        >
                           {spec.label}
                         </th>
                         <td className="py-3 font-medium align-top">{spec.value}</td>
@@ -239,7 +258,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <div className="mt-5 flex gap-3 rounded-[var(--radius-sm)] border border-line bg-surface px-4 py-3">
                   <AlertTriangle size={18} className="mt-0.5 shrink-0 text-ink-muted" aria-hidden />
                   <div className="text-sm leading-relaxed text-ink-soft">
-                    <p className="font-semibold text-ink">Требует подтверждения заказчиком</p>
+                    <p className="font-semibold text-ink">
+                      {typo('Требует подтверждения заказчиком')}
+                    </p>
                     <ul className="mt-1 flex list-disc flex-col gap-1 pl-4">
                       {product.dataNotes.map((note) => (
                         <li key={note}>{note}</li>
@@ -255,19 +276,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="rounded-[var(--radius-md)] border border-line bg-surface p-5">
               <h2 className="text-lg font-bold">Доставка и оплата</h2>
               <ul className="mt-3 flex flex-col gap-2.5 text-[15px] leading-relaxed text-ink-soft">
-                <li>Отправка транспортной компанией «{deliveryConfig.carrier}» по всей России.</li>
-                <li>Стоимость доставки рассчитывается при оформлении заказа по городу получателя.</li>
-                {deliveryConfig.pickupAvailable && <li>Возможен самовывоз со склада.</li>}
-                <li>Точную сумму и сроки подтверждает менеджер после оформления.</li>
+                <li>
+                  {typo(
+                    `Отправка транспортной компанией «${deliveryConfig.carrier}» по всей России.`,
+                  )}
+                </li>
+                <li>
+                  {typo(
+                    'Стоимость доставки рассчитывается при оформлении заказа по городу получателя.',
+                  )}
+                </li>
+                {deliveryConfig.pickupAvailable && <li>{typo('Возможен самовывоз со склада.')}</li>}
+                <li>{typo('Точную сумму и сроки подтверждает менеджер после оформления.')}</li>
               </ul>
               <Link
                 href="/delivery"
                 className="mt-4 inline-block font-semibold text-primary transition-colors hover:text-primary-hover"
               >
-                Условия доставки и оплаты
+                {typo('Условия доставки и оплаты')}
               </Link>
               <hr className="my-5 border-line" />
-              <p className="text-[15px] text-ink-soft">Остались вопросы по модели?</p>
+              <p className="text-[15px] text-ink-soft">{typo('Остались вопросы по модели?')}</p>
               <a
                 href={contacts.phoneHref}
                 className="mt-1 inline-block text-lg font-bold transition-colors hover:text-primary"
@@ -280,7 +309,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
         {similar.length > 0 && (
           <section aria-label="Похожие модели" className="mt-16">
-            <SectionHeader title="Похожие модели" link={{ href: '/catalog', label: 'Весь каталог' }} />
+            <SectionHeader
+              title="Похожие модели"
+              link={{ href: '/catalog', label: 'Весь каталог' }}
+            />
             <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {similar.map((item) => (
                 <li key={item.id} className="flex">

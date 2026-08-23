@@ -29,7 +29,9 @@ export interface ShipmentEstimate {
   hasUnknownDimensions: boolean;
 }
 
-export function estimateShipment(lines: { product: Product; quantity: number }[]): ShipmentEstimate {
+export function estimateShipment(
+  lines: { product: Product; quantity: number }[],
+): ShipmentEstimate {
   let volume = 0;
   let hasUnknownDimensions = false;
   const max = { width: 0, height: 0, depth: 0 };

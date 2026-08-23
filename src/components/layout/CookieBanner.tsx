@@ -51,7 +51,10 @@ export function CookieBanner() {
         <div className="flex flex-col gap-3 rounded-[var(--radius-md)] border border-line bg-white px-5 py-4 shadow-raised sm:flex-row sm:items-center sm:gap-6">
           <p className="flex-1 text-sm leading-relaxed text-ink-soft">
             Сайт использует файлы cookie, чтобы запоминать корзину и избранное.{' '}
-            <Link href={legal.privacyUrl} className="font-medium text-primary underline underline-offset-2">
+            <Link
+              href={legal.privacyUrl}
+              className="font-medium text-primary underline underline-offset-2"
+            >
               Подробнее
             </Link>
           </p>

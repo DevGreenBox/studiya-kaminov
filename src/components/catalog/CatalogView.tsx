@@ -101,14 +101,19 @@ export function CatalogView() {
     chips.push({
       key: `c-${slug}`,
       label: categoryBySlug.get(slug)?.name ?? slug,
-      clear: () => apply({ ...filters, categories: filters.categories.filter((v) => v !== slug) }, sort),
+      clear: () =>
+        apply({ ...filters, categories: filters.categories.filter((v) => v !== slug) }, sort),
     }),
   );
   filters.installations.forEach((value) =>
     chips.push({
       key: `i-${value}`,
       label: value,
-      clear: () => apply({ ...filters, installations: filters.installations.filter((v) => v !== value) }, sort),
+      clear: () =>
+        apply(
+          { ...filters, installations: filters.installations.filter((v) => v !== value) },
+          sort,
+        ),
     }),
   );
   filters.widths.forEach((id) =>
@@ -140,10 +145,18 @@ export function CatalogView() {
     });
   }
   if (filters.saleOnly) {
-    chips.push({ key: 'sale', label: 'Со скидкой', clear: () => apply({ ...filters, saleOnly: false }, sort) });
+    chips.push({
+      key: 'sale',
+      label: 'Со скидкой',
+      clear: () => apply({ ...filters, saleOnly: false }, sort),
+    });
   }
   if (filters.inStockOnly) {
-    chips.push({ key: 'stock', label: 'В наличии', clear: () => apply({ ...filters, inStockOnly: false }, sort) });
+    chips.push({
+      key: 'stock',
+      label: 'В наличии',
+      clear: () => apply({ ...filters, inStockOnly: false }, sort),
+    });
   }
 
   const title =
@@ -249,7 +262,7 @@ export function CatalogView() {
                 <select
                   value={sort}
                   onChange={(event) => apply(filters, event.target.value as SortKey)}
-                  className="h-10 min-w-0 max-w-[200px] cursor-pointer truncate rounded-[var(--radius-sm)] border border-line-strong bg-white pl-3 pr-8 text-sm text-ink outline-none hover:border-ink-muted"
+                  className="ef-select h-10 min-w-0 max-w-[220px] truncate rounded-[var(--radius-sm)] border border-line-strong bg-white pl-3 text-sm text-ink outline-none hover:border-ink-muted"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>

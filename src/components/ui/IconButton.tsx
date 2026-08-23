@@ -27,7 +27,9 @@ export function IconButton({
         'inline-flex items-center justify-center rounded-[var(--radius-sm)] text-ink',
         'transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed',
         size === 'md' ? 'h-11 w-11' : 'h-9 w-9',
-        variant === 'plain' ? 'hover:bg-surface-strong' : 'bg-white border border-line hover:border-ink-muted',
+        variant === 'plain'
+          ? 'hover:bg-surface-strong'
+          : 'bg-white border border-line hover:border-ink-muted',
         className,
       )}
     >

@@ -14,10 +14,22 @@ import { deliveryConfig } from '@/config/site';
 const ZONES: { match: RegExp; factor: number; days: [number, number] }[] = [
   { match: /москв|подмосков|московск/i, factor: 1, days: [1, 2] },
   { match: /санкт|петербург|спб|ленинградск/i, factor: 1.35, days: [2, 3] },
-  { match: /казан|нижн|воронеж|ярослав|тул|рязан|владимир|калуг|тверь|смоленск/i, factor: 1.5, days: [2, 4] },
-  { match: /екатеринбург|перм|уф|челябинск|самар|саратов|волгоград|ростов|краснодар/i, factor: 1.9, days: [3, 6] },
+  {
+    match: /казан|нижн|воронеж|ярослав|тул|рязан|владимир|калуг|тверь|смоленск/i,
+    factor: 1.5,
+    days: [2, 4],
+  },
+  {
+    match: /екатеринбург|перм|уф|челябинск|самар|саратов|волгоград|ростов|краснодар/i,
+    factor: 1.9,
+    days: [3, 6],
+  },
   { match: /новосибирск|омск|краснояр|барнаул|кемеров|томск|тюмен/i, factor: 2.4, days: [5, 9] },
-  { match: /иркутск|чит|улан|якутск|хабаровск|владивосток|магадан|камчат|сахалин/i, factor: 3.2, days: [8, 14] },
+  {
+    match: /иркутск|чит|улан|якутск|хабаровск|владивосток|магадан|камчат|сахалин/i,
+    factor: 3.2,
+    days: [8, 14],
+  },
 ];
 
 const BASE_PRICE = 900;
@@ -50,9 +62,9 @@ export class MockDeliveryProvider implements DeliveryProvider {
     );
     const oversize = longestSide > 1500 ? 1.2 : 1;
 
-    const price = Math.round(
-      ((BASE_PRICE + weightPart + volumePart) * factor * oversize + insurance) / 50,
-    ) * 50;
+    const price =
+      Math.round(((BASE_PRICE + weightPart + volumePart) * factor * oversize + insurance) / 50) *
+      50;
 
     return {
       carrier: deliveryConfig.carrier,

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 interface Props {
   title: string;
@@ -31,8 +32,12 @@ export function SectionHeader({
       )}
     >
       <div className={cn('max-w-2xl', align === 'center' && 'mx-auto')}>
-        <Tag className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">{title}</Tag>
-        {description && <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{description}</p>}
+        <Tag className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
+          {typo(title)}
+        </Tag>
+        {description && (
+          <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{typo(description)}</p>
+        )}
       </div>
       {link && (
         <Link
@@ -40,7 +45,11 @@ export function SectionHeader({
           className="group inline-flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-ink transition-colors hover:text-primary"
         >
           {link.label}
-          <ArrowRight size={17} className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
+          <ArrowRight
+            size={17}
+            className="transition-transform duration-200 group-hover:translate-x-0.5"
+            aria-hidden
+          />
         </Link>
       )}
       {children}

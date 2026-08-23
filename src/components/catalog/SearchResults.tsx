@@ -6,6 +6,7 @@ import { searchProducts } from '@/lib/search';
 import { ProductCard } from '@/components/product/ProductCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { pluralize } from '@/lib/format';
+import { typo } from '@/lib/typography';
 
 export function SearchResults() {
   const params = useSearchParams();
@@ -20,7 +21,9 @@ export function SearchResults() {
 
       {!query ? (
         <p className="mt-3 text-[15px] text-ink-soft">
-          Введите запрос через поиск в шапке сайта — например, «Дублин», «венге» или «угловой».
+          {typo(
+            'Введите запрос через поиск в шапке сайта — например, «Дублин», «венге» или «угловой».',
+          )}
         </p>
       ) : results.length === 0 ? (
         <div className="mt-8">

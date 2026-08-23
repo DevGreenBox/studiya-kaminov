@@ -79,7 +79,10 @@ export function PromoField({ discount }: { discount: number }) {
         </Button>
       </div>
       {message && (
-        <p className={cn('text-sm', status === 'applied' ? 'text-success' : 'text-danger')} role="status">
+        <p
+          className={cn('text-sm', status === 'applied' ? 'text-success' : 'text-danger')}
+          role="status"
+        >
           {message}
         </p>
       )}

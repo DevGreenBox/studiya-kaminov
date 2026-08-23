@@ -40,7 +40,8 @@ export const WIDTH_BUCKETS = [
   { id: 'from-1400', label: 'от 1400 мм', test: (w: number) => w > 1400 },
 ];
 
-const uniqueSorted = (values: string[]) => [...new Set(values)].sort((a, b) => a.localeCompare(b, 'ru'));
+const uniqueSorted = (values: string[]) =>
+  [...new Set(values)].sort((a, b) => a.localeCompare(b, 'ru'));
 
 /**
  * Доступные значения фильтров. Считаются по переданному набору товаров,
@@ -68,7 +69,8 @@ export function filterProducts(scope: Product[], filters: FilterState): Product[
   return scope.filter((p) => {
     if (filters.categories.length && !filters.categories.includes(p.category)) return false;
     if (filters.colors.length && !filters.colors.includes(p.color)) return false;
-    if (filters.installations.length && !filters.installations.includes(p.installation)) return false;
+    if (filters.installations.length && !filters.installations.includes(p.installation))
+      return false;
     if (filters.hearths.length && (!p.hearth || !filters.hearths.includes(p.hearth))) return false;
     if (filters.widths.length) {
       const width = p.dimensions?.width;

@@ -3,14 +3,39 @@ import { ButtonLink } from '@/components/ui/Button';
 import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import images from '@/data/image-index.json';
+import { typo } from '@/lib/typography';
 
 const steps: { icon: PencilIconName; title: string; text: string }[] = [
-  { icon: 'design', title: 'Проектирование', text: 'Разрабатываем портал: пропорции, рисунок, посадочное место под очаг.' },
-  { icon: 'factory', title: 'Производство элементов', text: 'Раскрой МДФ, покрытие, формовка декоративного камня.' },
-  { icon: 'assembly', title: 'Сборка', text: 'Собираем портал и устанавливаем очаг, проверяем геометрию.' },
-  { icon: 'quality', title: 'Контроль', text: 'Проверяем покрытие, работу пламени, обогрева, пульта и звука.' },
-  { icon: 'package', title: 'Упаковка', text: 'Комплектуем в коробки с крепежом и инструкцией по сборке.' },
-  { icon: 'truck', title: 'Отправка', text: 'Передаём транспортной компании и сообщаем трек-номер.' },
+  {
+    icon: 'design',
+    title: 'Проектирование',
+    text: typo('Разрабатываем портал: пропорции, рисунок, посадочное место под очаг.'),
+  },
+  {
+    icon: 'factory',
+    title: 'Производство элементов',
+    text: typo('Раскрой МДФ, покрытие, формовка декоративного камня.'),
+  },
+  {
+    icon: 'assembly',
+    title: 'Сборка',
+    text: typo('Собираем портал и устанавливаем очаг, проверяем геометрию.'),
+  },
+  {
+    icon: 'quality',
+    title: 'Контроль',
+    text: typo('Проверяем покрытие, работу пламени, обогрева, пульта и звука.'),
+  },
+  {
+    icon: 'package',
+    title: 'Упаковка',
+    text: typo('Комплектуем в коробки с крепежом и инструкцией по сборке.'),
+  },
+  {
+    icon: 'truck',
+    title: 'Отправка',
+    text: typo('Передаём транспортной компании и сообщаем трек-номер.'),
+  },
 ];
 
 const shared = images.shared as Record<string, string>;
@@ -22,16 +47,17 @@ export function ProductionBlock() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14">
           <div>
             <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-              Собственное производство электрокаминов
+              {typo('Собственное производство электрокаминов')}
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Мы производим электрокамины сами, а не перепродаём чужую продукцию. Порталы делаем из
-              МДФ с покрытием и декоративным искусственным камнем, комплектуем очагами и проверяем
-              каждое изделие перед отправкой.
+              {typo(
+                'Мы производим электрокамины сами, а не перепродаём чужую продукцию. Порталы делаем из МДФ с покрытием и декоративным искусственным камнем, комплектуем очагами и проверяем каждое изделие перед отправкой.',
+              )}
             </p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Поэтому мы отвечаем за то, что вы получаете: за геометрию портала, за качество
-              покрытия и за то, как работает очаг.
+              {typo(
+                'Поэтому мы отвечаем за то, что вы получаете: за геометрию портала, за качество покрытия и за то, как работает очаг.',
+              )}
             </p>
 
             <ButtonLink href="/about#production" variant="secondary" className="mt-7">

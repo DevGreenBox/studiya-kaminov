@@ -1,11 +1,12 @@
 import type { Category } from '@/types';
 import images from './image-index.json';
+import { typo } from '@/lib/typography';
 
 /**
  * Категории повторяют структуру папок в материалах заказчика.
  * Обложки — реальные фотографии продукции без маркетплейс-надписей.
  */
-export const categories: Category[] = [
+const rawCategories: Category[] = [
   {
     slug: 'kaminy-s-kamnem',
     name: 'Камины с камнем',
@@ -43,5 +44,11 @@ export const categories: Category[] = [
     image: images.categories['tumby-pod-tv'],
   },
 ];
+
+export const categories: Category[] = rawCategories.map((category) => ({
+  ...category,
+  name: typo(category.name),
+  summary: typo(category.summary),
+}));
 
 export const categoryBySlug = new Map(categories.map((c) => [c.slug, c]));

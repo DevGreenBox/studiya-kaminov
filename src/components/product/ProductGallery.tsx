@@ -49,7 +49,9 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
                 aria-current={index === active}
                 className={cn(
                   'relative block h-[92px] w-[70px] overflow-hidden rounded-[var(--radius-xs)] border-2 bg-surface transition-colors lg:h-[110px] lg:w-full',
-                  index === active ? 'border-primary' : 'border-transparent hover:border-line-strong',
+                  index === active
+                    ? 'border-primary'
+                    : 'border-transparent hover:border-line-strong',
                 )}
               >
                 <Image src={image} alt="" fill sizes="84px" className="object-cover" />

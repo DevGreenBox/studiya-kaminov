@@ -52,7 +52,9 @@ export function AddToCartButton({
       size={size}
       fullWidth={fullWidth}
       aria-label={
-        nameProduct ? `${inCart ? 'Уже в корзине' : 'Добавить в корзину'}: ${product.name}` : undefined
+        nameProduct
+          ? `${inCart ? 'Уже в корзине' : 'Добавить в корзину'}: ${product.name}`
+          : undefined
       }
       onClick={() => {
         add(product.id, quantity);

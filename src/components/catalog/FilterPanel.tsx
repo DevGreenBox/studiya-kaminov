@@ -18,7 +18,9 @@ interface Props {
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <fieldset className="border-t border-line py-5 first:border-t-0 first:pt-0">
-      <legend className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-muted">{title}</legend>
+      <legend className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-muted">
+        {title}
+      </legend>
       {children}
     </fieldset>
   );
@@ -41,7 +43,7 @@ function Option({
         type="checkbox"
         checked={checked}
         onChange={onToggle}
-        className="h-[18px] w-[18px] shrink-0 cursor-pointer rounded-[5px] border-2 border-line-strong accent-[var(--color-primary)]"
+        className="ef-checkbox h-[18px] w-[18px]"
       />
       <span className="min-w-0 flex-1">{label}</span>
       {count !== undefined && <span className="shrink-0 text-sm text-ink-muted">{count}</span>}

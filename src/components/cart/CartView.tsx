@@ -16,6 +16,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { PromoField } from './PromoField';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
+import { typo } from '@/lib/typography';
 
 export function CartView() {
   const hydrated = useCart((s) => s.hydrated);
@@ -90,14 +91,23 @@ export function CartView() {
                   href={`/catalog/${product.slug}`}
                   className="relative block aspect-[3/4] overflow-hidden rounded-[var(--radius-xs)] bg-surface"
                 >
-                  <Image src={product.images[0]} alt="" fill sizes="112px" className="object-cover" />
+                  <Image
+                    src={product.images[0]}
+                    alt=""
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                  />
                 </Link>
 
                 <div className="flex min-w-0 flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h2 className="text-[15px] font-semibold leading-snug sm:text-base">
-                        <Link href={`/catalog/${product.slug}`} className="transition-colors hover:text-primary">
+                        <Link
+                          href={`/catalog/${product.slug}`}
+                          className="transition-colors hover:text-primary"
+                        >
                           {product.name}
                         </Link>
                       </h2>
@@ -146,7 +156,9 @@ export function CartView() {
 
                     <div className="text-right">
                       {quantity > 1 && (
-                        <p className="text-sm text-ink-muted">{formatPrice(product.price)} × {quantity}</p>
+                        <p className="text-sm text-ink-muted">
+                          {formatPrice(product.price)} × {quantity}
+                        </p>
                       )}
                       <p className="text-lg font-bold whitespace-nowrap">
                         {formatPrice(product.price * quantity)}
@@ -182,7 +194,9 @@ export function CartView() {
               )}
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-soft">Доставка</dt>
-                <dd className="text-right text-sm text-ink-muted">рассчитается при оформлении</dd>
+                <dd className="text-right text-sm text-ink-muted">
+                  {typo('рассчитается при оформлении')}
+                </dd>
               </div>
             </dl>
 

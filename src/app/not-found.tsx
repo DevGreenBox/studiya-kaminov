@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ButtonLink } from '@/components/ui/Button';
+import { typo } from '@/lib/typography';
 
 export const metadata: Metadata = {
   title: 'Страница не найдена',
@@ -14,7 +15,9 @@ export default function NotFound() {
         Страница не найдена
       </h1>
       <p className="mt-3 max-w-md text-[15px] leading-relaxed text-ink-soft">
-        Возможно, ссылка устарела или в адресе опечатка. Загляните в каталог — все модели на месте.
+        {typo(
+          'Возможно, ссылка устарела или в адресе опечатка. Загляните в каталог — все модели на месте.',
+        )}
       </p>
       <div className="mt-7 flex flex-wrap justify-center gap-3">
         <ButtonLink href="/">На главную</ButtonLink>

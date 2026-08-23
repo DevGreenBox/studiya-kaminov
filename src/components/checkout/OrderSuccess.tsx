@@ -44,10 +44,12 @@ export function OrderSuccess() {
     <>
       <div className="mt-6 rounded-[var(--radius-lg)] border border-line bg-surface p-6 sm:p-9">
         <CheckCircle2 size={44} className="text-success" aria-hidden />
-        <h1 className="mt-4 text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight">Заказ оформлен</h1>
+        <h1 className="mt-4 text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight">
+          Заказ оформлен
+        </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">
-          Номер заказа <strong className="text-ink">{order.number}</strong>. Подтверждение отправлено
-          на {order.customer.email}.
+          Номер заказа <strong className="text-ink">{order.number}</strong>. Подтверждение
+          отправлено на {order.customer.email}.
         </p>
 
         <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">

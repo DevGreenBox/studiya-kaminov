@@ -73,7 +73,9 @@ export function MobileBuyBar({ product, anchorId }: { product: Product; anchorId
           tabIndex={visible ? 0 : -1}
           onClick={() => {
             add(product.id, 1);
-            toast.show('Товар добавлен в корзину', { action: { label: 'В корзину', href: '/cart' } });
+            toast.show('Товар добавлен в корзину', {
+              action: { label: 'В корзину', href: '/cart' },
+            });
           }}
           className="ml-auto inline-flex h-12 flex-1 max-w-[210px] items-center justify-center gap-2 rounded-[var(--radius-sm)] bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-hover"
         >

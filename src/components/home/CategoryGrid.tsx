@@ -32,14 +32,18 @@ export function CategoryGrid() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.04]"
                   />
-                  <span className="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden />
+                  <span
+                    className="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    aria-hidden
+                  />
                 </span>
 
                 <span className="flex flex-1 items-center justify-between gap-4 p-4 sm:p-5">
                   <span className="min-w-0">
                     <span className="block text-lg font-bold leading-snug">{category.name}</span>
                     <span className="mt-1 block text-sm text-ink-muted">
-                      {category.summary} · {count} {pluralize(count, ['модель', 'модели', 'моделей'])}
+                      {category.summary} · {count}{' '}
+                      {pluralize(count, ['модель', 'модели', 'моделей'])}
                     </span>
                   </span>
                   <span

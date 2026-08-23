@@ -1,22 +1,27 @@
 import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import { deliveryConfig } from '@/config/site';
+import { typo } from '@/lib/typography';
 
 const items: { icon: PencilIconName; title: string; text: string }[] = [
   {
     icon: 'truck',
     title: `Доставка «${deliveryConfig.carrier}»`,
-    text: 'Отправляем транспортной компанией по всей России. Стоимость считается при оформлении заказа.',
+    text: typo(
+      'Отправляем транспортной компанией по всей России. Стоимость считается при оформлении заказа.',
+    ),
   },
   {
     icon: 'package',
     title: 'Надёжная упаковка',
-    text: 'Камин приезжает в заводских коробках с крепежом и инструкцией по сборке.',
+    text: typo('Камин приезжает в заводских коробках с крепежом и инструкцией по сборке.'),
   },
   {
     icon: 'assembly',
     title: 'Простая сборка',
-    text: 'Большинство моделей собираются примерно за 10 минут по инструкции, без инструмента и монтажа.',
+    text: typo(
+      'Большинство моделей собираются примерно за 10 минут по инструкции, без инструмента и монтажа.',
+    ),
   },
 ];
 
@@ -30,8 +35,9 @@ export function DeliveryBlock() {
               Доставка и оплата
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Рассчитываем стоимость доставки прямо при оформлении заказа — по городу получателя,
-              весу и габаритам. Точную сумму подтверждает менеджер.
+              {typo(
+                'Рассчитываем стоимость доставки прямо при оформлении заказа — по городу получателя, весу и габаритам. Точную сумму подтверждает менеджер.',
+              )}
             </p>
             <ButtonLink href="/delivery" variant="secondary" className="mt-6">
               Условия доставки

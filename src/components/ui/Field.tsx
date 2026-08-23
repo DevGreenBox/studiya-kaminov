@@ -30,7 +30,8 @@ function Shell({
           {label}
           {required && (
             <span aria-hidden className="text-primary">
-              {' '}*
+              {' '}
+              *
             </span>
           )}
         </label>
@@ -120,8 +121,7 @@ export function Select({ label, error, className, id, children, ...rest }: Selec
         {...rest}
         className={cn(
           control,
-          'h-12 px-3 text-[15px] cursor-pointer appearance-none',
-          "bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2357534e%22 stroke-width=%222%22 stroke-linecap=%22round%22><path d=%22M6 9l6 6 6-6%22/></svg>')] bg-[length:20px] bg-[right_12px_center] bg-no-repeat pr-10",
+          'ef-select h-12 pl-3.5 text-[15px]',
           error ? 'border-danger' : 'border-line-strong hover:border-ink-muted',
           className,
         )}
@@ -149,11 +149,7 @@ export function Checkbox({ label, error, className, id, ...rest }: CheckboxProps
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           {...rest}
-          className={cn(
-            'mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded-[5px] border-2 accent-[var(--color-primary)]',
-            error ? 'border-danger' : 'border-line-strong',
-            className,
-          )}
+          className={cn('ef-checkbox mt-0.5 h-5 w-5', error && 'is-invalid', className)}
         />
         <span className="text-sm leading-6 text-ink-soft group-hover:text-ink">{label}</span>
       </label>

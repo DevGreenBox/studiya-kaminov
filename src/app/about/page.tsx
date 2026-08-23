@@ -7,6 +7,7 @@ import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { ContactSection } from '@/components/forms/ContactSection';
 import images from '@/data/image-index.json';
+import { typo } from '@/lib/typography';
 
 export const metadata: Metadata = {
   title: 'О компании',
@@ -22,32 +23,42 @@ const stages: { icon: PencilIconName; title: string; text: string }[] = [
   {
     icon: 'design',
     title: 'Проектируем портал',
-    text: 'Определяем пропорции, рисунок декора и посадочное место под очаг, чтобы камин собирался без подгонки.',
+    text: typo(
+      'Определяем пропорции, рисунок декора и посадочное место под очаг, чтобы камин собирался без подгонки.',
+    ),
   },
   {
     icon: 'factory',
     title: 'Изготавливаем элементы',
-    text: 'Раскраиваем МДФ, наносим покрытие — ПВХ, экошпон или эмаль — и формуем декоративный камень.',
+    text: typo(
+      'Раскраиваем МДФ, наносим покрытие — ПВХ, экошпон или эмаль — и формуем декоративный камень.',
+    ),
   },
   {
     icon: 'assembly',
     title: 'Собираем и комплектуем',
-    text: 'Соединяем портал, устанавливаем очаг Fobos или Flash 36, добавляем пульт и крепёж.',
+    text: typo(
+      'Соединяем портал, устанавливаем очаг Fobos или Flash 36, добавляем пульт и крепёж.',
+    ),
   },
   {
     icon: 'quality',
     title: 'Проверяем каждое изделие',
-    text: 'Смотрим геометрию и покрытие, включаем очаг: пламя, звук, обогрев, яркость и работу пульта.',
+    text: typo(
+      'Смотрим геометрию и покрытие, включаем очаг: пламя, звук, обогрев, яркость и работу пульта.',
+    ),
   },
   {
     icon: 'package',
     title: 'Упаковываем',
-    text: 'Раскладываем по коробкам с крепежом и инструкцией — камин доезжает без повреждений.',
+    text: typo(
+      'Раскладываем по коробкам с крепежом и инструкцией — камин доезжает без повреждений.',
+    ),
   },
   {
     icon: 'truck',
     title: 'Отправляем',
-    text: 'Передаём транспортной компании и сообщаем данные для отслеживания.',
+    text: typo('Передаём транспортной компании и сообщаем данные для отслеживания.'),
   },
 ];
 
@@ -62,15 +73,17 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-14">
           <div>
             <h1 className="text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] leading-[1.1]">
-              Производим электрокамины сами
+              {typo('Производим электрокамины сами')}
             </h1>
             <p className="mt-5 text-[15px] leading-relaxed text-ink-soft sm:text-lg">
-              Мы не перепродаём чужую продукцию. Порталы разрабатываются и изготавливаются на нашем
-              производстве, комплектуются очагами и проверяются перед отправкой покупателю.
+              {typo(
+                'Мы не перепродаём чужую продукцию. Порталы разрабатываются и изготавливаются на нашем производстве, комплектуются очагами и проверяются перед отправкой покупателю.',
+              )}
             </p>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
-              Поэтому мы отвечаем за то, что вы получаете: за геометрию портала, за качество
-              покрытия и за то, как работает очаг.
+              {typo(
+                'Поэтому мы отвечаем за то, что вы получаете: за геометрию портала, за качество покрытия и за то, как работает очаг.',
+              )}
             </p>
             <ButtonLink href="/catalog" size="lg" className="mt-7">
               Смотреть каталог
@@ -90,13 +103,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="production" className="mt-16 border-y border-line bg-surface py-12 sm:mt-20 sm:py-16">
+      <section
+        id="production"
+        className="mt-16 border-y border-line bg-surface py-12 sm:mt-20 sm:py-16"
+      >
         <div className="container-site">
           <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-            Как создаётся электрокамин
+            {typo('Как создаётся электрокамин')}
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-            Путь от чертежа до упакованной коробки — шесть этапов, которые проходит каждая модель.
+            {typo(
+              'Путь от чертежа до упакованной коробки — шесть этапов, которые проходит каждая модель.',
+            )}
           </p>
 
           <ol className="mt-9 grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
@@ -118,11 +136,12 @@ export default function AboutPage() {
 
       <section className="container-site py-12 sm:py-16">
         <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-          Контроль качества и комплектация
+          {typo('Контроль качества и комплектация')}
         </h2>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-          Перед упаковкой мы включаем очаг и проверяем все режимы: пламя, звук потрескивания дров,
-          два режима обогрева, регулировку яркости, работу пульта и кнопок на лицевой панели.
+          {typo(
+            'Перед упаковкой мы включаем очаг и проверяем все режимы: пламя, звук потрескивания дров, два режима обогрева, регулировку яркости, работу пульта и кнопок на лицевой панели.',
+          )}
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -136,7 +155,9 @@ export default function AboutPage() {
                 className="object-cover"
               />
             </div>
-            <figcaption className="text-sm text-ink-soft">Очаг Fobos крупным планом</figcaption>
+            <figcaption className="text-sm text-ink-soft">
+              {typo('Очаг Fobos крупным планом')}
+            </figcaption>
           </figure>
 
           <figure className="flex flex-col gap-2">
@@ -171,7 +192,7 @@ export default function AboutPage() {
               className="aspect-[3/4] rounded-[var(--radius-md)]"
             />
             <figcaption className="text-sm text-ink-muted">
-              Фотографий производства в материалах пока нет
+              {typo('Фотографий производства в материалах пока нет')}
             </figcaption>
           </figure>
         </div>
