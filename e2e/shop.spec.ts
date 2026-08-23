@@ -1,19 +1,24 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 /**
  * Smoke-тесты критических сценариев из ТЗ.
  * Проверяют, что интерфейс действительно работает, а не только отрисован.
  */
 
-/** Закрывает cookie-баннер, чтобы он не перекрывал кнопки внизу экрана. */
-async function acceptCookies(page: Page) {
-  const button = page.getByRole('button', { name: 'Принять' });
-  if (await button.isVisible().catch(() => false)) await button.click();
-}
-
+/**
+ * Cookie-баннер закреплён внизу экрана и на узких экранах перекрывает нижнюю
+ * часть контента. Гасим его до первой навигации, чтобы клики в тестах били
+ * туда, куда задумано, а не в баннер.
+ */
 test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    try {
+      localStorage.setItem('ef-cookie-accepted', '1');
+    } catch {
+      // приватный режим — баннер останется, тесты это переживут
+    }
+  });
   await page.goto('/');
-  await acceptCookies(page);
 });
 
 test('главная открывается и ведёт в каталог', async ({ page }) => {
@@ -78,6 +83,7 @@ test('карточка каталога кликабельна целиком', 
   const href = await card.getByRole('link').first().getAttribute('href');
 
   // Клик по области с характеристиками — не по заголовку и не по кнопке
+  await card.scrollIntoViewIfNeeded();
   const box = await card.boundingBox();
   if (!box) throw new Error('карточка не отрисована');
   await page.mouse.click(box.x + box.width / 2, box.y + box.height * 0.62);
