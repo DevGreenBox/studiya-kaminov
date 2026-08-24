@@ -13,35 +13,33 @@ export const metadata: Metadata = {
   openGraph: { title: `Оплата и доставка — ${site.name}`, url: '/delivery' },
 };
 
+/**
+ * Единая цепочка заказа — от оформления до получения.
+ *
+ * Оплата встроена сюда четвёртым шагом: раньше она дублировалась отдельным
+ * списком с теми же иконками и теми же формулировками.
+ */
 const steps: { icon: PencilIconName; title: string; text: string }[] = [
   {
     icon: 'design',
     title: 'Оформите заказ на сайте',
-    text: typo(
-      'Добавьте камин в корзину и заполните форму оформления. Логин и регистрация не нужны.',
-    ),
+    text: typo('Добавьте камин в корзину и заполните форму. Регистрация не нужна.'),
   },
   {
     icon: 'support',
     title: typo('Дождитесь звонка менеджера'),
-    text: typo(
-      'Менеджер подтвердит состав заказа, окончательную стоимость доставки и сроки отгрузки.',
-    ),
+    text: typo('Подтвердит состав заказа, стоимость доставки и сроки отгрузки.'),
+  },
+  {
+    icon: 'package',
+    title: 'Оплатите заказ',
+    text: typo('Менеджер пришлёт реквизиты. После оплаты передаём камин перевозчику.'),
   },
   {
     icon: 'truck',
     title: 'Получите камин',
-    text: typo(
-      `Отправляем ${carrierNames} — компанию выбираете при оформлении. Либо забираете сами со склада.`,
-    ),
+    text: typo('Компанию выбираете при оформлении. Либо забираете сами со склада.'),
   },
-];
-
-/** Порядок расчёта — короткими пунктами, без крупной плашки. */
-const paymentSteps: { icon: PencilIconName; text: string }[] = [
-  { icon: 'design', text: typo('Оформляете заказ — оплата на сайте не требуется') },
-  { icon: 'support', text: typo('Менеджер подтверждает сумму и присылает реквизиты') },
-  { icon: 'package', text: typo('Оплачиваете, и мы передаём камин перевозчику') },
 ];
 
 const faq = [
@@ -109,7 +107,7 @@ export default function DeliveryPage() {
           )}
         </p>
 
-        <ol className="mt-10 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-3">
+        <ol className="mt-10 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <li key={step.title} className="flex gap-4">
               <PencilIcon name={step.icon} size={42} className="mt-0.5 shrink-0 text-primary" />
@@ -124,39 +122,31 @@ export default function DeliveryPage() {
           ))}
         </ol>
 
-        {/* Оплата — коротким текстом перед плашками о доставке */}
+        {/* Оплата — только то, чего нет в шагах выше */}
         <section aria-labelledby="payment-heading" className="mt-14 border-t border-line pt-10">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-14">
-            <div>
-              <h2 id="payment-heading" className="text-2xl">
-                Оплата
-              </h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)] lg:gap-14">
+            <h2 id="payment-heading" className="text-2xl">
+              Оплата
+            </h2>
+
+            <div className="max-w-2xl">
+              <p className="text-[15px] leading-relaxed text-ink-soft sm:text-base">
                 {typo(
-                  'Оплата на сайте не нужна: сумму подтверждает менеджер, он же присылает реквизиты. Актуальный порядок расчётов уточняйте при подтверждении заказа.',
+                  'Сумму заказа вместе с доставкой подтверждает менеджер — он же присылает реквизиты. Актуальный порядок расчётов уточняйте при подтверждении заказа.',
                 )}
               </p>
-              <p className="mt-3 text-[15px] text-ink-soft">
+              <p className="mt-4 text-[15px] text-ink-soft">
                 {typo('Вопросы по оплате: ')}
                 <a href={contacts.phoneHref} className="font-semibold text-primary">
                   {contacts.phone}
                 </a>
               </p>
+              <p className="mt-4 border-l-2 border-line-strong pl-4 text-sm leading-relaxed text-ink-muted">
+                {typo(
+                  'Конкретные способы оплаты в исходных материалах не указаны. Когда заказчик их подтвердит, текст меняется в одном месте — src/app/delivery/page.tsx',
+                )}
+              </p>
             </div>
-
-            <ol className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
-              {paymentSteps.map((step, index) => (
-                <li key={step.text} className="flex gap-3">
-                  <PencilIcon name={step.icon} size={34} className="mt-0.5 shrink-0 text-primary" />
-                  <div className="min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
-                      {index + 1}
-                    </p>
-                    <p className="mt-0.5 text-[15px] leading-relaxed text-ink-soft">{step.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
