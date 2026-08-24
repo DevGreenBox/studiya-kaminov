@@ -11,9 +11,16 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
   const go = (index: number) => setActive(Math.min(images.length - 1, Math.max(0, index)));
 
   return (
-    <div className="flex min-w-0 max-w-full flex-col gap-3 lg:flex-row-reverse lg:gap-4">
+    <div className="flex min-w-0 max-w-full flex-col gap-3 lg:flex-row-reverse lg:items-start lg:gap-4">
+      {/*
+        На мобильном фотография занимает всю ширину, на десктопе ширина
+        считается из высоты окна: при пропорции 3:4 высота получается не
+        больше 70vh, и вертикальный кадр целиком помещается на экран.
+        Ограничение задано через ширину, а не высоту, — иначе колонка сетки
+        сжимала бы блок и object-cover резал бы кадр по бокам.
+      */}
       <div
-        className="relative aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-md)] border border-line bg-surface lg:flex-1"
+        className="relative mx-auto aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-md)] border border-line bg-surface lg:w-[min(100%,calc(min(70vh,720px)*0.75))]"
         onTouchStart={(event) => {
           touchStart.current = event.touches[0].clientX;
         }}
@@ -30,14 +37,14 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
           alt={`${name} — фото ${active + 1} из ${images.length}`}
           fill
           priority={active === 0}
-          sizes="(max-width: 1024px) 100vw, 520px"
+          sizes="(max-width: 1024px) 100vw, 40vw"
           className="object-cover ef-animate-fade-in"
         />
       </div>
 
       {images.length > 1 && (
         <ul
-          className="flex w-full min-w-0 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] lg:w-[84px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:pb-0 [&::-webkit-scrollbar]:hidden"
+          className="flex w-full min-w-0 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] lg:max-h-[min(70vh,720px)] lg:w-[84px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:pb-0 [&::-webkit-scrollbar]:hidden"
           aria-label="Другие фотографии товара"
         >
           {images.map((image, index) => (

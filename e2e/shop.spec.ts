@@ -104,6 +104,18 @@ test('кнопки внутри карточки не открывают тов�
   await expect(page.getByRole('link', { name: /^Избранное, 1$/ })).toBeVisible();
 });
 
+test('главное фото товара помещается на экран', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 800 });
+  await page.goto('/catalog/verona-white');
+
+  const box = await page.locator('main img').first().locator('..').boundingBox();
+  if (!box) throw new Error('галерея не отрисована');
+
+  // Кадр 3:4 не растянут и целиком помещается в окно
+  expect(box.width / box.height).toBeCloseTo(0.75, 2);
+  expect(box.y + box.height).toBeLessThanOrEqual(800);
+});
+
 test('корзина: добавление, количество, промокод, удаление', async ({ page }) => {
   await page.goto('/catalog/malta-white');
   await page.locator('#purchase-block').getByRole('button', { name: 'В корзину' }).click();
