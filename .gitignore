@@ -8,4 +8,6 @@ next-env.d.ts
 .DS_Store
 playwright-report
 test-results
-.netlify
+.vercel
+.env*
+!.env.example

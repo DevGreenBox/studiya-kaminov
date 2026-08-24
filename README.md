@@ -360,8 +360,9 @@ PDF-библиотека не подключалась: она добавила 
 
 ## Деплой
 
-Сайт выкладывается на Netlify: конфигурация в `netlify.toml`, пошаговая
-инструкция — в `DEPLOY.md`.
+Сайт выложен на Vercel — **https://studiya-kaminov.vercel.app**. Отдельного
+конфига хостинга нет: заголовки и кэш заданы в `next.config.ts`, а Next.js
+Vercel распознаёт без настройки. Пошаговая инструкция — в `DEPLOY.md`.
 
 Текущее состояние проекта, принятые решения и открытые вопросы — в
 `PROJECT-STATE.md`.
@@ -372,7 +373,7 @@ PDF-библиотека не подключалась: она добавила 
 
 ```bash
 npx playwright install chromium   # один раз
-npm run test:e2e                  # 24 теста: desktop + mobile
+npm run test:e2e                  # 32 теста: desktop + mobile
 ```
 
 Playwright сам собирает проект и поднимает сервер на порту 3100 — отдельно
