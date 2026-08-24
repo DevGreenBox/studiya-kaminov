@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { site, carrierNames } from '@/config/site';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ButtonLink } from '@/components/ui/Button';
-import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
+import { StepsPlate, type Step } from '@/components/ui/StepsPlate';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { ContactSection } from '@/components/forms/ContactSection';
 import { products } from '@/data/catalog';
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 const shared = images.shared as Record<string, string>;
 
-const stages: { icon: PencilIconName; title: string; text: string }[] = [
+const stages: Step[] = [
   {
     icon: 'design',
     title: 'Проектируем портал',
@@ -123,34 +123,15 @@ export default function AboutPage() {
       </section>
 
       {/* Как создаётся камин */}
-      <section id="production" className="container-site py-14 sm:py-20">
-        <h2 className="max-w-2xl text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-          {typo('Как создаётся электрокамин')}
-        </h2>
-        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-          {typo(
-            'Путь от чертежа до упакованной коробки — шесть этапов, которые проходит каждая модель.',
-          )}
-        </p>
-
-        <ol className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stages.map((stage, index) => (
-            <li
-              key={stage.title}
-              className="flex flex-col rounded-[var(--radius-md)] border border-line bg-surface p-6 transition-colors hover:border-line-strong"
-            >
-              <div className="flex items-center justify-between">
-                <PencilIcon name={stage.icon} size={40} className="text-primary" />
-                <span className="text-2xl font-bold tabular-nums text-line-strong">
-                  0{index + 1}
-                </span>
-              </div>
-              <h3 className="mt-5 text-[17px] font-bold leading-snug">{stage.title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{stage.text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <div className="container-site py-14 sm:py-20">
+        <StepsPlate
+          id="production"
+          title="Как создаётся электрокамин"
+          lead="Путь от чертежа до упакованной коробки — шесть этапов, которые проходит каждая модель."
+          steps={stages}
+          columns={3}
+        />
+      </div>
 
       {/* Контроль качества */}
       <section className="border-y border-line bg-surface py-14 sm:py-20">

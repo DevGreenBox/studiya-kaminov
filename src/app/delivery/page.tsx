@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ButtonLink } from '@/components/ui/Button';
-import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
+import { StepsPlate, type Step } from '@/components/ui/StepsPlate';
 import { ContactSection } from '@/components/forms/ContactSection';
 import { carriers, carrierNames, site, contacts } from '@/config/site';
 import { typo } from '@/lib/typography';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  * Оплата встроена сюда четвёртым шагом: раньше она дублировалась отдельным
  * списком с теми же иконками и теми же формулировками.
  */
-const steps: { icon: PencilIconName; title: string; text: string }[] = [
+const steps: Step[] = [
   {
     icon: 'design',
     title: 'Оформите заказ на сайте',
@@ -107,23 +107,17 @@ export default function DeliveryPage() {
           )}
         </p>
 
-        <ol className="mt-10 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <li key={step.title} className="flex gap-4">
-              <PencilIcon name={step.icon} size={42} className="mt-0.5 shrink-0 text-primary" />
-              <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
-                  Шаг {index + 1}
-                </p>
-                <h2 className="mt-1 text-[17px] font-bold leading-snug">{step.title}</h2>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-ink-soft">{step.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <StepsPlate
+          className="mt-10"
+          title="Как оформить заказ"
+          steps={steps}
+          numbering="step"
+          columns={4}
+        />
 
-        {/* Оплата — только то, чего нет в шагах выше */}
-        <section aria-labelledby="payment-heading" className="mt-14 border-t border-line pt-10">
+        {/* Оплата — только то, чего нет в шагах выше.
+            Разделитель не нужен: тёмная плашка выше сама отделяет блоки. */}
+        <section aria-labelledby="payment-heading" className="mt-14">
           <h2 id="payment-heading" className="text-2xl">
             Оплата
           </h2>

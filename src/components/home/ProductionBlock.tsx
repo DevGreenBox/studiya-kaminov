@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { ButtonLink } from '@/components/ui/Button';
-import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
+import { StepsPlate, type Step } from '@/components/ui/StepsPlate';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { typo } from '@/lib/typography';
 
-const steps: { icon: PencilIconName; title: string; text: string }[] = [
+const steps: Step[] = [
   {
     icon: 'design',
     title: 'Проектирование',
@@ -120,19 +120,8 @@ export function ProductionBlock() {
           </div>
         </div>
 
-        {/* Этапы — компактной лентой */}
-        <ol className="mt-14 grid grid-cols-1 gap-x-6 gap-y-8 border-t border-white/10 pt-10 sm:grid-cols-2 lg:grid-cols-6">
-          {steps.map((step, index) => (
-            <li key={step.title}>
-              <div className="flex items-center gap-3">
-                <PencilIcon name={step.icon} size={34} className="shrink-0 text-primary" />
-                <span className="text-xs font-bold tabular-nums text-white/40">0{index + 1}</span>
-              </div>
-              <h3 className="mt-3 text-[16px] font-bold leading-snug">{step.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-white/60">{step.text}</p>
-            </li>
-          ))}
-        </ol>
+        {/* Этапы — компактной лентой; секция уже тёмная, плашка не нужна */}
+        <StepsPlate steps={steps} columns={6} inset />
 
         <div className="mt-10 flex flex-col gap-4 rounded-[var(--radius-md)] border border-dashed border-white/15 p-5 sm:flex-row sm:items-center sm:gap-6">
           <PlaceholderImage
