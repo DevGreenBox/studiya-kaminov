@@ -63,6 +63,7 @@ src/
     ui/               дизайн-система: Button, Input, Modal, Drawer, Toast…
     layout/           Header, Footer, поиск, cookie-баннер
     home/             секции главной страницы
+    about/            карусель видов каминов
     catalog/          каталог, фильтры, результаты поиска
     product/          карточка товара, галерея, избранное, корзина
     cart/ checkout/   корзина, оформление, накладная
@@ -412,7 +413,7 @@ Vercel распознаёт без настройки. Пошаговая инс
 
 ```bash
 npx playwright install chromium   # один раз
-npm run test:e2e                  # 32 теста: desktop + mobile
+npm run test:e2e                  # 34 теста: desktop + mobile
 ```
 
 Playwright сам собирает проект и поднимает сервер на порту 3100 — отдельно

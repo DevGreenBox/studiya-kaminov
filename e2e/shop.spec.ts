@@ -222,6 +222,40 @@ test('форма «Связаться с продавцом» отправляе
   await expect(page.getByText('Спасибо, заявка отправлена')).toBeVisible();
 });
 
+test('карусель видов каминов листается и ведёт в каталог', async ({ page }) => {
+  await page.goto('/about');
+
+  const track = page.locator('section[aria-label="Виды каминов"] ul');
+  const before = await track.evaluate((el) => el.scrollLeft);
+
+  if ((page.viewportSize()?.width ?? 0) < 640) {
+    // На узких экранах стрелок нет: листают пальцем, а для клика есть точки
+    await page
+      .getByRole('button', { name: /^Показать/ })
+      .nth(2)
+      .click();
+  } else {
+    const back = page.getByRole('button', { name: 'Предыдущие камины' });
+    const forward = page.getByRole('button', { name: 'Следующие камины' });
+
+    // Стрелки не зациклены: на краях они гаснут
+    await expect(back).toBeDisabled();
+    await expect(forward).toBeEnabled();
+
+    await forward.click();
+    await expect(back).toBeEnabled();
+  }
+
+  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(before);
+
+  // Карточка ведёт в отфильтрованный каталог
+  await page
+    .getByRole('link', { name: /Угловые камины/ })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/category=uglovye/);
+});
+
 test('404 показывает страницу с выходами', async ({ page }) => {
   const response = await page.goto('/nonexistent');
   expect(response?.status()).toBe(404);

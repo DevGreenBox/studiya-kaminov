@@ -203,6 +203,7 @@ Tailwind CSS v4. Сборка проходит: 0 ошибок TypeScript, 0 о�
 | 10       | Перенести на Vercel                                                                                   | Новый адрес, заголовки в `next.config.ts`, Netlify убран; 32 теста на боевом адресе    |
 | 11       | Иконки «как нарисованные карандашом»                                                                  | Все 48 иконок пересобраны через rough.js; lucide больше не в браузере                  |
 | 12       | Оформление шагов с главной — на «О нас» и «Доставку»                                                  | Общий компонент `StepsPlate`; те же шаги больше не свёрстаны трижды                    |
+| 13       | Карусель видов каминов на «О нас», светлый первый экран                                               | `CategoryCarousel`; тёмной осталась только плашка с этапами                            |
 
 ---
 
@@ -214,7 +215,7 @@ npm run build          # production-сборка
 npm run lint           # ESLint
 npm run typecheck      # TypeScript
 npm run format         # Prettier
-npm run test:e2e       # 32 теста, сами поднимут сборку
+npm run test:e2e       # 34 теста, сами поднимут сборку
 
 # тесты по развёрнутому адресу
 E2E_BASE_URL=https://studiya-kaminov.vercel.app npm run test:e2e

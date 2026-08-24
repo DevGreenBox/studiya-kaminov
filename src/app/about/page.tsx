@@ -6,6 +6,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { StepsPlate, type Step } from '@/components/ui/StepsPlate';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { ContactSection } from '@/components/forms/ContactSection';
+import { CategoryCarousel } from '@/components/about/CategoryCarousel';
 import { products } from '@/data/catalog';
 import { categories } from '@/data/categories';
 import { typo } from '@/lib/typography';
@@ -74,21 +75,23 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* Первый экран: крупная фотография и короткое утверждение */}
-      <section className="relative overflow-hidden bg-ink text-white">
+      {/* Первый экран: крупная фотография и короткое утверждение.
+          Фон светлый — тёмной на странице остаётся только плашка с этапами,
+          и она за счёт этого читается как акцент, а не как ещё одна секция. */}
+      <section className="relative overflow-hidden border-b border-line bg-surface">
         <div className="container-site relative grid grid-cols-1 items-center gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 lg:py-20">
           <div>
             <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'О нас' }]} />
             <h1 className="mt-6 text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] leading-[1.06]">
               {typo('Производим электрокамины сами')}
             </h1>
-            <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-white/70 sm:text-lg">
+            <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-ink-soft sm:text-lg">
               {typo(
                 'Мы не перепродаём чужую продукцию. Порталы разрабатываются и изготавливаются на нашем производстве, комплектуются очагами и проверяются перед отправкой покупателю.',
               )}
             </p>
 
-            <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
+            <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-line pt-8">
               {facts.map((fact) => (
                 <div key={fact.label}>
                   <dt className="sr-only">{fact.label}</dt>
@@ -96,7 +99,7 @@ export default function AboutPage() {
                     <span className="block text-[clamp(1.75rem,1.4rem+1.4vw,2.5rem)] font-bold leading-none text-primary">
                       {fact.value}
                     </span>
-                    <span className="mt-2 block text-sm leading-snug text-white/60">
+                    <span className="mt-2 block text-sm leading-snug text-ink-soft">
                       {fact.label}
                     </span>
                   </dd>
@@ -121,6 +124,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <CategoryCarousel />
 
       {/* Как создаётся камин */}
       <div className="container-site py-14 sm:py-20">
