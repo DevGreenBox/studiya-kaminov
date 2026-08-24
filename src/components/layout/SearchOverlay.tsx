@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, X } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { searchProducts } from '@/lib/search';
 import { categoryBySlug } from '@/data/categories';
 import { formatPrice, pluralize } from '@/lib/format';
@@ -82,7 +82,7 @@ export function SearchOverlay({ onClose }: Props) {
           className="flex items-center gap-2 border-b border-line px-4 py-3 sm:px-5"
           role="search"
         >
-          <Search size={20} className="shrink-0 text-ink-muted" aria-hidden />
+          <SketchIcon name="search" size={20} className="shrink-0 text-ink-muted" aria-hidden />
           <input
             ref={inputRef}
             type="search"
@@ -98,7 +98,7 @@ export function SearchOverlay({ onClose }: Props) {
             aria-label="Закрыть поиск"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-ink-muted transition-colors hover:bg-surface-strong hover:text-ink"
           >
-            <X size={20} />
+            <SketchIcon name="x" size={20} />
           </button>
         </form>
 

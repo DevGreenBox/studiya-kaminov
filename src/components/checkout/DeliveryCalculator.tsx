@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Calculator, Check, Info } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Button } from '@/components/ui/Button';
 import { formatPrice, pluralize } from '@/lib/format';
 import { carriers } from '@/config/site';
@@ -72,7 +72,7 @@ export function DeliveryCalculator({
           loading={loading}
           disabled={!cityReady}
         >
-          {!loading && <Calculator size={16} aria-hidden />}
+          {!loading && <SketchIcon name="calculator" size={16} aria-hidden />}
           {options.length ? 'Пересчитать' : 'Рассчитать'}
         </Button>
       </div>
@@ -143,7 +143,7 @@ export function DeliveryCalculator({
 
       {options.some((o) => o.quote.isEstimate) && (
         <p className="mt-3 flex items-start gap-2 text-sm text-ink-muted">
-          <Info size={15} className="mt-0.5 shrink-0" aria-hidden />
+          <SketchIcon name="info" size={15} className="mt-0.5 shrink-0" aria-hidden />
           Предварительный расчёт по весу, объёму и городу. Точную сумму подтверждает менеджер.
         </p>
       )}
@@ -159,7 +159,7 @@ export function DeliveryCalculator({
 
       {options.length > 0 && (
         <p className="mt-3 flex items-center gap-2 text-sm text-success">
-          <Check size={15} aria-hidden />
+          <SketchIcon name="check" size={15} aria-hidden />
           Выбрано: {carriers.find((c) => c.id === selectedCarrierId)?.name}
         </p>
       )}

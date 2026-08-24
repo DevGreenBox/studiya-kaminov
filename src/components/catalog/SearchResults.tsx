@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { SearchX } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { searchProducts } from '@/lib/search';
 import { ProductCard } from '@/components/product/ProductCard';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -28,7 +28,7 @@ export function SearchResults() {
       ) : results.length === 0 ? (
         <div className="mt-8">
           <EmptyState
-            icon={<SearchX size={26} />}
+            icon={<SketchIcon name="search-x" size={26} />}
             title="Ничего не найдено"
             text="Проверьте написание или попробуйте более короткий запрос — например, название модели."
             action={{ label: 'Перейти в каталог', href: '/catalog' }}

@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, ShoppingCart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { useCart } from '@/lib/store/cart';
 import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
@@ -61,7 +61,11 @@ export function AddToCartButton({
         toast.show('Товар добавлен в корзину', { action: { label: 'В корзину', href: '/cart' } });
       }}
     >
-      {inCart ? <Check size={18} aria-hidden /> : <ShoppingCart size={18} aria-hidden />}
+      {inCart ? (
+        <SketchIcon name="check" size={18} aria-hidden />
+      ) : (
+        <SketchIcon name="cart" size={18} aria-hidden />
+      )}
       {inCart ? 'В корзине' : 'В корзину'}
     </Button>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ContactSection } from '@/components/forms/ContactSection';
 import { contacts, site } from '@/config/site';
@@ -45,7 +45,7 @@ export default function ContactsPage() {
 
         <ul className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <li className="rounded-[var(--radius-md)] border border-line bg-white p-5">
-            <Phone size={22} className="text-primary" aria-hidden />
+            <SketchIcon name="phone" size={22} className="text-primary" aria-hidden />
             <p className="mt-3 text-sm text-ink-muted">Телефон</p>
             <a
               href={contacts.phoneHref}
@@ -55,7 +55,7 @@ export default function ContactsPage() {
             </a>
           </li>
           <li className="rounded-[var(--radius-md)] border border-line bg-white p-5">
-            <Mail size={22} className="text-primary" aria-hidden />
+            <SketchIcon name="mail" size={22} className="text-primary" aria-hidden />
             <p className="mt-3 text-sm text-ink-muted">Email</p>
             <a
               href={`mailto:${contacts.email}`}
@@ -65,12 +65,12 @@ export default function ContactsPage() {
             </a>
           </li>
           <li className="rounded-[var(--radius-md)] border border-line bg-white p-5">
-            <MapPin size={22} className="text-primary" aria-hidden />
+            <SketchIcon name="map-pin" size={22} className="text-primary" aria-hidden />
             <p className="mt-3 text-sm text-ink-muted">Адрес</p>
             <p className="mt-1 font-semibold">{typo(contacts.address)}</p>
           </li>
           <li className="rounded-[var(--radius-md)] border border-line bg-white p-5">
-            <Clock size={22} className="text-primary" aria-hidden />
+            <SketchIcon name="clock" size={22} className="text-primary" aria-hidden />
             <p className="mt-3 text-sm text-ink-muted">Время работы</p>
             <p className="mt-1 font-semibold">{typo(contacts.workHours)}</p>
           </li>

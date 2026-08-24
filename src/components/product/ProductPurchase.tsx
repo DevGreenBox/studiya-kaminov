@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, MessageCircle, ShoppingCart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Button } from '@/components/ui/Button';
 import { QuantitySelector } from '@/components/ui/QuantitySelector';
 import { FavoriteButton } from './FavoriteButton';
@@ -38,7 +38,11 @@ export function ProductPurchase({ product }: { product: Product }) {
               );
             }}
           >
-            {inCart ? <Check size={18} aria-hidden /> : <ShoppingCart size={18} aria-hidden />}
+            {inCart ? (
+              <SketchIcon name="check" size={18} aria-hidden />
+            ) : (
+              <SketchIcon name="cart" size={18} aria-hidden />
+            )}
             {!product.inStock ? 'Нет в наличии' : inCart ? 'Добавить ещё' : 'В корзину'}
           </Button>
         </div>
@@ -51,7 +55,7 @@ export function ProductPurchase({ product }: { product: Product }) {
             className="flex-1"
           />
           <Button variant="secondary" className="flex-1" onClick={() => setContactOpen(true)}>
-            <MessageCircle size={18} aria-hidden />
+            <SketchIcon name="message-circle" size={18} aria-hidden />
             Связаться с продавцом
           </Button>
         </div>

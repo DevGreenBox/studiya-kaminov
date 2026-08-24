@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { SlidersHorizontal, PackageSearch } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { products } from '@/data/catalog';
 import { categories, categoryBySlug } from '@/data/categories';
 import {
@@ -248,7 +248,7 @@ export function CatalogView() {
                 className="lg:hidden"
                 onClick={() => setDrawerOpen(true)}
               >
-                <SlidersHorizontal size={16} aria-hidden />
+                <SketchIcon name="sliders" size={16} aria-hidden />
                 Фильтры
                 {activeCount > 0 && (
                   <span className="ml-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-white">
@@ -294,7 +294,7 @@ export function CatalogView() {
           {visible.length === 0 ? (
             <div className="mt-6">
               <EmptyState
-                icon={<PackageSearch size={26} />}
+                icon={<SketchIcon name="package-search" size={26} />}
                 title="По выбранным параметрам ничего не найдено"
                 text="Попробуйте убрать часть фильтров — возможно, условия слишком узкие."
                 secondaryAction={

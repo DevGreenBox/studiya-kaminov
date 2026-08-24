@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { CheckCircle2, PhoneCall } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -43,7 +43,7 @@ export function OrderSuccess() {
   return (
     <>
       <div className="mt-6 rounded-[var(--radius-lg)] border border-line bg-surface p-6 sm:p-9">
-        <CheckCircle2 size={44} className="text-success" aria-hidden />
+        <SketchIcon name="check-circle" size={44} className="text-success" aria-hidden />
         <h1 className="mt-4 text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight">
           Заказ оформлен
         </h1>
@@ -73,7 +73,12 @@ export function OrderSuccess() {
 
         <div className="mt-6 rounded-[var(--radius-sm)] border border-line bg-white p-4">
           <p className="flex items-start gap-2.5 text-[15px] leading-relaxed text-ink-soft">
-            <PhoneCall size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+            <SketchIcon
+              name="phone-call"
+              size={18}
+              className="mt-0.5 shrink-0 text-primary"
+              aria-hidden
+            />
             <span>
               Что дальше: менеджер позвонит по номеру {order.customer.phone}, подтвердит состав
               заказа, окончательную стоимость доставки и сроки отгрузки. Если удобнее, позвоните

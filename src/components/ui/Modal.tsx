@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { cn } from '@/lib/cn';
 import { IconButton } from './IconButton';
 
@@ -118,7 +118,7 @@ export function Modal({
         <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
           <h2 className={cn('text-lg font-bold', hideTitle && 'sr-only')}>{title}</h2>
           <IconButton label="Закрыть" onClick={onClose} className="-mr-2 shrink-0">
-            <X size={20} />
+            <SketchIcon name="x" size={20} />
           </IconButton>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-6">
@@ -173,7 +173,7 @@ export function Drawer({
         <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
           <h2 className="text-lg font-bold">{title}</h2>
           <IconButton label="Закрыть" onClick={onClose} className="-mr-2 shrink-0">
-            <X size={20} />
+            <SketchIcon name="x" size={20} />
           </IconButton>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5">

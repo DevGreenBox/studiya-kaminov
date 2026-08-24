@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Quote } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { reviews } from '@/data/reviews';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { productBySlug } from '@/data/catalog';
@@ -25,7 +25,7 @@ export function ReviewsPreview() {
           return (
             <li key={review.id} className="flex">
               <article className="flex h-full flex-col rounded-[var(--radius-md)] border border-line bg-white p-5">
-                <Quote size={22} className="text-primary" aria-hidden />
+                <SketchIcon name="quote" size={22} className="text-primary" aria-hidden />
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-soft">
                   {review.text}
                 </p>

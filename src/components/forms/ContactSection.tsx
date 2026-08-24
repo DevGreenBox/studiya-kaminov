@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea, Checkbox } from '@/components/ui/Field';
 import { formatPhone, isValidEmail, isValidPhone } from '@/lib/format';
@@ -109,7 +109,7 @@ export function ContactSection({
 
           {status === 'success' ? (
             <div className="flex flex-col items-start justify-center rounded-[var(--radius-md)] border border-line bg-white p-6">
-              <CheckCircle2 size={40} className="text-success" aria-hidden />
+              <SketchIcon name="check-circle" size={40} className="text-success" aria-hidden />
               <p className="mt-4 text-lg font-bold">Сообщение отправлено</p>
               <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">
                 Мы получили вашу заявку и свяжемся по телефону {phone}.

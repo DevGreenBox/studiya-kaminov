@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Check, ShoppingCart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Price } from '@/components/ui/Price';
 import { useCart } from '@/lib/store/cart';
 import { useToast } from '@/components/ui/Toast';
@@ -79,7 +79,11 @@ export function MobileBuyBar({ product, anchorId }: { product: Product; anchorId
           }}
           className="ml-auto inline-flex h-12 flex-1 max-w-[210px] items-center justify-center gap-2 rounded-[var(--radius-sm)] bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-hover"
         >
-          {inCart ? <Check size={18} aria-hidden /> : <ShoppingCart size={18} aria-hidden />}
+          {inCart ? (
+            <SketchIcon name="check" size={18} aria-hidden />
+          ) : (
+            <SketchIcon name="cart" size={18} aria-hidden />
+          )}
           {inCart ? 'Ещё раз' : 'В корзину'}
         </button>
       </div>

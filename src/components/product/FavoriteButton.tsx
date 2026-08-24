@@ -1,6 +1,6 @@
 'use client';
 
-import { Heart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { useFavorites } from '@/lib/store/favorites';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
@@ -43,7 +43,7 @@ export function FavoriteButton({ productId, productName, variant = 'overlay', cl
           className,
         )}
       >
-        <Heart size={18} className={cn(active && 'fill-current')} aria-hidden />
+        <SketchIcon name={active ? 'heart-filled' : 'heart'} size={18} aria-hidden />
         {active ? 'В избранном' : 'В избранное'}
       </button>
     );
@@ -65,7 +65,7 @@ export function FavoriteButton({ productId, productName, variant = 'overlay', cl
         className,
       )}
     >
-      <Heart size={17} className={cn(active && 'fill-current')} aria-hidden />
+      <SketchIcon name={active ? 'heart-filled' : 'heart'} size={17} aria-hidden />
     </button>
   );
 }

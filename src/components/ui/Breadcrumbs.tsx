@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 
 export interface Crumb {
   label: string;
@@ -13,7 +13,12 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
         {items.map((item, index) => (
           <li key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-1.5">
             {index > 0 && (
-              <ChevronRight size={14} className="shrink-0 text-line-strong" aria-hidden />
+              <SketchIcon
+                name="chevron-right"
+                size={14}
+                className="shrink-0 text-line-strong"
+                aria-hidden
+              />
             )}
             {item.href ? (
               <Link href={item.href} className="truncate transition-colors hover:text-primary">

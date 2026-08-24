@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { Loader2 } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { cn } from '@/lib/cn';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -53,7 +53,7 @@ export function Button({
       disabled={disabled || loading}
       className={cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className)}
     >
-      {loading && <Loader2 size={18} className="animate-spin" aria-hidden />}
+      {loading && <SketchIcon name="loader" size={18} className="animate-spin" aria-hidden />}
       {children}
     </button>
   );

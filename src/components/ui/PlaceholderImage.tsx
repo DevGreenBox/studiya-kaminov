@@ -1,4 +1,4 @@
-import { ImageOff } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { cn } from '@/lib/cn';
 
 /**
@@ -29,7 +29,12 @@ export function PlaceholderImage({
         className,
       )}
     >
-      <ImageOff size={26} className={dark ? 'text-white/50' : 'text-ink-muted'} aria-hidden />
+      <SketchIcon
+        name="image-off"
+        size={26}
+        className={dark ? 'text-white/50' : 'text-ink-muted'}
+        aria-hidden
+      />
       <span className={cn('text-sm font-medium', dark ? 'text-white/80' : 'text-ink-soft')}>
         {label}
       </span>

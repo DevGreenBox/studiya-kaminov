@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { heroMedia } from '@/config/site';
@@ -194,7 +194,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <ButtonLink href="/catalog" size="lg" className="sm:w-auto">
                   Перейти в каталог
-                  <ArrowRight size={19} aria-hidden />
+                  <SketchIcon name="arrow-right" size={19} aria-hidden />
                 </ButtonLink>
                 <ButtonLink href="/contacts" size="lg" variant="secondary" className="sm:w-auto">
                   Связаться с нами
@@ -281,7 +281,8 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
 
                   <span className="mt-8 inline-flex h-14 items-center gap-2 rounded-[var(--radius-sm)] bg-primary px-7 font-semibold text-white transition-colors group-hover:bg-primary-hover">
                     {promo.cta}
-                    <ArrowRight
+                    <SketchIcon
+                      name="arrow-right"
                       size={19}
                       aria-hidden
                       className="transition-transform duration-200 group-hover:translate-x-0.5"
@@ -315,7 +316,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
             aria-label="Предыдущий слайд"
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line-strong bg-white text-ink transition-colors hover:border-ink-muted"
           >
-            <ArrowLeft size={19} />
+            <SketchIcon name="arrow-left" size={19} />
           </button>
 
           <div className="flex items-center gap-3">
@@ -342,7 +343,11 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
               aria-label={playing ? 'Остановить автопрокрутку' : 'Включить автопрокрутку'}
               className="flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-white hover:text-ink"
             >
-              {playing ? <Pause size={15} /> : <Play size={15} />}
+              {playing ? (
+                <SketchIcon name="pause" size={15} />
+              ) : (
+                <SketchIcon name="play" size={15} />
+              )}
             </button>
           </div>
 
@@ -352,7 +357,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
             aria-label="Следующий слайд"
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line-strong bg-white text-ink transition-colors hover:border-ink-muted"
           >
-            <ArrowRight size={19} />
+            <SketchIcon name="arrow-right" size={19} />
           </button>
         </div>
       </div>

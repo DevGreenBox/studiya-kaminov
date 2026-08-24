@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, X } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/lib/store/cart';
 import { applyPromoCode } from '@/lib/promo';
@@ -20,7 +20,7 @@ export function PromoField({ discount }: { discount: number }) {
     return (
       <div className="flex items-center justify-between gap-3 rounded-[var(--radius-sm)] border border-success/25 bg-success-soft px-4 py-3">
         <p className="flex min-w-0 items-center gap-2 text-sm">
-          <Check size={17} className="shrink-0 text-success" aria-hidden />
+          <SketchIcon name="check" size={17} className="shrink-0 text-success" aria-hidden />
           <span className="truncate">
             Промокод <strong>{promo.code}</strong> · −{promo.percent}%
             {discount > 0 && ` (${formatPrice(discount)})`}
@@ -37,7 +37,7 @@ export function PromoField({ discount }: { discount: number }) {
           aria-label="Отменить промокод"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-white hover:text-ink"
         >
-          <X size={16} />
+          <SketchIcon name="x" size={16} />
         </button>
       </div>
     );

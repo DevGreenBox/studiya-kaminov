@@ -1,6 +1,6 @@
 'use client';
 
-import { Minus, Plus } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { cn } from '@/lib/cn';
 
 interface Props {
@@ -43,7 +43,7 @@ export function QuantitySelector({
           btn,
         )}
       >
-        <Minus size={16} />
+        <SketchIcon name="minus" size={16} />
       </button>
       <input
         type="text"
@@ -66,7 +66,7 @@ export function QuantitySelector({
           btn,
         )}
       >
-        <Plus size={16} />
+        <SketchIcon name="plus" size={16} />
       </button>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { useCart } from '@/lib/store/cart';
 import { useFavorites } from '@/lib/store/favorites';
 import { resolveCartLines, cartItemsTotal, cartCount } from '@/lib/cart-lines';
@@ -56,7 +56,7 @@ export function CartView() {
         <h1 className="mt-4 text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight">Корзина</h1>
         <div className="mt-8">
           <EmptyState
-            icon={<ShoppingCart size={26} />}
+            icon={<SketchIcon name="cart" size={26} />}
             title="Корзина пока пуста"
             text="Выберите камин в каталоге — он сохранится здесь, даже если вы закроете страницу."
             action={{ label: 'Перейти в каталог', href: '/catalog' }}
@@ -125,7 +125,7 @@ export function CartView() {
                       aria-label={`Удалить «${product.name}» из корзины`}
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-ink-muted transition-colors hover:bg-danger-soft hover:text-danger"
                     >
-                      <Trash2 size={17} />
+                      <SketchIcon name="trash" size={17} />
                     </button>
                   </div>
 
@@ -149,7 +149,11 @@ export function CartView() {
                           isFavorite ? 'text-primary' : 'text-ink-muted hover:text-ink',
                         )}
                       >
-                        <Heart size={16} className={cn(isFavorite && 'fill-current')} aria-hidden />
+                        <SketchIcon
+                          name={isFavorite ? 'heart-filled' : 'heart'}
+                          size={16}
+                          aria-hidden
+                        />
                         {isFavorite ? 'В избранном' : 'В избранное'}
                       </button>
                     </div>

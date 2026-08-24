@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Textarea, Checkbox } from '@/components/ui/Field';
 import { formatPhone, isValidEmail, isValidPhone } from '@/lib/format';
 import { legal } from '@/config/site';
-import { CheckCircle2 } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { typo } from '@/lib/typography';
 
 interface Props {
@@ -83,7 +83,7 @@ export function ContactSellerModal({ onClose, productName }: Props) {
     >
       {status === 'success' ? (
         <div className="flex flex-col items-center py-6 text-center">
-          <CheckCircle2 size={44} className="text-success" aria-hidden />
+          <SketchIcon name="check-circle" size={44} className="text-success" aria-hidden />
           <p className="mt-4 text-lg font-bold">{typo('Спасибо, заявка отправлена')}</p>
           <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-ink-soft">
             {productName

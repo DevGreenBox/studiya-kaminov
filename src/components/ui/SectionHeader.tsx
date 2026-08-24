@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { typo } from '@/lib/typography';
@@ -45,7 +45,8 @@ export function SectionHeader({
           className="group inline-flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-ink transition-colors hover:text-primary"
         >
           {link.label}
-          <ArrowRight
+          <SketchIcon
+            name="arrow-right"
             size={17}
             className="transition-transform duration-200 group-hover:translate-x-0.5"
             aria-hidden

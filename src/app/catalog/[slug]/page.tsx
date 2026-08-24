@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { AlertTriangle, Check, Package, Truck } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import {
   getColorVariants,
   getSimilar,
@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   product.inStock ? 'text-success' : 'text-ink-muted',
                 )}
               >
-                <Check size={17} aria-hidden />
+                <SketchIcon name="check" size={17} aria-hidden />
                 {product.inStock ? 'В наличии' : 'Нет в наличии'}
               </span>
             </div>
@@ -203,13 +203,23 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
             <ul className="mt-7 flex flex-col gap-2.5 text-[15px] text-ink-soft">
               <li className="flex items-start gap-2.5">
-                <Truck size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                <SketchIcon
+                  name="truck"
+                  size={18}
+                  className="mt-0.5 shrink-0 text-primary"
+                  aria-hidden
+                />
                 {typo(
                   `Доставка ${carrierNames} по России, стоимость рассчитывается при оформлении`,
                 )}
               </li>
               <li className="flex items-start gap-2.5">
-                <Package size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                <SketchIcon
+                  name="package"
+                  size={18}
+                  className="mt-0.5 shrink-0 text-primary"
+                  aria-hidden
+                />
                 {typo('Заводская упаковка, крепёж и инструкция в комплекте')}
               </li>
             </ul>
@@ -256,7 +266,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
               {product.dataNotes && product.dataNotes.length > 0 && (
                 <div className="mt-5 flex gap-3 rounded-[var(--radius-sm)] border border-line bg-surface px-4 py-3">
-                  <AlertTriangle size={18} className="mt-0.5 shrink-0 text-ink-muted" aria-hidden />
+                  <SketchIcon
+                    name="alert-triangle"
+                    size={18}
+                    className="mt-0.5 shrink-0 text-ink-muted"
+                    aria-hidden
+                  />
                   <div className="text-sm leading-relaxed text-ink-soft">
                     <p className="font-semibold text-ink">
                       {typo('Требует подтверждения заказчиком')}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Quote, MessageSquarePlus } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { reviews } from '@/data/reviews';
 import { productBySlug } from '@/data/catalog';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
@@ -40,7 +40,7 @@ export default function ReviewsPage() {
       {reviews.length === 0 ? (
         <div className="mt-8">
           <EmptyState
-            icon={<MessageSquarePlus size={26} />}
+            icon={<SketchIcon name="message-plus" size={26} />}
             title="Отзывов пока нет"
             text="Как только появятся отзывы покупателей, они будут здесь."
             action={{ label: 'Перейти в каталог', href: '/catalog' }}
@@ -53,7 +53,7 @@ export default function ReviewsPage() {
             return (
               <li key={review.id} className="flex">
                 <article className="flex h-full flex-col rounded-[var(--radius-md)] border border-line bg-white p-5">
-                  <Quote size={22} className="text-primary" aria-hidden />
+                  <SketchIcon name="quote" size={22} className="text-primary" aria-hidden />
                   <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-soft">
                     {review.text}
                   </p>

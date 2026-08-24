@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Phone, Clock } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { site, contacts, legal } from '@/config/site';
 import { footerNav } from '@/config/navigation';
 import { categories } from '@/data/categories';
@@ -105,7 +105,12 @@ export function Footer() {
                   href={contacts.phoneHref}
                   className="inline-flex items-start gap-2.5 transition-colors hover:text-primary"
                 >
-                  <Phone size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                  <SketchIcon
+                    name="phone"
+                    size={17}
+                    className="mt-0.5 shrink-0 text-primary"
+                    aria-hidden
+                  />
                   {contacts.phone}
                 </a>
               </li>
@@ -114,16 +119,31 @@ export function Footer() {
                   href={`mailto:${contacts.email}`}
                   className="inline-flex items-start gap-2.5 transition-colors hover:text-primary"
                 >
-                  <Mail size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                  <SketchIcon
+                    name="mail"
+                    size={17}
+                    className="mt-0.5 shrink-0 text-primary"
+                    aria-hidden
+                  />
                   <span className="break-all">{contacts.email}</span>
                 </a>
               </li>
               <li className="inline-flex items-start gap-2.5">
-                <MapPin size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                <SketchIcon
+                  name="map-pin"
+                  size={17}
+                  className="mt-0.5 shrink-0 text-primary"
+                  aria-hidden
+                />
                 {typo(contacts.address)}
               </li>
               <li className="inline-flex items-start gap-2.5">
-                <Clock size={17} className="mt-0.5 shrink-0 text-primary" aria-hidden />
+                <SketchIcon
+                  name="clock"
+                  size={17}
+                  className="mt-0.5 shrink-0 text-primary"
+                  aria-hidden
+                />
                 {typo(contacts.workHours)}
               </li>
             </ul>

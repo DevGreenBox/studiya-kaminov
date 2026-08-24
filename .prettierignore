@@ -1,7 +1,12 @@
 .next
-.netlify
+.vercel
 node_modules
 public
 playwright-report
 test-results
 package-lock.json
+
+# Исходные документы заказчика и протокол работы — не наши файлы,
+# форматирование в них менять нельзя
+Electric_Fireplaces.md
+clode.md

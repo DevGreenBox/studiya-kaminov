@@ -1,6 +1,6 @@
 'use client';
 
-import { Heart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { useFavorites } from '@/lib/store/favorites';
 import { productById } from '@/data/catalog';
 import { ProductCard } from './ProductCard';
@@ -45,7 +45,7 @@ export function FavoritesView() {
       {items.length === 0 ? (
         <div className="mt-8">
           <EmptyState
-            icon={<Heart size={26} />}
+            icon={<SketchIcon name="heart" size={26} />}
             title="В избранном пока ничего нет"
             text="Нажмите на сердце в карточке товара — модель сохранится здесь и не потеряется после перезагрузки."
             action={{ label: 'Перейти в каталог', href: '/catalog' }}

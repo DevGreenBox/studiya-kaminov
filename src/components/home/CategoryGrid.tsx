@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { categories } from '@/data/categories';
 import { products } from '@/data/catalog';
 import { pluralize } from '@/lib/format';
@@ -50,7 +50,7 @@ export function CategoryGrid() {
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line-strong text-ink transition-[transform,border-color,color] duration-200 group-hover:translate-x-0.5 group-hover:border-primary group-hover:text-primary"
                     aria-hidden
                   >
-                    <ArrowRight size={18} />
+                    <SketchIcon name="arrow-right" size={18} />
                   </span>
                 </span>
               </Link>

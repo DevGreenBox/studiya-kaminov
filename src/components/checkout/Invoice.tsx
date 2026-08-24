@@ -1,6 +1,6 @@
 'use client';
 
-import { Printer } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { Button } from '@/components/ui/Button';
 import { site, contacts, legal } from '@/config/site';
 import { formatPrice, formatDateTime } from '@/lib/format';
@@ -22,7 +22,7 @@ export function Invoice({ order }: { order: Order }) {
           Накладная к заказу
         </h2>
         <Button variant="secondary" onClick={() => window.print()}>
-          <Printer size={17} aria-hidden />
+          <SketchIcon name="printer" size={17} aria-hidden />
           {typo('Распечатать или сохранить в PDF')}
         </Button>
       </div>

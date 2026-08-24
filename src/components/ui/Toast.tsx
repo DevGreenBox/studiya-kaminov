@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { Check, AlertCircle, X } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { cn } from '@/lib/cn';
 import { useIsClient } from '@/lib/use-client-value';
 
@@ -66,7 +66,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   )}
                   aria-hidden
                 >
-                  {item.tone === 'success' ? <Check size={16} /> : <AlertCircle size={16} />}
+                  {item.tone === 'success' ? (
+                    <SketchIcon name="check" size={16} />
+                  ) : (
+                    <SketchIcon name="alert-circle" size={16} />
+                  )}
                 </span>
                 <p className="min-w-0 flex-1 text-sm font-medium text-ink">{item.message}</p>
                 {item.action && (
@@ -83,7 +87,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   onClick={() => setItems((prev) => prev.filter((t) => t.id !== item.id))}
                   className="shrink-0 rounded p-1 text-ink-muted hover:text-ink"
                 >
-                  <X size={16} />
+                  <SketchIcon name="x" size={16} />
                 </button>
               </div>
             ))}

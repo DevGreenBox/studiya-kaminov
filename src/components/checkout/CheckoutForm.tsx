@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
+import { SketchIcon } from '@/components/icons/SketchIcon';
 import { useCart } from '@/lib/store/cart';
 import { resolveCartLines, cartItemsTotal, cartCount } from '@/lib/cart-lines';
 import { promoDiscount, applyPromoCode } from '@/lib/promo';
@@ -93,7 +93,7 @@ export function CheckoutForm() {
     return (
       <div className="mt-8">
         <EmptyState
-          icon={<ShoppingCart size={26} />}
+          icon={<SketchIcon name="cart" size={26} />}
           title="Корзина пока пуста"
           text="Чтобы оформить заказ, сначала выберите камин в каталоге."
           action={{ label: 'Перейти в каталог', href: '/catalog' }}
