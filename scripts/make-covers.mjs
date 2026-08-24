@@ -59,11 +59,31 @@ const PRODUCTION = {
   'hearth-square': { src: 'malta-wenge/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1, out: { width: 700, height: 700 } },
 };
 
+/**
+ * Главные фото карточек товара.
+ *
+ * У нескольких моделей нет ни одного кадра без маркетплейс-надписей. Здесь для
+ * них вырезается середина кадра — без полос с текстом сверху и снизу. Готовый
+ * кадр становится первым в галерее, а исходник остаётся дальше как
+ * инфографика с габаритами и характеристиками.
+ */
+const CARDS = {
+  'chester-white': { src: 'chester-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 0.6 },
+  'malta-corner-votan': { src: 'malta-corner-votan/01.webp', focusX: 0.5, focusY: 0.49, zoom: 0.56 },
+  'verona-white': { src: 'verona-white/01.webp', focusX: 0.5, focusY: 0.4, zoom: 0.81 },
+  'malta-wenge': { src: 'malta-wenge/02.webp', focusX: 0.5, focusY: 0.47, zoom: 0.6 },
+};
+
 const OUT = { width: 900, height: 675 }; // 4:3 — плитки категорий
+const CARD_OUT = { width: 1050, height: 1400 }; // 3:4 — как остальные фото товаров
 const PROMO_OUT = { width: 760, height: 950 }; // 4:5 — баннеры карусели
 
-/** Вырезает окно заданных пропорций вокруг точки фокуса и сохраняет в WebP. */
-async function crop(file, dest, out, cfg) {
+/**
+ * Вырезает окно заданных пропорций вокруг точки фокуса и сохраняет в WebP.
+ * `noEnlarge` не даёт растянуть вырезанный фрагмент выше его исходного
+ * размера — иначе тесные кадры карточек становятся мыльными.
+ */
+async function crop(file, dest, out, cfg, { noEnlarge = false } = {}) {
   const ratio = out.height / out.width;
   const meta = await sharp(file).metadata();
 
@@ -78,10 +98,13 @@ async function crop(file, dest, out, cfg) {
   const left = Math.max(0, Math.min(meta.width - cropW, Math.round(meta.width * cfg.focusX - cropW / 2)));
   const top = Math.max(0, Math.min(meta.height - cropH, Math.round(meta.height * cfg.focusY - cropH / 2)));
 
+  const width = noEnlarge ? Math.min(out.width, cropW) : out.width;
+  const height = Math.round(width * ratio);
+
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   await sharp(file)
     .extract({ left, top, width: cropW, height: cropH })
-    .resize(out.width, out.height, { fit: 'cover' })
+    .resize(width, height, { fit: 'cover' })
     .webp({ quality: 84 })
     .toFile(dest);
 }
@@ -120,5 +143,24 @@ for (const [id, cfg] of Object.entries(PRODUCTION)) {
   written++;
   console.log(`производство ${id} ← ${cfg.src}`);
 }
+
+const cardIndex = {};
+for (const [slug, cfg] of Object.entries(CARDS)) {
+  const file = path.join(root, 'public/images/products', cfg.src);
+  if (!fs.existsSync(file)) {
+    console.warn(`  ! нет исходника: ${cfg.src}`);
+    continue;
+  }
+  const rel = `cards/${slug}.webp`;
+  await crop(file, path.join(root, 'public/images', rel), CARD_OUT, cfg, { noEnlarge: true });
+  cardIndex[slug] = `/images/${rel}`;
+  written++;
+  console.log(`главное фото ${slug} ← ${cfg.src}`);
+}
+
+fs.writeFileSync(
+  path.join(root, 'src/data/card-images.json'),
+  JSON.stringify(cardIndex, null, 2) + '\n',
+);
 
 console.log(`\nГотово. Изображений: ${written}`);

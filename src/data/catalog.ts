@@ -1,5 +1,6 @@
 import type { Product, Specification } from '@/types';
 import images from './image-index.json';
+import cardImages from './card-images.json';
 import { prices } from './prices';
 import { typo } from '@/lib/typography';
 
@@ -16,7 +17,19 @@ type Draft = Omit<Product, 'price' | 'oldPrice' | 'images'> & {
   images?: string[];
 };
 
-const img = (slug: string): string[] => (images.products as Record<string, string[]>)[slug] ?? [];
+/**
+ * Галерея товара.
+ *
+ * У части моделей нет ни одного кадра без маркетплейс-надписей. Для них
+ * scripts/make-covers.mjs готовит обрезанный кадр без текстовых полос — он
+ * встаёт первым и попадает в карточку каталога и в главное фото на странице
+ * товара. Исходник остаётся дальше в галерее как инфографика.
+ */
+const img = (slug: string): string[] => {
+  const gallery = (images.products as Record<string, string[]>)[slug] ?? [];
+  const card = (cardImages as Record<string, string>)[slug];
+  return card ? [card, ...gallery] : gallery;
+};
 
 /** Характеристики очага Fobos — общие для всех моделей с этим очагом. */
 const fobosSpecs = (heatingArea: number): Specification[] => [
