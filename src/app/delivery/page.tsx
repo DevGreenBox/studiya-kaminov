@@ -124,30 +124,28 @@ export default function DeliveryPage() {
 
         {/* Оплата — только то, чего нет в шагах выше */}
         <section aria-labelledby="payment-heading" className="mt-14 border-t border-line pt-10">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)] lg:gap-14">
-            <h2 id="payment-heading" className="text-2xl">
-              Оплата
-            </h2>
+          <h2 id="payment-heading" className="text-2xl">
+            Оплата
+          </h2>
 
-            <div className="max-w-2xl">
-              <p className="text-[15px] leading-relaxed text-ink-soft sm:text-base">
-                {typo(
-                  'Сумму заказа вместе с доставкой подтверждает менеджер — он же присылает реквизиты. Актуальный порядок расчётов уточняйте при подтверждении заказа.',
-                )}
-              </p>
-              <p className="mt-4 text-[15px] text-ink-soft">
-                {typo('Вопросы по оплате: ')}
-                <a href={contacts.phoneHref} className="font-semibold text-primary">
-                  {contacts.phone}
-                </a>
-              </p>
-              <p className="mt-4 border-l-2 border-line-strong pl-4 text-sm leading-relaxed text-ink-muted">
-                {typo(
-                  'Конкретные способы оплаты в исходных материалах не указаны. Когда заказчик их подтвердит, текст меняется в одном месте — src/app/delivery/page.tsx',
-                )}
-              </p>
-            </div>
-          </div>
+          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft sm:text-base">
+            {typo(
+              'Сумму заказа вместе с доставкой подтверждает менеджер — он же присылает реквизиты. Актуальный порядок расчётов уточняйте при подтверждении заказа.',
+            )}
+          </p>
+
+          <p className="mt-4 text-[15px] text-ink-soft">
+            {typo('Вопросы по оплате: ')}
+            <a href={contacts.phoneHref} className="font-semibold text-primary">
+              {contacts.phone}
+            </a>
+          </p>
+
+          <p className="mt-5 max-w-2xl border-l-2 border-line-strong pl-4 text-sm leading-relaxed text-ink-muted">
+            {typo(
+              'Конкретные способы оплаты в исходных материалах не указаны. Когда заказчик их подтвердит, текст меняется в одном месте — src/app/delivery/page.tsx',
+            )}
+          </p>
         </section>
 
         {/* Плашки о транспортных компаниях */}
