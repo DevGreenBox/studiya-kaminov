@@ -1,12 +1,12 @@
 import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { ButtonLink } from '@/components/ui/Button';
-import { deliveryConfig } from '@/config/site';
+import { carrierNames } from '@/config/site';
 import { typo } from '@/lib/typography';
 
 const items: { icon: PencilIconName; title: string; text: string }[] = [
   {
     icon: 'truck',
-    title: `Доставка «${deliveryConfig.carrier}»`,
+    title: typo(`Доставка ${carrierNames}`),
     text: typo(
       'Отправляем транспортной компанией по всей России. Стоимость считается при оформлении заказа.',
     ),

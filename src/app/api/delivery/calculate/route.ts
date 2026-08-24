@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { getDeliveryProvider } from '@/lib/delivery';
 import { estimateShipment } from '@/lib/orders/shipment';
 import { resolveCartLines } from '@/lib/cart-lines';
-import { deliveryConfig } from '@/config/site';
-import type { CartItem } from '@/types';
+import { carriers, deliveryConfig } from '@/config/site';
+import type { CartItem, DeliveryOption } from '@/types';
 
 interface Body {
   city?: unknown;
@@ -39,34 +39,42 @@ export async function POST(request: Request) {
 
   const shipment = estimateShipment(lines);
 
-  try {
-    const quote = await getDeliveryProvider().calculate({
-      originCity: deliveryConfig.originCity,
-      destinationCity: city,
-      weight: shipment.weight,
-      volume: shipment.volume,
-      maxDimensions: shipment.maxDimensions,
-      declaredValue: shipment.declaredValue,
-    });
-
-    return NextResponse.json({
-      quote,
-      shipment: {
+  // Считаем сразу по всем перевозчикам: покупатель сравнивает цену и срок
+  // в одном месте, а не пересчитывает по очереди.
+  const results = await Promise.allSettled(
+    carriers.map(async (carrier): Promise<DeliveryOption> => {
+      const quote = await getDeliveryProvider(carrier.id).calculate({
+        carrierId: carrier.id,
+        originCity: deliveryConfig.originCity,
+        destinationCity: city,
         weight: shipment.weight,
         volume: shipment.volume,
-        hasUnknownDimensions: shipment.hasUnknownDimensions,
-      },
-    });
-  } catch (error) {
-    console.error('[delivery] расчёт не удался:', error);
+        maxDimensions: shipment.maxDimensions,
+        declaredValue: shipment.declaredValue,
+      });
+      return { carrierId: carrier.id, carrierName: carrier.name, quote };
+    }),
+  );
+
+  const options = results.flatMap((result, index) => {
+    if (result.status === 'fulfilled') return [result.value];
+    console.error(`[delivery] ${carriers[index].id}: расчёт не удался`, result.reason);
+    return [];
+  });
+
+  if (options.length === 0) {
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Не удалось рассчитать доставку. Попробуйте ещё раз или укажите город точнее.',
-      },
+      { error: 'Не удалось рассчитать доставку. Попробуйте ещё раз или укажите город точнее.' },
       { status: 502 },
     );
   }
+
+  return NextResponse.json({
+    options,
+    shipment: {
+      weight: shipment.weight,
+      volume: shipment.volume,
+      hasUnknownDimensions: shipment.hasUnknownDimensions,
+    },
+  });
 }

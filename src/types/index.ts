@@ -92,6 +92,8 @@ export interface AppliedPromo {
 }
 
 export interface DeliveryRequest {
+  /** Идентификатор транспортной компании из config/site.ts. */
+  carrierId: string;
   originCity: string;
   destinationCity: string;
   /** Суммарный вес заказа, кг. */
@@ -121,6 +123,12 @@ export interface DeliveryProvider {
   calculate(input: DeliveryRequest): Promise<DeliveryQuote>;
 }
 
+export interface DeliveryOption {
+  carrierId: string;
+  carrierName: string;
+  quote: DeliveryQuote;
+}
+
 export interface OrderLine {
   productId: string;
   name: string;
@@ -145,6 +153,7 @@ export interface Order {
   };
   delivery: {
     method: 'carrier' | 'pickup';
+    carrierId?: string;
     carrier?: string;
     city?: string;
     address?: string;

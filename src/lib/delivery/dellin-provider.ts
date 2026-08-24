@@ -1,5 +1,5 @@
 import type { DeliveryProvider, DeliveryQuote, DeliveryRequest } from '@/types';
-import { deliveryConfig } from '@/config/site';
+import { carrierById } from '@/config/site';
 
 /**
  * Заготовка боевого провайдера «Деловых Линий».
@@ -68,7 +68,7 @@ export class DellinDeliveryProvider implements DeliveryProvider {
     }
 
     return {
-      carrier: deliveryConfig.carrier,
+      carrier: carrierById('dellin')?.name ?? 'Деловые Линии',
       price: Math.round(price),
       minDays: 1,
       maxDays: 1,

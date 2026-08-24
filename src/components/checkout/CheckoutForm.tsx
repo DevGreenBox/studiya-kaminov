@@ -14,8 +14,8 @@ import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { DeliveryCalculator } from './DeliveryCalculator';
-import { deliveryConfig, legal } from '@/config/site';
-import type { DeliveryQuote, Order, PromoStatus } from '@/types';
+import { defaultCarrierId, deliveryConfig, legal } from '@/config/site';
+import type { DeliveryOption, Order, PromoStatus } from '@/types';
 import { cn } from '@/lib/cn';
 import { typo } from '@/lib/typography';
 
@@ -68,7 +68,8 @@ export function CheckoutForm() {
   const [method, setMethod] = useState<'carrier' | 'pickup'>('carrier');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
-  const [quote, setQuote] = useState<DeliveryQuote | null>(null);
+  const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOption[]>([]);
+  const [carrierId, setCarrierId] = useState<string>(defaultCarrierId);
   const [comment, setComment] = useState('');
   const [promoInput, setPromoInput] = useState('');
   const [promoStatus, setPromoStatus] = useState<PromoStatus>('idle');
@@ -103,7 +104,8 @@ export function CheckoutForm() {
 
   const itemsTotal = cartItemsTotal(lines);
   const discount = promoDiscount(itemsTotal, promo);
-  const deliveryPrice = method === 'pickup' ? 0 : (quote?.price ?? 0);
+  const selectedOption = deliveryOptions.find((o) => o.carrierId === carrierId);
+  const deliveryPrice = method === 'pickup' ? 0 : (selectedOption?.quote.price ?? 0);
   const total = itemsTotal - discount + deliveryPrice;
   const count = cartCount(lines);
 
@@ -153,12 +155,13 @@ export function CheckoutForm() {
           recipient: otherRecipient ? { name: recipientName, phone: recipientPhone } : null,
           delivery: {
             method,
+            carrierId,
             city,
             address,
             price: deliveryPrice,
-            minDays: quote?.minDays,
-            maxDays: quote?.maxDays,
-            isEstimate: quote?.isEstimate,
+            minDays: selectedOption?.quote.minDays,
+            maxDays: selectedOption?.quote.maxDays,
+            isEstimate: selectedOption?.quote.isEstimate,
           },
           comment,
           promoCode: promo?.code,
@@ -250,10 +253,7 @@ export function CheckoutForm() {
           <div className="flex flex-col gap-2 sm:flex-row">
             {(
               [
-                {
-                  value: 'carrier' as const,
-                  label: `Транспортная компания «${deliveryConfig.carrier}»`,
-                },
+                { value: 'carrier' as const, label: typo('Доставка транспортной компанией') },
                 { value: 'pickup' as const, label: 'Самовывоз со склада' },
               ] satisfies { value: 'carrier' | 'pickup'; label: string }[]
             )
@@ -275,7 +275,7 @@ export function CheckoutForm() {
                     checked={method === option.value}
                     onChange={() => {
                       setMethod(option.value);
-                      setQuote(null);
+                      setDeliveryOptions([]);
                     }}
                     className="ef-radio h-4 w-4"
                   />
@@ -294,7 +294,7 @@ export function CheckoutForm() {
                   value={city}
                   onChange={(e) => {
                     setCity(e.target.value);
-                    setQuote(null);
+                    setDeliveryOptions([]);
                   }}
                   error={errors.city}
                 />
@@ -307,7 +307,14 @@ export function CheckoutForm() {
                   error={errors.address}
                 />
               </div>
-              <DeliveryCalculator city={city} items={items} quote={quote} onQuote={setQuote} />
+              <DeliveryCalculator
+                city={city}
+                items={items}
+                options={deliveryOptions}
+                selectedCarrierId={carrierId}
+                onOptions={setDeliveryOptions}
+                onSelect={setCarrierId}
+              />
             </div>
           ) : (
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
@@ -445,8 +452,8 @@ export function CheckoutForm() {
               <dd className="text-right font-medium">
                 {method === 'pickup' ? (
                   'самовывоз'
-                ) : quote ? (
-                  formatPrice(quote.price)
+                ) : selectedOption ? (
+                  formatPrice(selectedOption.quote.price)
                 ) : (
                   <span className="text-sm font-normal text-ink-muted">рассчитает менеджер</span>
                 )}
@@ -463,7 +470,7 @@ export function CheckoutForm() {
             {submitting ? 'Оформляем…' : 'Оформить заказ'}
           </Button>
 
-          {method === 'carrier' && !quote && (
+          {method === 'carrier' && !selectedOption && (
             <p className="mt-3 rounded-[var(--radius-xs)] bg-surface-warm px-3 py-2 text-sm leading-relaxed text-ink-soft">
               {typo(
                 'Доставка не рассчитана — итог показан без неё. Нажмите «Рассчитать», чтобы увидеть полную сумму, либо оформляйте заказ: стоимость доставки назовёт менеджер.',

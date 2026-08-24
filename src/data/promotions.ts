@@ -1,10 +1,13 @@
 import type { Promotion } from '@/types';
-import images from './image-index.json';
 import { products } from './catalog';
 import { typo } from '@/lib/typography';
 
-const cover = (slug: string, index = 0) =>
-  (images.products as Record<string, string[]>)[slug]?.[index] ?? '';
+/**
+ * Баннеры карусели собираются отдельным скриптом: у части фотографий есть
+ * маркетплейс-надписи, и окно кадрирования подобрано так, чтобы они остались
+ * за рамкой — node scripts/make-covers.mjs
+ */
+const banner = (id: string) => `/images/promos/${id}.webp`;
 
 const priceOf = (slug: string) => products.find((p) => p.slug === slug);
 
@@ -21,7 +24,7 @@ const rawPromotions: Promotion[] = [
     text: `Античный портал с белым камнем и очагом Fobos — ${
       priceOf('dublin-ivory')?.oldPrice?.toLocaleString('ru-RU') ?? ''
     } ₽ → ${priceOf('dublin-ivory')?.price.toLocaleString('ru-RU') ?? ''} ₽.`,
-    image: cover('dublin-ivory'),
+    image: banner('sale-dublin-ivory'),
     href: '/catalog/dublin-ivory',
     cta: 'Смотреть камин',
   },
@@ -30,7 +33,7 @@ const rawPromotions: Promotion[] = [
     kind: 'new',
     title: 'Новинка: Дублин Премиум с тумбами',
     text: 'Камин и две секции с открытыми полками в одном корпусе шириной 1750 мм.',
-    image: cover('dublin-premium-white-grey'),
+    image: banner('new-dublin-premium'),
     href: '/catalog/dublin-premium-white-grey',
     cta: 'Открыть модель',
   },
@@ -39,7 +42,7 @@ const rawPromotions: Promotion[] = [
     kind: 'sale',
     title: 'Честер: тумба под ТВ и камин',
     text: 'Корпус 1600 мм, панорамный очаг Flash 36 и телевизор сверху. Сейчас со скидкой.',
-    image: cover('chester-white'),
+    image: banner('sale-chester'),
     href: '/catalog/chester-white',
     cta: 'Смотреть предложение',
   },
@@ -48,7 +51,7 @@ const rawPromotions: Promotion[] = [
     kind: 'new',
     title: 'Новинка: Модерн',
     text: 'Прямой белый корпус и широкий панорамный очаг для интерьера без лишних деталей.',
-    image: cover('modern-white'),
+    image: banner('new-modern'),
     href: '/catalog/modern-white',
     cta: 'Открыть модель',
   },
@@ -57,7 +60,7 @@ const rawPromotions: Promotion[] = [
     kind: 'news',
     title: 'Промокод FIRE10',
     text: 'Демонстрационный промокод: −10% на товары в корзине. Применяется в корзине или при оформлении.',
-    image: cover('malta-white'),
+    image: banner('news-promo'),
     href: '/catalog',
     cta: 'Перейти в каталог',
   },

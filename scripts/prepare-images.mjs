@@ -58,23 +58,11 @@ for (const [slug, cfg] of Object.entries(manifest.products)) {
   console.log(`${slug}: ${list.length} фото`);
 }
 
-for (const [slug, [dir, file, offset = 0.45]] of Object.entries(manifest.categories)) {
-  const rel = `categories/${slug}.webp`;
-  // Категорийная плитка горизонтальная: берём верхнюю часть вертикального кадра,
-  // чтобы камин не обрезался снизу.
-  const src = path.join(srcRoot, dir, file);
-  if (fs.existsSync(src)) {
-    fs.mkdirSync(path.dirname(out(rel)), { recursive: true });
-    const meta = await sharp(src).metadata();
-    const cropH = Math.round(meta.width * (CATEGORY.height / CATEGORY.width));
-    await sharp(src)
-      .extract({ left: 0, top: Math.max(0, Math.round((meta.height - cropH) * offset)), width: meta.width, height: Math.min(cropH, meta.height) })
-      .resize(CATEGORY.width, CATEGORY.height, { fit: 'cover' })
-      .webp({ quality: 82 })
-      .toFile(out(rel));
-    written++;
-    index.categories[slug] = `/images/${rel}`;
-  }
+// Обложки категорий собираются отдельным скриптом из уже готовых фотографий
+// товаров — там окно кадрирования подобрано вручную, чтобы камины стояли по
+// центру и в одном масштабе: node scripts/make-covers.mjs
+for (const slug of Object.keys(manifest.categories)) {
+  index.categories[slug] = `/images/categories/${slug}.webp`;
 }
 
 for (const [name, [dir, file]] of Object.entries(manifest.shared)) {
@@ -91,3 +79,4 @@ if (await emit(path.join(srcRoot, heroDir, heroFile), out('hero/hero.webp'), HER
 
 fs.writeFileSync(path.join(root, 'src/data/image-index.json'), JSON.stringify(index, null, 2) + '\n');
 console.log(`\nГотово. Записано файлов: ${written}. Индекс: src/data/image-index.json`);
+console.log('Дальше: node scripts/make-covers.mjs — обложки категорий.');

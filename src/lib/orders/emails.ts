@@ -74,7 +74,7 @@ ${linesTable(order)}
 
 ${totals(order)}
 
-Доставка: ${order.delivery.method === 'pickup' ? 'самовывоз' : `${order.delivery.carrier}, ${order.delivery.city ?? ''}`}
+Доставка: ${order.delivery.method === 'pickup' ? 'самовывоз' : `${order.delivery.carrier ?? ''}, ${order.delivery.city ?? ''}`}
 
 Менеджер свяжется с вами по телефону ${order.customer.phone}, чтобы подтвердить состав заказа и сроки.
 

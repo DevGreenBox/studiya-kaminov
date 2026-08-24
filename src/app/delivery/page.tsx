@@ -3,12 +3,12 @@ import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ButtonLink } from '@/components/ui/Button';
 import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { ContactSection } from '@/components/forms/ContactSection';
-import { deliveryConfig, site, contacts } from '@/config/site';
+import { carriers, carrierNames, site, contacts } from '@/config/site';
 import { typo } from '@/lib/typography';
 
 export const metadata: Metadata = {
   title: 'Оплата и доставка',
-  description: `Как оформить заказ, как рассчитывается доставка «${deliveryConfig.carrier}» и какие есть способы оплаты.`,
+  description: `Как оформить заказ, как рассчитывается доставка ${carrierNames} и какие есть способы оплаты.`,
   alternates: { canonical: '/delivery' },
   openGraph: { title: `Оплата и доставка — ${site.name}`, url: '/delivery' },
 };
@@ -32,26 +32,39 @@ const steps: { icon: PencilIconName; title: string; text: string }[] = [
     icon: 'truck',
     title: 'Получите камин',
     text: typo(
-      `Отправляем транспортной компанией «${deliveryConfig.carrier}» либо передаём при самовывозе.`,
+      `Отправляем ${carrierNames} — компанию выбираете при оформлении. Либо забираете сами со склада.`,
     ),
   },
 ];
 
+/** Порядок расчёта — короткими пунктами, без крупной плашки. */
+const paymentSteps: { icon: PencilIconName; text: string }[] = [
+  { icon: 'design', text: typo('Оформляете заказ — оплата на сайте не требуется') },
+  { icon: 'support', text: typo('Менеджер подтверждает сумму и присылает реквизиты') },
+  { icon: 'package', text: typo('Оплачиваете, и мы передаём камин перевозчику') },
+];
+
 const faq = [
   {
-    q: typo('Как рассчитывается стоимость доставки?'),
+    q: 'Какую транспортную компанию выбрать?',
     a: typo(
-      'На странице оформления заказа укажите город получателя и нажмите «Рассчитать». Расчёт учитывает город, вес и габариты заказа. Это предварительная оценка — точную сумму подтверждает менеджер.',
+      'СДЭК — основной перевозчик: пунктов выдачи больше, срок обычно короче. «Деловые Линии» выгоднее на крупногабаритных моделях вроде «Дублин Премиум» и «Честер». При оформлении заказа сайт покажет цену и срок обеих компаний — выбирайте, что удобнее.',
     ),
   },
   {
-    q: typo('Нужен ли монтаж и дымоход?'),
+    q: 'Как рассчитывается стоимость доставки?',
+    a: typo(
+      'На странице оформления заказа укажите город получателя и нажмите «Рассчитать». Расчёт учитывает город, вес и габариты заказа и показывает обе компании сразу. Это предварительная оценка — точную сумму подтверждает менеджер.',
+    ),
+  },
+  {
+    q: 'Нужен ли монтаж и дымоход?',
     a: typo(
       'Нет. Электрокамин подключается к обычной розетке 220 В. Дымоход, вытяжка и согласования не требуются.',
     ),
   },
   {
-    q: typo('В каком виде приезжает камин?'),
+    q: 'В каком виде приезжает камин?',
     a: typo(
       'В заводских коробках. Большинство моделей поставляются в двух упаковках — портал и очаг, у моделей с тумбами упаковок больше. Крепёж и инструкция в комплекте.',
     ),
@@ -61,12 +74,25 @@ const faq = [
     a: typo('Сборка занимает около 10 минут по инструкции, специальный инструмент не нужен.'),
   },
   {
-    q: typo('Можно ли забрать заказ самостоятельно?'),
+    q: 'Можно ли забрать заказ самостоятельно?',
     a: typo(
       'Да, самовывоз со склада возможен. Дату и адрес согласует менеджер после оформления заказа.',
     ),
   },
 ];
+
+const carrierDetails: Record<string, string[]> = {
+  cdek: [
+    'Пункты выдачи по всей России и курьер до двери.',
+    'Обычно самый короткий срок среди доступных вариантов.',
+    'Удобен для моделей средних габаритов — «Мальта», «Дублин», угловые.',
+  ],
+  dellin: [
+    'Доставка до терминала или до адреса.',
+    'Выгоднее на крупногабаритных моделях — «Дублин Премиум», «Честер».',
+    'Срок обычно на день-два больше, чем у СДЭК.',
+  ],
+};
 
 export default function DeliveryPage() {
   return (
@@ -79,7 +105,7 @@ export default function DeliveryPage() {
         </h1>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft sm:text-base">
           {typo(
-            'Отправляем электрокамины по всей России. Стоимость доставки считается при оформлении заказа — по городу получателя, весу и габаритам.',
+            `Отправляем электрокамины по всей России — ${carrierNames}. Стоимость обеих компаний считается при оформлении заказа, вы выбираете подходящую.`,
           )}
         </p>
 
@@ -98,64 +124,106 @@ export default function DeliveryPage() {
           ))}
         </ol>
 
-        <section className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-[var(--radius-md)] border border-line bg-surface p-6">
-            <h2 className="text-xl font-bold">{typo(`Доставка «${deliveryConfig.carrier}»`)}</h2>
-            <ul className="mt-4 flex list-disc flex-col gap-2.5 pl-5 text-[15px] leading-relaxed text-ink-soft">
-              <li>{typo('Отправка по всей России до терминала или до адреса.')}</li>
-              <li>{typo('Стоимость рассчитывается автоматически при оформлении заказа.')}</li>
-              <li>{typo('Расчёт учитывает город получателя, вес и объём отправления.')}</li>
-              <li>{typo('Сроки зависят от региона: от 1–2 дней по ближайшим городам.')}</li>
-              <li>{typo('Точную стоимость и сроки подтверждает менеджер до отгрузки.')}</li>
-            </ul>
-            <ButtonLink href="/catalog" variant="secondary" className="mt-6">
-              Выбрать камин
-            </ButtonLink>
-          </div>
+        {/* Оплата — коротким текстом перед плашками о доставке */}
+        <section aria-labelledby="payment-heading" className="mt-14 border-t border-line pt-10">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-14">
+            <div>
+              <h2 id="payment-heading" className="text-2xl">
+                Оплата
+              </h2>
+              <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                {typo(
+                  'Оплата на сайте не нужна: сумму подтверждает менеджер, он же присылает реквизиты. Актуальный порядок расчётов уточняйте при подтверждении заказа.',
+                )}
+              </p>
+              <p className="mt-3 text-[15px] text-ink-soft">
+                {typo('Вопросы по оплате: ')}
+                <a href={contacts.phoneHref} className="font-semibold text-primary">
+                  {contacts.phone}
+                </a>
+              </p>
+            </div>
 
-          <div className="rounded-[var(--radius-md)] border border-line bg-surface p-6">
-            <h2 className="text-xl font-bold">Оплата</h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
-              {typo(
-                'Способы оплаты и условия предоплаты уточняйте у менеджера при подтверждении заказа — он назовёт актуальный порядок расчётов и пришлёт реквизиты.',
-              )}
-            </p>
-            <p className="mt-4 rounded-[var(--radius-sm)] border border-dashed border-line-strong bg-white px-4 py-3 text-sm leading-relaxed text-ink-muted">
-              {typo(
-                'Конкретные способы оплаты в исходных материалах не указаны. Когда заказчик их подтвердит, текст меняется в одном месте —',
-              )}
-              <code>src/app/delivery/page.tsx</code>.
-            </p>
-            <p className="mt-4 text-[15px] text-ink-soft">
-              Вопросы по оплате:{' '}
-              <a href={contacts.phoneHref} className="font-semibold text-primary">
-                {contacts.phone}
-              </a>
-            </p>
+            <ol className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
+              {paymentSteps.map((step, index) => (
+                <li key={step.text} className="flex gap-3">
+                  <PencilIcon name={step.icon} size={34} className="mt-0.5 shrink-0 text-primary" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+                      {index + 1}
+                    </p>
+                    <p className="mt-0.5 text-[15px] leading-relaxed text-ink-soft">{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        <section className="mt-14">
-          <h2 className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-            Частые вопросы
+        {/* Плашки о транспортных компаниях */}
+        <section aria-labelledby="carriers-heading" className="mt-14">
+          <h2 id="carriers-heading" className="text-2xl">
+            Транспортные компании
           </h2>
-          <dl className="mt-6 flex flex-col divide-y divide-line border-y border-line">
-            {faq.map((item) => (
-              <div key={item.q} className="py-5">
-                <dt className="text-[17px] font-bold">{item.q}</dt>
-                <dd className="mt-2 max-w-3xl text-[15px] leading-relaxed text-ink-soft">
-                  {item.a}
-                </dd>
+          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+            {typo(
+              'При оформлении заказа сайт рассчитывает обе компании и показывает цену и срок рядом.',
+            )}
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {carriers.map((carrier) => (
+              <div
+                key={carrier.id}
+                className="flex flex-col rounded-[var(--radius-md)] border border-line bg-surface p-6"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-xl font-bold">{carrier.name}</h3>
+                  <span
+                    className={
+                      carrier.primary
+                        ? 'inline-flex h-6 shrink-0 items-center rounded-[var(--radius-xs)] bg-primary px-2 text-xs font-bold text-white'
+                        : 'inline-flex h-6 shrink-0 items-center rounded-[var(--radius-xs)] bg-white px-2 text-xs font-bold text-ink-soft'
+                    }
+                  >
+                    {carrier.primary ? 'Основная' : 'Дополнительно'}
+                  </span>
+                </div>
+                <ul className="mt-4 flex list-disc flex-col gap-2.5 pl-5 text-[15px] leading-relaxed text-ink-soft">
+                  {carrierDetails[carrier.id]?.map((line) => (
+                    <li key={line}>{typo(line)}</li>
+                  ))}
+                </ul>
               </div>
             ))}
-          </dl>
+          </div>
+
+          <ButtonLink href="/catalog" className="mt-6">
+            Выбрать камин
+          </ButtonLink>
         </section>
       </div>
 
+      {/* Форма обратной связи — сразу после плашек о ТК */}
       <ContactSection
         title="Нужна помощь с доставкой?"
         text="Подскажем срок и стоимость для вашего города и подберём удобный способ получения."
       />
+
+      {/* Частые вопросы — ниже формы */}
+      <section aria-labelledby="faq-heading" className="container-site pb-4">
+        <h2 id="faq-heading" className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
+          Частые вопросы
+        </h2>
+        <dl className="mt-6 flex flex-col divide-y divide-line border-y border-line">
+          {faq.map((item) => (
+            <div key={item.q} className="py-5">
+              <dt className="text-[17px] font-bold">{typo(item.q)}</dt>
+              <dd className="mt-2 max-w-3xl text-[15px] leading-relaxed text-ink-soft">{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
     </>
   );
 }

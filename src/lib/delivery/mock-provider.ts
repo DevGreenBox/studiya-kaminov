@@ -1,10 +1,10 @@
 import type { DeliveryProvider, DeliveryQuote, DeliveryRequest } from '@/types';
-import { deliveryConfig } from '@/config/site';
+import { carrierById } from '@/config/site';
 
 /**
  * Демонстрационный расчёт доставки.
  *
- * Реальных тарифов и ключей «Деловых Линий» в проекте нет, поэтому здесь
+ * Реальных тарифов и ключей перевозчиков в проекте нет, поэтому здесь
  * прозрачная формула на основе веса, объёма и расстояния «по справочнику
  * зон». Результат всегда помечен `isEstimate: true` — интерфейс показывает,
  * что это предварительная оценка, а не тариф перевозчика.
@@ -37,6 +37,20 @@ const PER_KG = 28;
 const PER_M3 = 2600;
 const INSURANCE_RATE = 0.005;
 
+/**
+ * Различия между перевозчиками.
+ *
+ * СДЭК берёт дороже за килограмм, но везёт быстрее и охотнее работает с
+ * небольшими габаритами. «Деловые Линии» дешевле на крупногабаритном грузе,
+ * зато срок на день-два больше. Коэффициенты условные — их заменит боевой
+ * тариф, но соотношение соответствует реальной картине.
+ */
+const CARRIER_PROFILE: Record<string, { price: number; days: number; oversizeSurcharge: number }> =
+  {
+    cdek: { price: 1.15, days: 0, oversizeSurcharge: 1.3 },
+    dellin: { price: 0.92, days: 1, oversizeSurcharge: 1.12 },
+  };
+
 export class MockDeliveryProvider implements DeliveryProvider {
   readonly id = 'mock';
 
@@ -46,9 +60,19 @@ export class MockDeliveryProvider implements DeliveryProvider {
       throw new Error('Укажите город доставки');
     }
 
+    const carrier = carrierById(input.carrierId);
+    if (!carrier) {
+      throw new Error('Неизвестная транспортная компания');
+    }
+    const profile = CARRIER_PROFILE[input.carrierId] ?? {
+      price: 1,
+      days: 0,
+      oversizeSurcharge: 1.2,
+    };
+
     const zone = ZONES.find((z) => z.match.test(city));
     const factor = zone?.factor ?? 2.1;
-    const [minDays, maxDays] = zone?.days ?? [4, 8];
+    const [zoneMin, zoneMax] = zone?.days ?? [4, 8];
 
     const weightPart = Math.max(input.weight, 1) * PER_KG;
     const volumePart = Math.max(input.volume, 0.05) * PER_M3;
@@ -60,17 +84,19 @@ export class MockDeliveryProvider implements DeliveryProvider {
       input.maxDimensions.height,
       input.maxDimensions.depth,
     );
-    const oversize = longestSide > 1500 ? 1.2 : 1;
+    const oversize = longestSide > 1500 ? profile.oversizeSurcharge : 1;
 
     const price =
-      Math.round(((BASE_PRICE + weightPart + volumePart) * factor * oversize + insurance) / 50) *
-      50;
+      Math.round(
+        ((BASE_PRICE + weightPart + volumePart) * factor * oversize * profile.price + insurance) /
+          50,
+      ) * 50;
 
     return {
-      carrier: deliveryConfig.carrier,
+      carrier: carrier.name,
       price,
-      minDays,
-      maxDays,
+      minDays: zoneMin + profile.days,
+      maxDays: zoneMax + profile.days,
       isEstimate: true,
       note: zone
         ? undefined

@@ -6,7 +6,7 @@ import { getEmailTransport, shopEmail } from '@/lib/notifications/email';
 import { promoDiscount } from '@/lib/promo';
 import { applyPromoCode } from '@/lib/promo';
 import { isValidEmail } from '@/lib/format';
-import { deliveryConfig } from '@/config/site';
+import { carrierById, defaultCarrierId } from '@/config/site';
 import type { CartItem, Order, OrderLine } from '@/types';
 
 const str = (value: unknown, max = 500) =>
@@ -18,6 +18,7 @@ interface Body {
   recipient?: { name?: unknown; phone?: unknown } | null;
   delivery?: {
     method?: unknown;
+    carrierId?: unknown;
     city?: unknown;
     address?: unknown;
     price?: unknown;
@@ -64,6 +65,8 @@ export async function POST(request: Request) {
   const method = body.delivery?.method === 'pickup' ? 'pickup' : 'carrier';
   const city = str(body.delivery?.city, 120);
   const address = str(body.delivery?.address, 300);
+  // Перевозчика сверяем со справочником, а не доверяем присланному названию.
+  const carrier = carrierById(str(body.delivery?.carrierId, 40)) ?? carrierById(defaultCarrierId);
 
   if (method === 'carrier') {
     if (city.length < 2)
@@ -103,7 +106,8 @@ export async function POST(request: Request) {
         : undefined,
     delivery: {
       method,
-      carrier: method === 'carrier' ? deliveryConfig.carrier : undefined,
+      carrierId: method === 'carrier' ? carrier?.id : undefined,
+      carrier: method === 'carrier' ? carrier?.name : undefined,
       city: method === 'carrier' ? city : undefined,
       address: method === 'carrier' ? address : undefined,
       price: deliveryPrice,

@@ -150,7 +150,13 @@ test('оформление заказа: расчёт доставки, вали
   await page.getByRole('textbox', { name: 'Адрес или терминал' }).fill('ул. Ленина, 1');
 
   await page.getByRole('button', { name: 'Рассчитать' }).click();
-  await expect(page.getByText(/^Срок: /)).toBeVisible();
+  // Считаются обе транспортные компании сразу
+  await expect(
+    page
+      .getByRole('radiogroup', { name: 'Транспортная компания' })
+      .getByRole('radio', { name: /СДЭК/ }),
+  ).toBeChecked();
+  await expect(page.getByText(/^Срок: /).first()).toBeVisible();
 
   // без согласия заказ не оформляется
   await page.getByRole('button', { name: 'Оформить заказ' }).click();
@@ -164,6 +170,27 @@ test('оформление заказа: расчёт доставки, вали
   await expect(page.getByText(/ЭК-\d{6}-\d{4}/).first()).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Накладная к заказу' })).toBeVisible();
   await expect(page.locator('table tbody tr')).toHaveCount(1);
+});
+
+test('можно выбрать вторую транспортную компанию', async ({ page }) => {
+  await page.goto('/catalog/chester-white');
+  await page.locator('#purchase-block').getByRole('button', { name: 'В корзину' }).click();
+  await page.goto('/checkout');
+
+  await page.getByRole('textbox', { name: 'Город' }).fill('Новосибирск');
+  await page.getByRole('button', { name: 'Рассчитать' }).click();
+
+  const group = page.getByRole('radiogroup', { name: 'Транспортная компания' });
+  const cdek = group.getByRole('radio', { name: /СДЭК/ });
+  const dellin = group.getByRole('radio', { name: /Деловые Линии/ });
+  await expect(cdek).toBeChecked();
+
+  // Итог пересчитывается под выбранного перевозчика
+  const before = await page.locator('aside').innerText();
+  await dellin.check();
+  await expect(dellin).toBeChecked();
+  await expect(page.locator('aside')).not.toHaveText(before);
+  await expect(page.locator('aside')).toContainText('Доставка');
 });
 
 test('форма «Связаться с продавцом» отправляется', async ({ page }) => {

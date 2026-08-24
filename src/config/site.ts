@@ -95,8 +95,39 @@ export const promoCodes = [
  * Настройки доставки. Реальные тарифы приходят из провайдера
  * (src/lib/delivery). Здесь только то, что показывается в интерфейсе.
  */
+/**
+ * Транспортные компании.
+ *
+ * СДЭК — основной перевозчик, «Деловые Линии» — дополнительный: они лучше
+ * подходят для крупногабаритных отправлений. Покупатель выбирает компанию
+ * при оформлении заказа.
+ */
+export const carriers = [
+  {
+    id: 'cdek',
+    name: 'СДЭК',
+    /** Первый в списке и выбран по умолчанию. */
+    primary: true,
+    note: 'Пункты выдачи по всей России, доставка до двери',
+  },
+  {
+    id: 'dellin',
+    name: 'Деловые Линии',
+    primary: false,
+    note: 'Удобны для крупногабаритных моделей и отправки до терминала',
+  },
+] as const;
+
+export type CarrierId = (typeof carriers)[number]['id'];
+
+export const defaultCarrierId: CarrierId = carriers.find((c) => c.primary)!.id;
+
+export const carrierById = (id: string) => carriers.find((c) => c.id === id);
+
+/** Названия перевозчиков через запятую — для общих формулировок в текстах. */
+export const carrierNames = carriers.map((c) => c.name).join(' и ');
+
 export const deliveryConfig = {
-  carrier: 'Деловые Линии',
   /** PLACEHOLDER — город отправления со склада производства. */
   originCity: process.env.DELIVERY_ORIGIN_CITY ?? 'Москва',
   /** Порог бесплатной доставки. null — акции нет. */

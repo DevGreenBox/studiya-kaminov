@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { Hero } from '@/components/home/Hero';
-import { PromoCarousel } from '@/components/home/PromoCarousel';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { FeaturedProducts } from '@/components/home/FeaturedProducts';
 import { ProductionBlock } from '@/components/home/ProductionBlock';
@@ -20,8 +19,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <PromoCarousel items={promotions} />
+      <HeroCarousel promotions={promotions} />
       <CategoryGrid />
       <FeaturedProducts />
       <ProductionBlock />

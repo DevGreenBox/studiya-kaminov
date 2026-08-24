@@ -10,7 +10,7 @@ import {
   discountPercent,
 } from '@/data/catalog';
 import { categoryBySlug } from '@/data/categories';
-import { site, deliveryConfig, contacts } from '@/config/site';
+import { site, carrierNames, deliveryConfig, contacts } from '@/config/site';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Badge, DiscountBadge } from '@/components/ui/Badge';
 import { Price } from '@/components/ui/Price';
@@ -205,7 +205,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <li className="flex items-start gap-2.5">
                 <Truck size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
                 {typo(
-                  `Доставка «${deliveryConfig.carrier}» по России, стоимость рассчитывается при оформлении`,
+                  `Доставка ${carrierNames} по России, стоимость рассчитывается при оформлении`,
                 )}
               </li>
               <li className="flex items-start gap-2.5">
@@ -278,7 +278,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <ul className="mt-3 flex flex-col gap-2.5 text-[15px] leading-relaxed text-ink-soft">
                 <li>
                   {typo(
-                    `Отправка транспортной компанией «${deliveryConfig.carrier}» по всей России.`,
+                    `Отправляем ${carrierNames} по всей России — компанию выбираете при оформлении.`,
                   )}
                 </li>
                 <li>
