@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 
 test('главная открывается и ведёт в каталог', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Электрокамины');
-  await page.getByRole('link', { name: 'Перейти в каталог' }).first().click();
+  await page.getByRole('link', { name: 'Выбрать камин' }).first().click();
   await expect(page).toHaveURL(/\/catalog$/);
   await expect(page.getByText(/Найдено: \d+ товар/)).toBeVisible();
 });
@@ -220,6 +220,34 @@ test('форма «Связаться с продавцом» отправляе
   await dialog.getByRole('checkbox').check();
   await dialog.getByRole('button', { name: 'Отправить заявку' }).click();
   await expect(page.getByText('Спасибо, заявка отправлена')).toBeVisible();
+});
+
+test('панель фильтров прокручивается отдельно от каталога', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 1024, 'на мобильном фильтры открываются в шторке');
+
+  await page.goto('/catalog');
+  const panel = page.locator('aside > div').first();
+
+  // Пока страница не прокручена, липкая панель ещё не прижата к верху и её низ
+  // лежит ниже экрана — воспроизводим то состояние, в котором ей пользуются
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.waitForTimeout(200);
+
+  const state = await panel.evaluate((el) => ({
+    client: el.clientHeight,
+    scroll: el.scrollHeight,
+    overflow: getComputedStyle(el).overflowY,
+  }));
+
+  // Панель выше экрана — значит обязана иметь собственную прокрутку,
+  // иначе нижние фильтры недостижимы, пока каталог не домотан до конца
+  expect(state.scroll).toBeGreaterThan(state.client);
+  expect(state.overflow).toBe('auto');
+  expect(state.client).toBeLessThanOrEqual(page.viewportSize()!.height);
+
+  // Последняя группа фильтров достижима прокруткой самой панели
+  await panel.evaluate((el) => el.scrollTo(0, el.scrollHeight));
+  await expect(panel.getByText('Дополнительно').first()).toBeInViewport();
 });
 
 test('карусель видов каминов листается и ведёт в каталог', async ({ page }) => {

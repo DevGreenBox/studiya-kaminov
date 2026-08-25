@@ -128,7 +128,8 @@ export default function AboutPage() {
       <CategoryCarousel />
 
       {/* Как создаётся камин */}
-      <div className="container-site py-14 sm:py-20">
+      {/* Сверху отступа нет: его уже дала карусель выше */}
+      <div className="container-site pb-10 sm:pb-14">
         <StepsPlate
           id="production"
           title="Как создаётся электрокамин"
@@ -139,7 +140,7 @@ export default function AboutPage() {
       </div>
 
       {/* Контроль качества */}
-      <section className="border-y border-line bg-surface py-14 sm:py-20">
+      <section className="border-y border-line bg-surface py-10 sm:py-14">
         <div className="container-site">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-16">
             <div>

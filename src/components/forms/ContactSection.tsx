@@ -67,7 +67,7 @@ export function ContactSection({
   };
 
   return (
-    <section className="container-site py-12 sm:py-16">
+    <section className="container-site py-10 sm:py-12">
       <div className="rounded-[var(--radius-lg)] border border-line bg-surface p-6 sm:p-9 lg:p-11">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-14">
           <div>

@@ -6,7 +6,7 @@ export function FeaturedProducts() {
   const featured = products.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section className="container-site py-12 sm:py-16">
+    <section className="container-site py-10 sm:py-12">
       <SectionHeader
         title="Популярные модели"
         description="Модели, которые чаще всего выбирают для гостиной и загородного дома."

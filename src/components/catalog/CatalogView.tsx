@@ -217,7 +217,12 @@ export function CatalogView() {
 
       <div className="mt-7 grid grid-cols-1 gap-8 lg:grid-cols-[264px_minmax(0,1fr)] lg:gap-10">
         <aside className="hidden lg:block">
-          <div className="sticky top-28">
+          {/*
+            Панель фильтров выше экрана: без своей прокрутки нижние фильтры
+            было не достать — липкий блок уезжал вместе со страницей только
+            после того, как каталог доскроллен до конца.
+          */}
+          <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 [scrollbar-width:thin]">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-bold">Фильтры</h2>
               {activeCount > 0 && (

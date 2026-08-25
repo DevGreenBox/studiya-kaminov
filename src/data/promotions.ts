@@ -1,5 +1,4 @@
 import type { Promotion } from '@/types';
-import { products } from './catalog';
 import { typo } from '@/lib/typography';
 
 /**
@@ -8,8 +7,6 @@ import { typo } from '@/lib/typography';
  * за рамкой — node scripts/make-covers.mjs
  */
 const banner = (id: string) => `/images/promos/${id}.webp`;
-
-const priceOf = (slug: string) => products.find((p) => p.slug === slug);
 
 /**
  * Акции и новости для карусели на главной.
@@ -21,9 +18,7 @@ const rawPromotions: Promotion[] = [
     id: 'sale-dublin-ivory',
     kind: 'sale',
     title: 'Дублин «слоновая кость» со скидкой',
-    text: `Античный портал с белым камнем и очагом Fobos — ${
-      priceOf('dublin-ivory')?.oldPrice?.toLocaleString('ru-RU') ?? ''
-    } ₽ → ${priceOf('dublin-ivory')?.price.toLocaleString('ru-RU') ?? ''} ₽.`,
+    text: 'Античный портал с белым камнем, ручной патиной и очагом Fobos.',
     image: banner('sale-dublin-ivory'),
     href: '/catalog/dublin-ivory',
     cta: 'Смотреть камин',

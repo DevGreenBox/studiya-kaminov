@@ -14,8 +14,11 @@ export function Footer() {
   );
 
   return (
-    <footer className="mt-20 border-t border-line bg-surface sm:mt-24">
-      <div className="container-site py-12 lg:py-16">
+    // Отступ небольшой: у последней секции страницы свой нижний отступ, а сам
+    // подвал отделён рамкой и другим фоном. Раньше здесь было mt-24, и между
+    // контентом и подвалом оставалась пустая полоса почти в 150 px.
+    <footer className="mt-6 border-t border-line bg-surface sm:mt-8">
+      <div className="container-site py-10 lg:py-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-8">
           <div>
             <Link href="/" className="inline-flex" aria-label={`${site.name} — на главную`}>

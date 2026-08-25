@@ -413,7 +413,7 @@ Vercel распознаёт без настройки. Пошаговая инс
 
 ```bash
 npx playwright install chromium   # один раз
-npm run test:e2e                  # 34 теста: desktop + mobile
+npm run test:e2e                  # 36 тестов: desktop + mobile
 ```
 
 Playwright сам собирает проект и поднимает сервер на порту 3100 — отдельно

@@ -31,3 +31,20 @@ export function useScrolled(threshold = 8) {
     () => false,
   );
 }
+
+/**
+ * Просит ли система уменьшить движение. Через внешний источник, а не через
+ * состояние в эффекте: иначе первый кадр успевает проиграть анимацию, которую
+ * пользователь просил не показывать.
+ */
+export function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+      query.addEventListener('change', onChange);
+      return () => query.removeEventListener('change', onChange);
+    },
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => false,
+  );
+}

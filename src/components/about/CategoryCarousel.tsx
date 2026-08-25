@@ -1,12 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { SketchIcon } from '@/components/icons/SketchIcon';
+import { CategoryCard } from '@/components/catalog/CategoryCard';
 import { categories } from '@/data/categories';
-import { products } from '@/data/catalog';
-import { pluralize } from '@/lib/format';
 import { typo } from '@/lib/typography';
 import { cn } from '@/lib/cn';
 
@@ -70,7 +67,7 @@ export function CategoryCarousel() {
   };
 
   return (
-    <section aria-roledescription="карусель" aria-label="Виды каминов" className="py-14 sm:py-20">
+    <section aria-roledescription="карусель" aria-label="Виды каминов" className="py-10 sm:py-14">
       <div className="container-site">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -111,48 +108,19 @@ export function CategoryCarousel() {
           ref={trackRef}
           className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {categories.map((category, index) => {
-            const count = products.filter((p) => p.category === category.slug).length;
-            return (
-              <li
-                key={category.slug}
-                aria-roledescription="слайд"
-                aria-label={`${index + 1} из ${categories.length}`}
-                className="w-[78%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
-              >
-                <Link
-                  href={`/catalog?category=${category.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-line bg-white transition-[border-color,box-shadow] duration-200 hover:border-line-strong hover:shadow-card"
-                >
-                  <span className="relative block aspect-[4/3] overflow-hidden bg-surface">
-                    <Image
-                      src={category.image}
-                      alt={`${category.name} — фотография модели из каталога`}
-                      fill
-                      sizes="(max-width: 640px) 78vw, (max-width: 1024px) 46vw, 31vw"
-                      className="object-cover transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.04]"
-                    />
-                  </span>
-
-                  <span className="flex flex-1 items-center justify-between gap-4 p-4 sm:p-5">
-                    <span className="min-w-0">
-                      <span className="block text-lg font-bold leading-snug">{category.name}</span>
-                      <span className="mt-1 block text-sm text-ink-muted">
-                        {category.summary} · {count}{' '}
-                        {pluralize(count, ['модель', 'модели', 'моделей'])}
-                      </span>
-                    </span>
-                    <span
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line-strong text-ink transition-[transform,border-color,color] duration-200 group-hover:translate-x-0.5 group-hover:border-primary group-hover:text-primary"
-                      aria-hidden
-                    >
-                      <SketchIcon name="arrow-right" size={18} />
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
+          {categories.map((category, index) => (
+            <li
+              key={category.slug}
+              aria-roledescription="слайд"
+              aria-label={`${index + 1} из ${categories.length}`}
+              className="w-[78%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+            >
+              <CategoryCard
+                category={category}
+                sizes="(max-width: 640px) 78vw, (max-width: 1024px) 46vw, 31vw"
+              />
+            </li>
+          ))}
         </ul>
 
         <div className="mt-5 flex justify-center gap-1.5 sm:hidden">

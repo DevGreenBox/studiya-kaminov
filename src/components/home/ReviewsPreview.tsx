@@ -10,7 +10,7 @@ export function ReviewsPreview() {
   const allDemo = items.every((r) => r.demo);
 
   return (
-    <section className="container-site py-12 sm:py-16">
+    <section className="container-site py-10 sm:py-12">
       <SectionHeader title="Отзывы" link={{ href: '/reviews', label: 'Все отзывы' }} />
 
       {allDemo && (

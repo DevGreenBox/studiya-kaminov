@@ -26,7 +26,9 @@ const COVERS = {
   'kaminy-s-kamnem': { src: 'dublin-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 1 },
   klassicheskie: { src: 'versal-ivory/01.webp', focusX: 0.56, focusY: 0.56, zoom: 1 },
   sovremennye: { src: 'modern-white/01.webp', focusX: 0.45, focusY: 0.6, zoom: 1 },
-  's-bokovymi-tumbami': { src: 'dublin-premium-white-grey/01.webp', focusX: 0.5, focusY: 0.58, zoom: 1 },
+  // 01 — самый мягкий кадр модели (резкость 97 против 640 у 02). У 02
+  // маркетплейс-надписи сверху и снизу, поэтому берём чистую середину.
+  's-bokovymi-tumbami': { src: 'dublin-premium-white-grey/02.webp', focusX: 0.5, focusY: 0.535, zoom: 1 },
   uglovye: { src: 'malta-corner-votan/02.webp', focusX: 0.5, focusY: 0.48, zoom: 1 },
   'tumby-pod-tv': { src: 'chester-white/01.webp', focusX: 0.47, focusY: 0.56, zoom: 1 },
 };

@@ -44,7 +44,7 @@ const items: { icon: PencilIconName; title: string; text: string }[] = [
 
 export function Advantages() {
   return (
-    <section className="container-site py-12 sm:py-16">
+    <section className="container-site py-10 sm:py-12">
       <h2 className="mb-8 text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
         Почему покупают у нас
       </h2>
