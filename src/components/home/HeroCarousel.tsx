@@ -154,12 +154,16 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
   const photoRef = useRef<HTMLDivElement>(null);
   const coverBox = useCoverBox(photoRef, 4 / 5);
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true);
   const [hovered, setHovered] = useState(false);
   const reduced = usePrefersReducedMotion();
 
   const total = promotions.length + 1;
-  const running = playing && !hovered && !reduced;
+  /*
+   * Кнопки паузы нет по решению заказчика. Автопрокрутка всё равно
+   * останавливается: под курсором, при фокусе внутри ленты, на скрытой вкладке
+   * и полностью — если система просит уменьшить движение.
+   */
+  const running = !hovered && !reduced;
 
   const scrollTo = useCallback((index: number) => {
     const track = trackRef.current;
@@ -449,18 +453,6 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
             </button>
           ))}
         </div>
-
-        {!reduced && (
-          <button
-            type="button"
-            onClick={() => setPlaying((value) => !value)}
-            aria-label={playing ? 'Остановить автопрокрутку' : 'Включить автопрокрутку'}
-            className="flex h-9 items-center gap-2 rounded-full border border-white/20 pl-3 pr-3.5 text-xs font-semibold text-white/70 transition-colors hover:border-white/45 hover:text-white"
-          >
-            <SketchIcon name={playing ? 'pause' : 'play'} size={14} />
-            {playing ? 'Пауза' : 'Слайды'}
-          </button>
-        )}
       </div>
     </section>
   );
