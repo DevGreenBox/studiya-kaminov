@@ -73,6 +73,15 @@ const CARDS = {
   'chester-white': { src: 'chester-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 0.6 },
   'malta-corner-votan': { src: 'malta-corner-votan/01.webp', focusX: 0.5, focusY: 0.49, zoom: 0.56 },
   'verona-white': { src: 'verona-white/01.webp', focusX: 0.5, focusY: 0.4, zoom: 0.81 },
+  // Штатное первое фото модели — единственный кадр без надписей, но он
+  // всего 550×733 и на карточке выглядит мыльным. Берём чистую середину
+  // резкого снимка: надписи сверху и снизу остаются за рамкой.
+  'dublin-premium-white-grey': {
+    src: 'dublin-premium-white-grey/02.webp',
+    focusX: 0.5,
+    focusY: 0.57,
+    zoom: 0.7,
+  },
   'malta-wenge': { src: 'malta-wenge/02.webp', focusX: 0.5, focusY: 0.47, zoom: 0.6 },
 };
 

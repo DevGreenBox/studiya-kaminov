@@ -2,10 +2,13 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { SketchIcon } from '@/components/icons/SketchIcon';
+import { Lightbox } from './Lightbox';
 import { cn } from '@/lib/cn';
 
 export function ProductGallery({ images, name }: { images: string[]; name: string }) {
   const [active, setActive] = useState(0);
+  const [zoomed, setZoomed] = useState(false);
   const touchStart = useRef<number | null>(null);
 
   const go = (index: number) => setActive(Math.min(images.length - 1, Math.max(0, index)));
@@ -20,7 +23,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
         сжимала бы блок и object-cover резал бы кадр по бокам.
       */}
       <div
-        className="relative mx-auto aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-md)] border border-line bg-surface lg:w-[min(100%,calc(min(70vh,720px)*0.75))]"
+        className="group relative mx-auto aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-md)] border border-line bg-surface lg:w-[min(100%,calc(min(70vh,720px)*0.75))]"
         onTouchStart={(event) => {
           touchStart.current = event.touches[0].clientX;
         }}
@@ -40,6 +43,26 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
           sizes="(max-width: 1024px) 100vw, 40vw"
           className="object-cover ef-animate-fade-in"
         />
+
+        {/*
+          Фотография открывается на весь экран. Кнопка лежит поверх снимка и
+          растянута на него целиком: клик по самой фотографии — то, чего ждут
+          от галереи, а видимая подсказка нужна, чтобы это не приходилось
+          угадывать.
+        */}
+        <button
+          type="button"
+          onClick={() => setZoomed(true)}
+          aria-label={`Открыть фото ${active + 1} на весь экран`}
+          className="absolute inset-0 cursor-zoom-in"
+        >
+          <span
+            aria-hidden
+            className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/90 text-ink-soft shadow-card backdrop-blur transition-colors group-hover:border-primary group-hover:text-primary"
+          >
+            <SketchIcon name="search" size={18} />
+          </span>
+        </button>
       </div>
 
       {images.length > 1 && (
@@ -66,6 +89,16 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
             </li>
           ))}
         </ul>
+      )}
+
+      {zoomed && (
+        <Lightbox
+          images={images}
+          index={active}
+          name={name}
+          onClose={() => setZoomed(false)}
+          onIndexChange={setActive}
+        />
       )}
     </div>
   );

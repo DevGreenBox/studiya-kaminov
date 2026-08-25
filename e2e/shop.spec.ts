@@ -116,6 +116,28 @@ test('главное фото товара помещается на экран'
   expect(box.y + box.height).toBeLessThanOrEqual(800);
 });
 
+test('фото товара открывается на весь экран', async ({ page }) => {
+  await page.goto('/catalog/verona-white');
+
+  const gallery = await page.locator('main img').first().boundingBox();
+  await page.getByRole('button', { name: /Открыть фото/ }).click();
+
+  const viewer = page.getByRole('dialog', { name: /просмотр фотографий/ });
+  await expect(viewer).toBeVisible();
+
+  // Просмотр должен давать заметный выигрыш по высоте, иначе он бессмыслен
+  const shown = await viewer.locator('img').first().boundingBox();
+  expect(shown!.height).toBeGreaterThan(gallery!.height * 1.2);
+
+  // Листание и счётчик
+  await expect(viewer.getByText(/Фото 1 из/)).toBeVisible();
+  await page.getByRole('button', { name: 'Следующее фото' }).click();
+  await expect(viewer.getByText(/Фото 2 из/)).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(viewer).toBeHidden();
+});
+
 test('корзина: добавление, количество, промокод, удаление', async ({ page }) => {
   await page.goto('/catalog/malta-white');
   await page.locator('#purchase-block').getByRole('button', { name: 'В корзину' }).click();

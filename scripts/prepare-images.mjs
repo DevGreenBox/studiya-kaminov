@@ -25,12 +25,23 @@ if (!fs.existsSync(srcRoot)) {
 }
 
 const out = (...p) => path.join(root, 'public/images', ...p);
-const PRODUCT = { width: 1050, height: 1400 }; // 3:4 — все исходники вертикальные
+// Потолок, а не жёсткий размер: часть исходников крупнее (до 2030×2707) и
+// теперь отдаёт больше деталей, мелкие остаются как есть.
+const PRODUCT = { width: 1400, height: 1867 }; // 3:4 — все исходники вертикальные
 const CATEGORY = { width: 900, height: 675 }; // 4:3
 const HERO = { width: 1200, height: 1500 };
 
 let written = 0;
-async function emit(srcFile, dest, size, { fit = 'cover', quality = 82 } = {}) {
+
+/**
+ * `withoutEnlargement` — главное здесь.
+ *
+ * Материалы заказчика разного размера: большинство 1024×1365, но часть
+ * заметно меньше, вплоть до 550×733. Раньше все они приводились к общей цели
+ * и мелкие растягивались почти вдвое — отсюда мыло на карточках товара.
+ * Теперь цель работает как потолок: снимок уменьшается, но не увеличивается.
+ */
+async function emit(srcFile, dest, size, { fit = 'cover', quality = 88 } = {}) {
   if (!fs.existsSync(srcFile)) {
     console.warn(`  ! пропущен (нет файла): ${srcFile}`);
     return false;
@@ -38,7 +49,12 @@ async function emit(srcFile, dest, size, { fit = 'cover', quality = 82 } = {}) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   await sharp(srcFile)
     .rotate()
-    .resize(size.width, size.height, { fit, position: 'centre', background: '#f6f2ec' })
+    .resize(size.width, size.height, {
+      fit,
+      position: 'centre',
+      background: '#f6f2ec',
+      withoutEnlargement: true,
+    })
     .webp({ quality })
     .toFile(dest);
   written++;
