@@ -22,13 +22,34 @@ const root = path.resolve(fileURLToPath(import.meta.url), '../..');
  * Значения подобраны по кадрам: камин стоит по центру, надписи остаются за
  * рамкой, масштаб между категориями примерно одинаковый.
  */
+/*
+ * Обложки категорий.
+ *
+ * `zoom` меньше единицы у всех намеренно. При zoom: 1 окно кадрирования равно
+ * полной ширине исходника, сдвигать его некуда — и `focusX` не работал вовсе.
+ * Именно поэтому камины стояли по плиткам вразнобой.
+ *
+ * `focusX` — центр топки, измеренный по кадру: топка это самая крупная тёмная
+ * область в светлом интерьере, и она надёжнее пламени, которое у части моделей
+ * приглушённое. `focusY` поднят над центром топки, чтобы в кадр попадал
+ * портал целиком, а не только очаг.
+ */
 const COVERS = {
-  'kaminy-s-kamnem': { src: 'dublin-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 1 },
-  klassicheskie: { src: 'versal-ivory/01.webp', focusX: 0.56, focusY: 0.56, zoom: 1 },
-  sovremennye: { src: 'modern-white/01.webp', focusX: 0.45, focusY: 0.6, zoom: 1 },
-  's-bokovymi-tumbami': { src: 'dublin-premium-white-grey/01.webp', focusX: 0.5, focusY: 0.55, zoom: 1 },
-  uglovye: { src: 'malta-corner-votan/02.webp', focusX: 0.5, focusY: 0.48, zoom: 1 },
-  'tumby-pod-tv': { src: 'chester-white/01.webp', focusX: 0.47, focusY: 0.56, zoom: 1 },
+  'kaminy-s-kamnem': { src: 'dublin-white/01.webp', focusX: 0.476, focusY: 0.577, zoom: 0.82 },
+  klassicheskie: { src: 'versal-ivory/01.webp', focusX: 0.537, focusY: 0.615, zoom: 0.82 },
+  // Корпус широкий, топка сильно правее центра кадра: при zoom 0.82 окно
+  // упиралось в край и камин оставался смещённым. 0.75 даёт нужный запас.
+  sovremennye: { src: 'modern-white/01.webp', focusX: 0.621, focusY: 0.552, zoom: 0.75 },
+  's-bokovymi-tumbami': {
+    src: 'dublin-premium-white-grey/01.webp',
+    focusX: 0.483,
+    focusY: 0.556,
+    zoom: 0.82,
+  },
+  // У всех шести кадров модели маркетплейс-надписи сверху и снизу. Чистая
+  // полоса — примерно 0.19…0.76 по высоте, окно подобрано под неё.
+  uglovye: { src: 'malta-corner-votan/01.webp', focusX: 0.497, focusY: 0.475, zoom: 0.6 },
+  'tumby-pod-tv': { src: 'chester-white/01.webp', focusX: 0.522, focusY: 0.616, zoom: 0.82 },
 };
 
 /**
@@ -73,7 +94,15 @@ const CARDS = {
   'malta-wenge': { src: 'malta-wenge/02.webp', focusX: 0.5, focusY: 0.47, zoom: 0.6 },
 };
 
-const OUT = { width: 900, height: 675 }; // 4:3 — плитки категорий
+/*
+ * Плитки категорий вертикальные (4:5), а не горизонтальные.
+ *
+ * Все исходники сняты вертикально, 3:4. В горизонтальный кадр 4:3 влезает
+ * лишь 56% высоты снимка — портал не помещается целиком, и никакое
+ * центрирование этого не чинит. При 4:5 в кадр попадает 77% высоты, и камин
+ * виден от карниза до основания.
+ */
+const OUT = { width: 900, height: 1125 }; // 4:5 — плитки категорий
 const CARD_OUT = { width: 1050, height: 1400 }; // 3:4 — как остальные фото товаров
 const PROMO_OUT = { width: 760, height: 950 }; // 4:5 — баннеры карусели
 

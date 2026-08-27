@@ -28,7 +28,7 @@ export function CategoryCard({
 
   return (
     <Link href={`/catalog?category=${category.slug}`} className={cn('group block', className)}>
-      <span className="relative block aspect-[4/3] overflow-hidden bg-surface">
+      <span className="relative block aspect-[4/5] overflow-hidden bg-surface">
         <Image
           src={category.image}
           alt={`${category.name} — фотография модели из каталога`}
