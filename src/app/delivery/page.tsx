@@ -161,18 +161,7 @@ export default function DeliveryPage() {
                 key={carrier.id}
                 className="flex flex-col rounded-[var(--radius-md)] border border-line bg-surface p-6"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-xl font-bold">{carrier.name}</h3>
-                  <span
-                    className={
-                      carrier.primary
-                        ? 'inline-flex h-6 shrink-0 items-center rounded-[var(--radius-xs)] bg-primary px-2 text-xs font-bold text-white'
-                        : 'inline-flex h-6 shrink-0 items-center rounded-[var(--radius-xs)] bg-white px-2 text-xs font-bold text-ink-soft'
-                    }
-                  >
-                    {carrier.primary ? 'Основная' : 'Дополнительно'}
-                  </span>
-                </div>
+                <h3 className="text-xl font-bold">{carrier.name}</h3>
                 <ul className="mt-4 flex list-disc flex-col gap-2.5 pl-5 text-[15px] leading-relaxed text-ink-soft">
                   {carrierDetails[carrier.id]?.map((line) => (
                     <li key={line}>{typo(line)}</li>

@@ -11,6 +11,12 @@ import type { Promotion } from '@/types';
 import { cn } from '@/lib/cn';
 
 const AUTOPLAY_MS = 7000;
+/*
+ * Длительность перелистывания. Системная прокрутка `behavior: 'smooth'`
+ * длится около 300 мс и на широком слайде читается как рывок; своя анимация
+ * позволяет задать и время, и кривую.
+ */
+const SLIDE_MS = 850;
 
 const kindLabel: Record<Promotion['kind'], string> = {
   sale: 'Акция',
@@ -147,10 +153,11 @@ const PHOTO_CELL = 'relative aspect-[4/5] lg:aspect-auto lg:min-h-[min(88vh,820p
 export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
+  const animation = useRef<number | null>(null);
   const coverBox = useCoverBox(photoRef, 4 / 5);
+  const reduced = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
   const [hovered, setHovered] = useState(false);
-  const reduced = usePrefersReducedMotion();
 
   const total = promotions.length + 1;
   /*
@@ -160,13 +167,49 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
    */
   const running = !hovered && !reduced;
 
-  const scrollTo = useCallback((index: number) => {
-    const track = trackRef.current;
-    const slide = track?.children[index] as HTMLElement | undefined;
-    if (!track || !slide) return;
-    const base = (track.children[0] as HTMLElement).offsetLeft;
-    track.scrollTo({ left: slide.offsetLeft - base, behavior: 'smooth' });
-  }, []);
+  const scrollTo = useCallback(
+    (index: number) => {
+      const track = trackRef.current;
+      const slide = track?.children[index] as HTMLElement | undefined;
+      if (!track || !slide) return;
+
+      const base = (track.children[0] as HTMLElement).offsetLeft;
+      const to = slide.offsetLeft - base;
+      const from = track.scrollLeft;
+      const delta = to - from;
+
+      if (animation.current !== null) cancelAnimationFrame(animation.current);
+      if (reduced || Math.abs(delta) < 1) {
+        track.scrollLeft = to;
+        return;
+      }
+
+      /*
+       * Прилипание отключается на время анимации: при `scroll-snap-type:
+       * mandatory` браузер дотягивает ленту до ближайшего слайда после каждого
+       * присвоения scrollLeft и анимация дёргается.
+       */
+      track.style.scrollSnapType = 'none';
+
+      // Медленный старт и мягкое торможение
+      const ease = (p: number) => (p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2);
+      const start = performance.now();
+
+      const step = (now: number) => {
+        const p = Math.min(1, (now - start) / SLIDE_MS);
+        track.scrollLeft = from + delta * ease(p);
+        if (p < 1) {
+          animation.current = requestAnimationFrame(step);
+        } else {
+          animation.current = null;
+          track.style.scrollSnapType = '';
+        }
+      };
+
+      animation.current = requestAnimationFrame(step);
+    },
+    [reduced],
+  );
 
   const sync = useCallback(() => {
     const track = trackRef.current;
@@ -194,6 +237,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
     return () => {
       track.removeEventListener('scroll', sync);
       window.removeEventListener('resize', sync);
+      if (animation.current !== null) cancelAnimationFrame(animation.current);
     };
   }, [sync]);
 
@@ -220,7 +264,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
         onMouseLeave={() => setHovered(false)}
         onFocusCapture={() => setHovered(true)}
         onBlurCapture={() => setHovered(false)}
-        className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {/* Слайд 1 — камин как герой, минимум слов */}
         <li

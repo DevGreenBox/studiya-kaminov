@@ -14,10 +14,10 @@ export function Footer() {
   );
 
   return (
-    // Отступ небольшой: у последней секции страницы свой нижний отступ, а сам
-    // подвал отделён рамкой и другим фоном. Раньше здесь было mt-24, и между
-    // контентом и подвалом оставалась пустая полоса почти в 150 px.
-    <footer className="mt-6 border-t border-line bg-surface sm:mt-8">
+    // Внешнего отступа нет: подвал отделён рамкой и собственным фоном, а
+    // любой зазор проявляется полосой основного фона между двумя
+    // подкрашенными блоками и читается как дырка в вёрстке.
+    <footer className="border-t border-line bg-surface">
       <div className="container-site py-10 lg:py-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-8">
           <div>
