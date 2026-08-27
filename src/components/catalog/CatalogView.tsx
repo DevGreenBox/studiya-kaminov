@@ -310,7 +310,7 @@ export function CatalogView() {
               />
             </div>
           ) : (
-            <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-3 2xl:grid-cols-4">
+            <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-8 xl:grid-cols-3 2xl:grid-cols-4">
               {visible.map((product, index) => (
                 <li key={product.id} className="flex">
                   <ProductCard

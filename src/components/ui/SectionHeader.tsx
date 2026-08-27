@@ -31,7 +31,7 @@ export function SectionHeader({
       className={cn(
         // Линейка под заголовком вместо подложки: разделяет секции, ничего не
         // добавляя в макет
-        'mb-10 flex flex-col gap-4 border-b border-line pb-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10',
+        'mb-8 flex flex-col gap-4 border-b border-line pb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-10',
         align === 'center' && 'sm:flex-col sm:items-center sm:text-center',
         className,
       )}

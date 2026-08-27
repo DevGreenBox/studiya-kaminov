@@ -11,7 +11,6 @@ export function FeaturedProducts() {
       <SectionHeader
         eyebrow="Популярное"
         title="Чаще всего выбирают"
-        description="Модели, которые берут в гостиную и загородный дом."
         link={{ href: '/catalog', label: 'Смотреть все' }}
       />
       {/* Просветы шире, чем были: карточки без рамок держатся воздухом */}

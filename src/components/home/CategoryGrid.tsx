@@ -4,7 +4,6 @@ import { categories } from '@/data/categories';
 import { CategoryCard } from '@/components/catalog/CategoryCard';
 import { Reveal } from '@/components/ui/Reveal';
 import { typo } from '@/lib/typography';
-import { cn } from '@/lib/cn';
 
 /**
  * Шесть типов каминов.
@@ -31,13 +30,7 @@ export function CategoryGrid() {
 
       <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10">
         {categories.map((category, index) => (
-          <Reveal
-            as="li"
-            key={category.slug}
-            delay={(index % 3) * 90}
-            // Средняя колонка опущена: ряд перестаёт читаться как таблица
-            className={cn(index % 3 === 1 && 'lg:mt-16')}
-          >
+          <Reveal as="li" key={category.slug} delay={(index % 3) * 90}>
             <CategoryCard category={category} priority={index < 3} />
           </Reveal>
         ))}
