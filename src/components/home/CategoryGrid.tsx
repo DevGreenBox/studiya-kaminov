@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import { SketchIcon } from '@/components/icons/SketchIcon';
 import { categories } from '@/data/categories';
 import { CategoryCard } from '@/components/catalog/CategoryCard';
 import { Reveal } from '@/components/ui/Reveal';
@@ -35,19 +33,6 @@ export function CategoryGrid() {
           </Reveal>
         ))}
       </ul>
-
-      <Link
-        href="/catalog"
-        className="group mt-14 inline-flex items-center gap-3 border-b-2 border-line-strong pb-2 text-[16px] font-semibold text-ink transition-colors hover:border-primary hover:text-primary lg:mt-20"
-      >
-        Весь каталог
-        <SketchIcon
-          name="arrow-right"
-          size={18}
-          aria-hidden
-          className="text-primary transition-transform duration-200 group-hover:translate-x-1"
-        />
-      </Link>
     </section>
   );
 }
