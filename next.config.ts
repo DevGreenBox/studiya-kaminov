@@ -12,8 +12,20 @@ const securityHeaders = [
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
 ];
 
-/** Логотип и фотографии меняются только вместе с релизом — держим неделю. */
-const staticCache = [{ key: 'Cache-Control', value: 'public, max-age=604800' }];
+/**
+ * Кэш картинок.
+ *
+ * Неделя жёсткого кэша здесь была ошибкой: имена файлов не меняются при замене
+ * фотографии, поэтому браузер и оптимизатор Vercel продолжали отдавать старый
+ * снимок до истечения срока — замена фото была не видна.
+ *
+ * Теперь свежесть ограничена пятью минутами, а `stale-while-revalidate`
+ * оставляет прежнюю скорость: браузер сразу показывает кэш и обновляет его
+ * в фоне.
+ */
+const staticCache = [
+  { key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=604800' },
+];
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
