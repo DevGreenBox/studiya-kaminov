@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SketchIcon } from '@/components/icons/SketchIcon';
+import { LineIcon } from '@/components/icons/LineIcon';
 import { site, contacts } from '@/config/site';
 import { mainNav } from '@/config/navigation';
 import { useCart } from '@/lib/store/cart';
@@ -128,7 +128,7 @@ export function Header() {
               aria-label="Поиск по сайту"
               className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-sm)] text-ink transition-colors hover:bg-surface-strong"
             >
-              <SketchIcon name="search" size={21} />
+              <LineIcon name="search" size={21} />
             </button>
 
             <Link
@@ -139,7 +139,7 @@ export function Header() {
                 isActive('/favorites') ? 'text-primary' : 'text-ink',
               )}
             >
-              <SketchIcon name="heart" size={21} />
+              <LineIcon name="heart" size={21} />
               <CountBadge value={favCount} />
             </Link>
 
@@ -151,7 +151,7 @@ export function Header() {
                 isActive('/cart') ? 'text-primary' : 'text-ink',
               )}
             >
-              <SketchIcon name="cart" size={21} />
+              <LineIcon name="cart" size={21} />
               <CountBadge value={cartCount} />
             </Link>
 
@@ -159,7 +159,7 @@ export function Header() {
               href={contacts.phoneHref}
               className="ml-2 hidden items-center gap-2 rounded-[var(--radius-sm)] border border-line-strong px-3.5 py-2 text-[15px] font-semibold text-ink transition-colors hover:border-ink-muted xl:inline-flex"
             >
-              <SketchIcon name="phone" size={16} className="text-primary" aria-hidden />
+              <LineIcon name="phone" size={16} className="text-primary" aria-hidden />
               {contacts.phone}
             </a>
 
@@ -170,7 +170,7 @@ export function Header() {
               aria-expanded={menuOpen}
               className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-sm)] text-ink transition-colors hover:bg-surface-strong lg:hidden"
             >
-              <SketchIcon name="menu" size={22} />
+              <LineIcon name="menu" size={22} />
             </button>
           </div>
         </div>
@@ -204,7 +204,7 @@ export function Header() {
                 aria-label="Закрыть меню"
                 className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-sm)] text-ink transition-colors hover:bg-surface-strong"
               >
-                <SketchIcon name="x" size={22} />
+                <LineIcon name="x" size={22} />
               </button>
             </div>
 
@@ -239,7 +239,7 @@ export function Header() {
                     href="/favorites"
                     className="flex min-h-12 items-center gap-3 rounded-[var(--radius-sm)] px-4 text-[17px] text-ink transition-colors hover:bg-surface"
                   >
-                    <SketchIcon name="heart" size={19} className="text-ink-muted" aria-hidden />
+                    <LineIcon name="heart" size={19} className="text-ink-muted" aria-hidden />
                     Избранное
                     {favCount > 0 && (
                       <span className="ml-auto text-sm text-ink-muted">{favCount}</span>
@@ -251,7 +251,7 @@ export function Header() {
                     href="/cart"
                     className="flex min-h-12 items-center gap-3 rounded-[var(--radius-sm)] px-4 text-[17px] text-ink transition-colors hover:bg-surface"
                   >
-                    <SketchIcon name="cart" size={19} className="text-ink-muted" aria-hidden />
+                    <LineIcon name="cart" size={19} className="text-ink-muted" aria-hidden />
                     Корзина
                     {cartCount > 0 && (
                       <span className="ml-auto text-sm text-ink-muted">{cartCount}</span>
@@ -266,7 +266,7 @@ export function Header() {
                 href={contacts.phoneHref}
                 className="flex h-12 items-center justify-center gap-2 rounded-[var(--radius-sm)] bg-primary font-semibold text-white"
               >
-                <SketchIcon name="phone" size={17} aria-hidden />
+                <LineIcon name="phone" size={17} aria-hidden />
                 {contacts.phone}
               </a>
             </div>

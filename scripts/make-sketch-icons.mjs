@@ -192,6 +192,23 @@ const ui = {
 /** Заливка штриховкой — как на образце, где фигуры «заштрихованы» ручкой. */
 const filled = { 'heart-filled': 'Heart' };
 
+/**
+ * Ровные иконки — только для шапки сайта.
+ *
+ * Заказчик попросил оставить их обычного начертания: шапка висит поверх любой
+ * страницы, и дрожащий контур в мелком кегле рядом с логотипом читается как
+ * дефект, а не как приём. Геометрия та же самая, просто без огрубления.
+ */
+const plain = ['Search', 'Heart', 'ShoppingCart', 'Phone', 'Menu', 'X'];
+const plainKey = {
+  Search: 'search',
+  Heart: 'heart',
+  ShoppingCart: 'cart',
+  Phone: 'phone',
+  Menu: 'menu',
+  X: 'x',
+};
+
 /* ------------------------------------------------------------------ *
  * Огрубление
  * ------------------------------------------------------------------ */
@@ -301,7 +318,43 @@ const decorativeOptions = (key) => ({
   preserveVertices: false,
 });
 
-const out = { ui: {}, decorative: {} };
+const out = { ui: {}, decorative: {}, plain: {} };
+
+/** Примитив lucide → строка `d`, без огрубления. */
+function toPath(tag, a) {
+  const n = (v) => Number(v);
+  if (tag === 'path') return a.d;
+  if (tag === 'line') return `M${n(a.x1)} ${n(a.y1)}L${n(a.x2)} ${n(a.y2)}`;
+  if (tag === 'circle') {
+    const [cx, cy, r] = [n(a.cx), n(a.cy), n(a.r)];
+    // Два полукруга: дугами окружность описывается без лишних узлов
+    return `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
+  }
+  if (tag === 'rect') {
+    const [x, y, w, h] = [n(a.x), n(a.y), n(a.width), n(a.height)];
+    const r = n(a.rx ?? 0);
+    if (!r) return `M${x} ${y}h${w}v${h}h${-w}z`;
+    return (
+      `M${x + r} ${y}h${w - r * 2}a${r} ${r} 0 0 1 ${r} ${r}` +
+      `v${h - r * 2}a${r} ${r} 0 0 1 ${-r} ${r}` +
+      `h${-(w - r * 2)}a${r} ${r} 0 0 1 ${-r} ${-r}` +
+      `v${-(h - r * 2)}a${r} ${r} 0 0 1 ${r} ${-r}z`
+    );
+  }
+  if (tag === 'polyline' || tag === 'polygon') {
+    const pts = a.points.trim().split(/[\s,]+/).map(Number);
+    const parts = [];
+    for (let i = 0; i < pts.length; i += 2) parts.push(`${pts[i]} ${pts[i + 1]}`);
+    return `M${parts.join('L')}${tag === 'polygon' ? 'z' : ''}`;
+  }
+  throw new Error(`Неизвестный примитив: ${tag}`);
+}
+
+for (const exportName of plain) {
+  out.plain[plainKey[exportName]] = {
+    strokes: lucideShapes(exportName).map(([tag, attrs]) => toPath(tag, attrs)),
+  };
+}
 
 for (const [key, exportName] of Object.entries(ui)) {
   const { strokes } = roughen(lucideShapes(exportName), uiOptions(key));
@@ -330,5 +383,5 @@ fs.writeFileSync(outFile, `${JSON.stringify(out, null, 2)}\n`);
 
 const size = (fs.statSync(outFile).size / 1024).toFixed(1);
 console.log(
-  `${Object.keys(out.ui).length} интерфейсных + ${Object.keys(out.decorative).length} декоративных → ${outFile.replace(root + '/', '')} (${size} КБ)`,
+  `${Object.keys(out.ui).length} интерфейсных + ${Object.keys(out.decorative).length} декоративных + ${Object.keys(out.plain).length} ровных → ${outFile.replace(root + '/', '')} (${size} КБ)`,
 );
