@@ -134,6 +134,11 @@ const decorative = {
     ['circle', { cx: 25, cy: 14, r: 2.4 }],
     ['circle', { cx: 33, cy: 19, r: 2.4 }],
   ],
+  payment: [
+    ['path', { d: 'M6 14h36a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z' }],
+    ['path', { d: 'M3 22h42' }],
+    ['path', { d: 'M9 28h9' }],
+  ],
   plug: [
     ['path', { d: 'M18 6v10' }],
     ['path', { d: 'M30 6v10' }],

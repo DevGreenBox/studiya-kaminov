@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 
 test('главная открывается и ведёт в каталог', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Электрокамины');
-  await page.getByRole('link', { name: 'Выбрать камин' }).first().click();
+  await page.getByRole('link', { name: 'Смотреть каталог' }).first().click();
   await expect(page).toHaveURL(/\/catalog$/);
   await expect(page.getByText(/Найдено: \d+ товар/)).toBeVisible();
 });

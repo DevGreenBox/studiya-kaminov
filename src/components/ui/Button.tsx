@@ -6,16 +6,20 @@ import { cn } from '@/lib/cn';
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
+/*
+ * Кнопки почти прямоугольные и без тени: скруглённые «пилюли» с подсветкой —
+ * первое, что делает интерфейс похожим на шаблон. Форму задаёт цвет и
+ * плотность набора, а не радиус.
+ */
 const base =
   'inline-flex items-center justify-center gap-2 font-semibold rounded-[var(--radius-sm)] ' +
-  'transition-[background-color,color,border-color,box-shadow] duration-150 ' +
+  'transition-[background-color,color,border-color] duration-150 ' +
   'disabled:opacity-50 disabled:cursor-not-allowed select-none text-center';
 
 const variants: Record<Variant, string> = {
-  primary:
-    'bg-primary text-white hover:bg-primary-hover active:bg-primary-active shadow-[0_1px_2px_rgb(28_25_23/0.08)]',
+  primary: 'bg-primary text-white hover:bg-primary-hover active:bg-primary-active',
   secondary:
-    'bg-white text-ink border border-line-strong hover:bg-surface hover:border-ink-muted active:bg-surface-strong',
+    'bg-transparent text-ink border border-line-strong hover:border-ink hover:bg-transparent active:bg-surface',
   ghost: 'bg-transparent text-ink hover:bg-surface-strong active:bg-surface-strong',
   danger: 'bg-danger-soft text-danger border border-transparent hover:bg-danger hover:text-white',
 };

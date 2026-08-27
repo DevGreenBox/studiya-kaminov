@@ -1,20 +1,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { SketchIcon } from '@/components/icons/SketchIcon';
 import { products } from '@/data/catalog';
 import { pluralize } from '@/lib/format';
 import type { Category } from '@/types';
 import { cn } from '@/lib/cn';
 
 /**
- * Плитка категории: фотография во всю карточку, подпись поверх неё.
+ * Плитка категории без плашки.
  *
- * Раньше снимок был окошком сверху, а текст жил в белой полосе под ним —
- * карточка читалась как строка каталога. Теперь работает сама фотография:
- * ради неё человек и приходит на страницу.
- *
- * Компонент общий для главной и «О нас»: карточки там были свёрстаны
- * отдельно и начали расходиться.
+ * Ни рамки, ни тени, ни стрелки в кружке: композицию делает сама фотография,
+ * а подпись стоит под ней, как в мебельном каталоге. Прежняя версия была
+ * карточкой с рамкой и подписью поверх снимка — из-за контейнера все шесть
+ * категорий читались как один повторяющийся блок.
  */
 export function CategoryCard({
   category,
@@ -30,46 +27,28 @@ export function CategoryCard({
   const count = products.filter((p) => p.category === category.slug).length;
 
   return (
-    <Link
-      href={`/catalog?category=${category.slug}`}
-      className={cn(
-        'group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-[var(--radius-md)] bg-ink',
-        className,
-      )}
-    >
-      <Image
-        src={category.image}
-        alt={`${category.name} — фотография модели из каталога`}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className="object-cover transition-transform duration-700 ease-[var(--ease-out-soft)] group-hover:scale-[1.05]"
-      />
+    <Link href={`/catalog?category=${category.slug}`} className={cn('group block', className)}>
+      <span className="relative block aspect-[4/3] overflow-hidden bg-surface">
+        <Image
+          src={category.image}
+          alt={`${category.name} — фотография модели из каталога`}
+          fill
+          priority={priority}
+          sizes={sizes}
+          className="object-cover transition-transform duration-[900ms] ease-[var(--ease-out-soft)] group-hover:scale-[1.03]"
+        />
+      </span>
 
-      {/*
-        Затемнение снизу. Градиент задан явными остановками, а не парой
-        from/to: интерьеры сняты в светлых тонах, и мягкого перехода не
-        хватало — белая подпись тонула в кадре.
-      */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.94)_0%,rgba(28,25,23,0.78)_22%,rgba(28,25,23,0.35)_48%,rgba(28,25,23,0)_72%)]"
-      />
-
-      <span className="relative flex items-end justify-between gap-4 p-5">
-        <span className="min-w-0">
-          <span className="block text-[19px] font-bold leading-snug text-white">
-            {category.name}
-          </span>
-          <span className="mt-1 block text-sm text-white/70">
-            {category.summary} · {count} {pluralize(count, ['модель', 'модели', 'моделей'])}
-          </span>
+      <span className="mt-4 block">
+        <span className="block font-display text-[21px] leading-snug transition-colors group-hover:text-primary">
+          {category.name}
         </span>
-        <span
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/40 text-white transition-[transform,background-color,border-color] duration-200 group-hover:translate-x-0.5 group-hover:border-primary group-hover:bg-primary"
-          aria-hidden
-        >
-          <SketchIcon name="arrow-right" size={19} />
+        <span className="mt-1.5 block text-sm text-ink-muted">
+          {category.summary}
+          <span aria-hidden className="mx-2 text-line-strong">
+            ·
+          </span>
+          {count} {pluralize(count, ['модель', 'модели', 'моделей'])}
         </span>
       </span>
     </Link>

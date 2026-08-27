@@ -84,7 +84,7 @@ export default function ContactsPage() {
                 <li key={m.label}>
                   <a
                     href={m.href}
-                    className="inline-flex h-11 items-center rounded-full border border-line-strong bg-white px-5 font-medium transition-colors hover:border-primary hover:text-primary"
+                    className="inline-flex h-11 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-5 font-medium transition-colors hover:border-primary hover:text-primary"
                   >
                     {m.label}
                   </a>
@@ -94,7 +94,7 @@ export default function ContactsPage() {
                 <li key={s.label}>
                   <a
                     href={s.href}
-                    className="inline-flex h-11 items-center rounded-full border border-line-strong bg-white px-5 font-medium transition-colors hover:border-primary hover:text-primary"
+                    className="inline-flex h-11 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-5 font-medium transition-colors hover:border-primary hover:text-primary"
                   >
                     {s.label}
                   </a>

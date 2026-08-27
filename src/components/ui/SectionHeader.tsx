@@ -6,6 +6,8 @@ import { typo } from '@/lib/typography';
 
 interface Props {
   title: string;
+  /** Надзаголовок капителью — вместо цветного бейджа. */
+  eyebrow?: string;
   description?: string;
   link?: { href: string; label: string };
   align?: 'left' | 'center';
@@ -16,6 +18,7 @@ interface Props {
 
 export function SectionHeader({
   title,
+  eyebrow,
   description,
   link,
   align = 'left',
@@ -26,29 +29,32 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        'mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between',
+        // Линейка под заголовком вместо подложки: разделяет секции, ничего не
+        // добавляя в макет
+        'mb-10 flex flex-col gap-4 border-b border-line pb-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10',
         align === 'center' && 'sm:flex-col sm:items-center sm:text-center',
         className,
       )}
     >
-      <div className={cn('max-w-2xl', align === 'center' && 'mx-auto')}>
-        <Tag className="text-[clamp(1.5rem,1.2rem+1.3vw,2.125rem)] leading-tight">
-          {typo(title)}
-        </Tag>
-        {description && (
-          <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{typo(description)}</p>
-        )}
+      <div className={cn('max-w-[34ch]', align === 'center' && 'mx-auto')}>
+        {eyebrow && <p className="eyebrow mb-4">{typo(eyebrow)}</p>}
+        <Tag className="display-md">{typo(title)}</Tag>
       </div>
+      {description && (
+        <p className="max-w-[40ch] text-[15px] leading-relaxed text-ink-soft">
+          {typo(description)}
+        </p>
+      )}
       {link && (
         <Link
           href={link.href}
-          className="group inline-flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-ink transition-colors hover:text-primary"
+          className="group inline-flex shrink-0 items-center gap-2.5 border-b-2 border-line-strong pb-1.5 text-[15px] font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
         >
           {link.label}
           <SketchIcon
             name="arrow-right"
             size={17}
-            className="transition-transform duration-200 group-hover:translate-x-0.5"
+            className="text-primary transition-transform duration-200 group-hover:translate-x-1"
             aria-hidden
           />
         </Link>

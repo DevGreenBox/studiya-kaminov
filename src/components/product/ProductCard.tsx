@@ -16,13 +16,15 @@ interface Props {
   sizes?: string;
 }
 
-/** Две-три ключевые характеристики для карточки — берутся из каталога. */
+/**
+ * Две характеристики, не три: в списке из двадцати карточек третья строка
+ * читается как шум и отбирает место у фотографии.
+ */
 function keyFacts(product: Product) {
   const facts: string[] = [product.color];
   if (product.dimensions) facts.push(`${product.dimensions.width} мм`);
-  if (product.heatingArea) facts.push(`до ${product.heatingArea} м²`);
-  else if (product.hearth) facts.push(`очаг ${product.hearth}`);
-  return facts.slice(0, 3);
+  else if (product.heatingArea) facts.push(`до ${product.heatingArea} м²`);
+  return facts.slice(0, 2);
 }
 
 export function ProductCard({
@@ -40,7 +42,7 @@ export function ProductCard({
      * не появляется. Кнопки избранного и корзины подняты слоем выше, поэтому
      * работают как обычно.
      */
-    <article className="group relative isolate flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-line bg-white transition-[border-color,box-shadow] duration-200 hover:border-line-strong hover:shadow-card focus-within:border-primary">
+    <article className="group relative isolate flex h-full flex-col">
       <div className="relative aspect-[3/4] overflow-hidden bg-surface">
         <Image
           src={product.images[0]}
@@ -48,10 +50,10 @@ export function ProductCard({
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-[900ms] ease-[var(--ease-out-soft)] group-hover:scale-[1.025]"
         />
 
-        <div className="pointer-events-none absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
+        <div className="pointer-events-none absolute left-0 top-0 flex flex-wrap gap-px">
           {product.badges.map((badge) => (
             <Badge key={badge} kind={badge} />
           ))}
@@ -61,13 +63,13 @@ export function ProductCard({
         <FavoriteButton
           productId={product.id}
           productName={product.name}
-          className="absolute right-2.5 top-2.5 z-20"
+          className="absolute right-2 top-2 z-20"
         />
       </div>
 
-      {/* Контент сверху, цена и кнопки прижаты вниз — карточки в ряду одной высоты */}
-      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-        <h3 className="text-[15px] font-semibold leading-snug">
+      {/* Подпись под фотографией, без подложки: карточка — это сам снимок */}
+      <div className="flex flex-1 flex-col pt-4">
+        <h3 className="text-[16px] font-medium leading-snug">
           <Link
             href={`/catalog/${product.slug}`}
             className="line-clamp-2-fixed transition-colors before:absolute before:inset-0 before:z-10 before:content-[''] group-hover:text-primary"
@@ -76,7 +78,7 @@ export function ProductCard({
           </Link>
         </h3>
 
-        <ul className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-[13px] text-ink-muted">
+        <ul className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-[13px] text-ink-muted">
           {keyFacts(product).map((fact) => (
             <li
               key={fact}
@@ -87,11 +89,15 @@ export function ProductCard({
           ))}
         </ul>
 
-        <div className="mt-auto pt-4">
-          <Price value={product.price} oldValue={product.oldPrice} />
-          {!product.inStock && <p className="mt-1 text-sm text-ink-muted">Нет в наличии</p>}
-          <div className="relative z-20 mt-3">
-            <AddToCartButton product={product} fullWidth nameProduct />
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-3">
+          <div>
+            <Price value={product.price} oldValue={product.oldPrice} />
+            {!product.inStock && <p className="mt-1 text-sm text-ink-muted">Нет в наличии</p>}
+          </div>
+          {/* Кнопка компактная, а не во всю ширину: двадцать оранжевых полос
+              в сетке перебивали фотографии */}
+          <div className="relative z-20">
+            <AddToCartButton product={product} size="sm" nameProduct />
           </div>
         </div>
       </div>

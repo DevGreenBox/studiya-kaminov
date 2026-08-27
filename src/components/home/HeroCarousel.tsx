@@ -4,26 +4,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SketchIcon } from '@/components/icons/SketchIcon';
-import { ButtonLink } from '@/components/ui/Button';
-import { PencilIcon, type PencilIconName } from '@/components/icons/PencilIcon';
 import { heroMedia } from '@/config/site';
 import { typo } from '@/lib/typography';
+import { usePrefersReducedMotion } from '@/lib/use-client-value';
 import type { Promotion } from '@/types';
 import { cn } from '@/lib/cn';
-import { usePrefersReducedMotion } from '@/lib/use-client-value';
 
 const AUTOPLAY_MS = 7000;
 
-const points: { icon: PencilIconName; text: string }[] = [
-  { icon: 'factory', text: 'Собственное производство' },
-  { icon: 'flame', text: typo('Очаг с живым эффектом пламени') },
-  { icon: 'truck', text: 'Доставка по России' },
-];
-
-const labels: Record<Promotion['kind'], { text: string; className: string }> = {
-  sale: { text: 'Акция', className: 'bg-primary text-white' },
-  new: { text: 'Новинка', className: 'bg-white text-ink' },
-  news: { text: 'Новости', className: 'bg-white/15 text-white backdrop-blur' },
+const kindLabel: Record<Promotion['kind'], string> = {
+  sale: 'Акция',
+  new: 'Новинка',
+  news: 'Новости',
 };
 
 interface CoverBox {
@@ -36,11 +28,11 @@ interface CoverBox {
 /**
  * Прямоугольник, который занимает фотография внутри контейнера при
  * `object-cover`: часть кадра уходит за края, и в процентах от контейнера
- * точку на фотографии уже не задать.
+ * точку на снимке уже не задать.
  *
- * Нужно ради живого огня: его координаты заданы в процентах от снимка, а
- * колонка с фотографией тянется по высоте соседней колонки, так что её
- * пропорция заранее неизвестна.
+ * Нужно ради живого огня: его координаты заданы в процентах от фотографии, а
+ * колонка со снимком подстраивается под высоту экрана, так что её пропорция
+ * заранее неизвестна.
  */
 function useCoverBox(ref: React.RefObject<HTMLElement | null>, ratio: number) {
   const [box, setBox] = useState<CoverBox | null>(null);
@@ -49,8 +41,8 @@ function useCoverBox(ref: React.RefObject<HTMLElement | null>, ratio: number) {
     const el = ref.current;
     if (!el) return;
 
-    // ResizeObserver срабатывает и сразу после подписки, поэтому отдельного
-    // первого замера в теле эффекта не нужно.
+    // ResizeObserver срабатывает и сразу после подписки, отдельного первого
+    // замера в теле эффекта не нужно.
     const observer = new ResizeObserver(([entry]) => {
       const { width: cw, height: ch } = entry.contentRect;
       if (!cw || !ch) return;
@@ -66,7 +58,12 @@ function useCoverBox(ref: React.RefObject<HTMLElement | null>, ratio: number) {
   return box;
 }
 
-/** Живой огонь поверх реального фото горящего очага. */
+/**
+ * Живой огонь поверх реального фото горящего очага.
+ *
+ * Анимация постоянная, а не по наведению: это единственный элемент страницы,
+ * который должен двигаться сам — ради него сюда и приходят.
+ */
 function Flame({ box }: { box: CoverBox | null }) {
   const { flame } = heroMedia;
   if (!box) return null;
@@ -135,19 +132,17 @@ function Flame({ box }: { box: CoverBox | null }) {
 }
 
 /*
- * Отступ слева совпадает с контейнером сайта, а правая колонка уходит в край
- * экрана: так фотография читается как разворот, а не как карточка, но текст
- * стоит на общей вертикали с остальными секциями страницы.
+ * Композиция намеренно несимметричная: текст занимает меньшую долю, фотография
+ * уходит в правый край экрана. Отступ слева совпадает с контейнером сайта,
+ * поэтому заголовок стоит на общей вертикали с остальными секциями.
  */
 const TEXT_INSET =
-  'ps-4 pe-4 md:ps-6 md:pe-6 lg:ps-[max(40px,calc((100vw-var(--container-site))/2+40px))] lg:pe-12';
+  'ps-4 pe-4 md:ps-6 md:pe-6 lg:ps-[max(40px,calc((100vw-var(--container-site))/2+40px))] lg:pe-14';
 
-/*
- * На мобильном фотография держит пропорцию исходника, на десктопе тянется по
- * высоте текстовой колонки: иначе под снимком оставалась тёмная полоса.
- */
-const PHOTO_CELL = 'relative aspect-[4/5] lg:aspect-auto';
-const PHOTO = 'absolute inset-0 overflow-hidden bg-white/5';
+const SLIDE_GRID =
+  'grid h-full grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:items-stretch';
+
+const PHOTO_CELL = 'relative aspect-[4/5] lg:aspect-auto lg:min-h-[min(88vh,820px)]';
 
 export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
   const trackRef = useRef<HTMLUListElement>(null);
@@ -213,26 +208,11 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
 
   const step = (direction: -1 | 1) => scrollTo((active + direction + total) % total);
 
-  const arrow = (direction: -1 | 1) => (
-    <button
-      type="button"
-      onClick={() => step(direction)}
-      aria-label={direction === -1 ? 'Предыдущий слайд' : 'Следующий слайд'}
-      className={cn(
-        // Обе стрелки лежат на фотографии: слева они наезжали бы на заголовок
-        'absolute bottom-8 z-20 hidden h-14 w-14 items-center justify-center rounded-full border border-white/25 bg-ink/45 text-white backdrop-blur transition-colors hover:border-white/60 hover:bg-ink/75 lg:flex',
-        direction === -1 ? 'right-28' : 'right-8',
-      )}
-    >
-      <SketchIcon name={direction === -1 ? 'arrow-left' : 'arrow-right'} size={22} />
-    </button>
-  );
-
   return (
     <section
       aria-roledescription="карусель"
       aria-label="Акции, новинки и о компании"
-      className="relative bg-ink text-white"
+      className="relative bg-canvas"
     >
       <ul
         ref={trackRef}
@@ -242,100 +222,71 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
         onBlurCapture={() => setHovered(false)}
         className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {/* Слайд 1 — производитель и живой огонь */}
+        {/* Слайд 1 — камин как герой, минимум слов */}
         <li
           className="w-full shrink-0 snap-start"
           aria-roledescription="слайд"
           aria-label={`1 из ${total}`}
         >
-          <div className="grid h-full grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.62fr)] lg:items-stretch">
+          <div className={SLIDE_GRID}>
             <div
               className={cn(
-                'order-2 flex flex-col justify-center pb-28 pt-12 lg:order-1 lg:pb-32',
+                'order-2 flex flex-col justify-center pb-24 pt-10 lg:order-1 lg:pb-28 lg:pt-0',
                 TEXT_INSET,
               )}
             >
-              <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 px-3.5 py-1.5 text-sm font-medium text-white/75">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
-                {typo('Производитель электрокаминов')}
-              </p>
+              <p className="eyebrow">{typo('Собственное производство')}</p>
 
-              <h1 className="mt-6 max-w-[15ch] text-[clamp(2.25rem,1.4rem+3.4vw,4rem)] font-bold leading-[1.03]">
-                {typo('Электрокамины собственного производства')}
+              <h1 className="display-xl mt-6 max-w-[13ch]">
+                {typo('Электрокамины, которые меняют вечер')}
               </h1>
 
-              <p className="mt-6 max-w-xl text-[clamp(1rem,0.95rem+0.3vw,1.1875rem)] leading-relaxed text-white/70">
+              <p className="mt-7 max-w-[42ch] text-[17px] leading-relaxed text-ink-soft">
                 {typo(
-                  'Живое пламя, тепло и тишина — без дымохода и согласований. Собираем порталы сами и отправляем по всей России.',
+                  'Собираем порталы сами — от чертежа до упаковки. Очаг подключается к обычной розетке: ни дымохода, ни согласований.',
                 )}
               </p>
 
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <ButtonLink href="/catalog" size="lg" className="sm:w-auto">
-                  Выбрать камин
-                  <SketchIcon name="arrow-right" size={19} aria-hidden />
-                </ButtonLink>
-                <ButtonLink
-                  href="/about"
-                  size="lg"
-                  variant="ghost"
-                  className="border border-white/25 bg-white/5 text-white hover:border-white/50 hover:bg-white/10 sm:w-auto"
-                >
-                  О производстве
-                </ButtonLink>
-              </div>
-
-              <ul className="mt-10 flex flex-col gap-3.5 border-t border-white/10 pt-7 sm:flex-row sm:flex-wrap sm:gap-x-8">
-                {points.map((point) => (
-                  <li
-                    key={point.text}
-                    className="flex items-center gap-2.5 text-[15px] text-white/75"
-                  >
-                    <PencilIcon name={point.icon} size={28} className="shrink-0 text-primary" />
-                    {point.text}
-                  </li>
-                ))}
-              </ul>
+              <Link
+                href="/catalog"
+                className="group mt-9 inline-flex w-fit items-center gap-3 border-b-2 border-primary pb-2 text-[17px] font-semibold text-ink transition-colors hover:text-primary"
+              >
+                Смотреть каталог
+                <SketchIcon
+                  name="arrow-right"
+                  size={19}
+                  aria-hidden
+                  className="text-primary transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </Link>
             </div>
 
             <div className={cn('order-1 lg:order-2', PHOTO_CELL)}>
-              <div ref={photoRef} className={PHOTO}>
-                {heroMedia.video ? (
-                  <video
-                    src={heroMedia.video}
-                    poster={heroMedia.poster}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label="Электрокамин с горящим пламенем в интерьере"
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                ) : (
-                  <>
-                    <Image
-                      src={heroMedia.poster}
-                      alt="Электрокамин с белым порталом и искусственным камнем в светлой гостиной"
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-cover"
-                    />
-                    <Flame box={coverBox} />
-                  </>
-                )}
-                {/* Смягчает стык тёмного текстового поля и фотографии */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-ink to-transparent lg:block"
+              <div ref={photoRef} className="absolute inset-0 overflow-hidden bg-surface">
+                <Image
+                  src={heroMedia.poster}
+                  alt="Электрокамин Дублин с белым порталом и искусственным камнем в светлой гостиной"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-cover"
                 />
+                <Flame box={coverBox} />
               </div>
+
+              {/* Подпись у фотографии: какая именно модель в кадре */}
+              <Link
+                href="/catalog/dublin-white"
+                className="absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 bg-canvas/90 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur transition-colors hover:text-primary lg:bottom-6 lg:right-6"
+              >
+                <span aria-hidden className="h-px w-5 bg-primary" />
+                {typo('Дублин, белый')}
+              </Link>
             </div>
           </div>
         </li>
 
-        {/* Слайды акций и новинок — кликабельны целиком */}
+        {/* Баннеры акций и новинок — кликабельны целиком */}
         {promotions.map((promo, index) => (
           <li
             key={promo.id}
@@ -343,26 +294,24 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
             aria-roledescription="слайд"
             aria-label={`${index + 2} из ${total}`}
           >
-            {/* relative обязателен: заголовок растягивает ссылку на всю карточку
-                через before:inset-0, и без точки отсчёта она накрывала бы
-                весь первый экран, перехватывая клики по соседним слайдам */}
-            <article className="group relative grid h-full grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.62fr)] lg:items-stretch">
+            {/*
+              relative обязателен: заголовок растягивает ссылку на всю карточку
+              через before:inset-0, и без точки отсчёта она накрывала бы весь
+              первый экран, перехватывая клики по соседним слайдам.
+            */}
+            <article className={cn('group relative', SLIDE_GRID)}>
               <div
                 className={cn(
-                  'order-2 flex flex-col justify-center pb-28 pt-12 lg:order-1 lg:pb-32',
+                  'order-2 flex flex-col justify-center pb-24 pt-10 lg:order-1 lg:pb-28 lg:pt-0',
                   TEXT_INSET,
                 )}
               >
-                <span
-                  className={cn(
-                    'inline-flex h-7 w-fit items-center rounded-full px-3.5 text-sm font-bold',
-                    labels[promo.kind].className,
-                  )}
-                >
-                  {labels[promo.kind].text}
-                </span>
+                <p className="eyebrow flex items-center gap-2.5 text-primary">
+                  <span aria-hidden className="h-px w-6 bg-primary" />
+                  {kindLabel[promo.kind]}
+                </p>
 
-                <h2 className="mt-6 max-w-[15ch] text-[clamp(2rem,1.3rem+3vw,3.5rem)] font-bold leading-[1.05]">
+                <h2 className="display-lg mt-6 max-w-[14ch]">
                   <Link
                     href={promo.href}
                     className="before:absolute before:inset-0 before:content-[''] group-hover:text-primary"
@@ -371,33 +320,29 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
                   </Link>
                 </h2>
 
-                <p className="mt-6 max-w-xl text-[clamp(1rem,0.95rem+0.3vw,1.1875rem)] leading-relaxed text-white/70">
+                <p className="mt-6 max-w-[44ch] text-[17px] leading-relaxed text-ink-soft">
                   {promo.text}
                 </p>
 
-                <span className="mt-9 inline-flex h-14 w-fit items-center gap-2 rounded-[var(--radius-sm)] bg-primary px-7 font-semibold text-white transition-colors group-hover:bg-primary-hover">
+                <span className="mt-9 inline-flex w-fit items-center gap-3 border-b-2 border-primary pb-2 text-[17px] font-semibold text-ink transition-colors group-hover:text-primary">
                   {promo.cta}
                   <SketchIcon
                     name="arrow-right"
                     size={19}
                     aria-hidden
-                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    className="text-primary transition-transform duration-200 group-hover:translate-x-1"
                   />
                 </span>
               </div>
 
               <div className={cn('order-1 lg:order-2', PHOTO_CELL)}>
-                <div className={PHOTO}>
+                <div className="absolute inset-0 overflow-hidden bg-surface">
                   <Image
                     src={promo.image}
                     alt=""
                     fill
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                    className="object-cover transition-transform duration-700 ease-[var(--ease-out-soft)] group-hover:scale-[1.03]"
-                  />
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-ink to-transparent lg:block"
+                    sizes="(max-width: 1024px) 100vw, 58vw"
+                    className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-soft)] group-hover:scale-[1.02]"
                   />
                 </div>
               </div>
@@ -406,20 +351,13 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
         ))}
       </ul>
 
-      {arrow(-1)}
-      {arrow(1)}
-
       {/*
-        Управление лежит поверх нижнего края слайда, а не под ним: иначе
-        фотография обрывалась выше конца секции и выглядела подрезанной.
-        Место под него зарезервировано нижним отступом текстовой колонки.
-
-        Ширина по содержимому, а не во всю строку: растянутая панель
-        перехватывала клики по стрелкам, которые лежат в том же нижнем поясе.
+        Управление лежит поверх нижнего края слайда. Ширина по содержимому:
+        растянутая панель перехватывала бы клики по стрелкам.
       */}
       <div
         className={cn(
-          'absolute bottom-0 left-0 z-20 flex w-auto items-center gap-3 pb-8 lg:pb-10',
+          'absolute bottom-0 left-0 z-20 flex w-auto items-center gap-6 pb-8 lg:pb-10',
           TEXT_INSET,
         )}
       >
@@ -433,8 +371,8 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
               aria-label={`Слайд ${index + 1}`}
               onClick={() => scrollTo(index)}
               className={cn(
-                'h-1.5 overflow-hidden rounded-full transition-[width,background-color] duration-300',
-                index === active ? 'w-14 bg-white/25' : 'w-4 bg-white/25 hover:bg-white/45',
+                'h-[3px] overflow-hidden transition-[width,background-color] duration-300',
+                index === active ? 'w-12 bg-line-strong' : 'w-4 bg-line-strong hover:bg-ink-muted',
               )}
             >
               {index === active && (
@@ -442,7 +380,7 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
                   // Ключ перезапускает анимацию при каждой смене слайда
                   key={`${active}-${running}`}
                   aria-hidden
-                  className="block h-full origin-left rounded-full bg-primary"
+                  className="block h-full origin-left bg-primary"
                   style={{
                     animation: `ef-slide-progress ${AUTOPLAY_MS}ms linear forwards`,
                     animationPlayState: running ? 'running' : 'paused',
@@ -452,6 +390,25 @@ export function HeroCarousel({ promotions }: { promotions: Promotion[] }) {
               )}
             </button>
           ))}
+        </div>
+
+        <div className="hidden items-center gap-1 sm:flex">
+          <button
+            type="button"
+            onClick={() => step(-1)}
+            aria-label="Предыдущий слайд"
+            className="flex h-10 w-10 items-center justify-center text-ink-muted transition-colors hover:text-ink"
+          >
+            <SketchIcon name="arrow-left" size={19} />
+          </button>
+          <button
+            type="button"
+            onClick={() => step(1)}
+            aria-label="Следующий слайд"
+            className="flex h-10 w-10 items-center justify-center text-ink-muted transition-colors hover:text-ink"
+          >
+            <SketchIcon name="arrow-right" size={19} />
+          </button>
         </div>
       </div>
     </section>

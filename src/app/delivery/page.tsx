@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { ButtonLink } from '@/components/ui/Button';
 import { StepsPlate, type Step } from '@/components/ui/StepsPlate';
+import { PencilIcon } from '@/components/icons/PencilIcon';
 import { ContactSection } from '@/components/forms/ContactSection';
 import { carriers, carrierNames, site, contacts } from '@/config/site';
 import { typo } from '@/lib/typography';
@@ -118,7 +119,8 @@ export default function DeliveryPage() {
         {/* Оплата — только то, чего нет в шагах выше.
             Разделитель не нужен: тёмная плашка выше сама отделяет блоки. */}
         <section aria-labelledby="payment-heading" className="mt-14">
-          <h2 id="payment-heading" className="text-2xl">
+          <h2 id="payment-heading" className="flex items-center gap-3 text-2xl">
+            <PencilIcon name="payment" size={38} className="shrink-0 text-primary" />
             Оплата
           </h2>
 

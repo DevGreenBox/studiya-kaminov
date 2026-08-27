@@ -157,7 +157,7 @@ export function Footer() {
                   <li key={m.label}>
                     <a
                       href={m.href}
-                      className="inline-flex h-9 items-center rounded-full border border-line-strong bg-white px-3.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
+                      className="inline-flex h-9 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-3.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
                     >
                       {m.label}
                     </a>
@@ -172,7 +172,7 @@ export function Footer() {
                   <li key={s.label}>
                     <a
                       href={s.href}
-                      className="inline-flex h-9 items-center rounded-full border border-line-strong bg-white px-3.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
+                      className="inline-flex h-9 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-3.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
                     >
                       {s.label}
                     </a>

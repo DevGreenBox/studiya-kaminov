@@ -1,10 +1,15 @@
 import type { BadgeKind } from '@/types';
 import { cn } from '@/lib/cn';
 
+/*
+ * Метки набраны текстом с разрядкой, а не цветными пилюлями.
+ * Цветные плашки над каждой карточкой шумят и перетягивают внимание с
+ * фотографии; здесь они читаются как подпись, но остаются заметными.
+ */
 const config: Record<BadgeKind, { label: string; className: string }> = {
-  hit: { label: 'Хит', className: 'bg-ink text-white' },
-  new: { label: 'Новинка', className: 'bg-success-soft text-success' },
-  sale: { label: 'Акция', className: 'bg-primary text-white' },
+  hit: { label: 'Хит', className: 'text-ink' },
+  new: { label: 'Новинка', className: 'text-success' },
+  sale: { label: 'Акция', className: 'text-primary' },
 };
 
 export function Badge({ kind }: { kind: BadgeKind }) {
@@ -12,7 +17,7 @@ export function Badge({ kind }: { kind: BadgeKind }) {
   return (
     <span
       className={cn(
-        'inline-flex h-6 items-center rounded-[var(--radius-xs)] px-2 text-xs font-bold tracking-wide',
+        'inline-flex items-center bg-canvas/90 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] backdrop-blur',
         className,
       )}
     >
@@ -23,7 +28,7 @@ export function Badge({ kind }: { kind: BadgeKind }) {
 
 export function DiscountBadge({ percent }: { percent: number }) {
   return (
-    <span className="inline-flex h-6 items-center rounded-[var(--radius-xs)] bg-primary px-2 text-xs font-bold text-white">
+    <span className="inline-flex items-center bg-primary px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
       −{percent}%
     </span>
   );
@@ -31,7 +36,7 @@ export function DiscountBadge({ percent }: { percent: number }) {
 
 export function Chip({ children, onRemove }: { children: React.ReactNode; onRemove?: () => void }) {
   return (
-    <span className="inline-flex h-8 items-center gap-1.5 rounded-full border border-line-strong bg-white pl-3 pr-1.5 text-sm text-ink">
+    <span className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-line-strong bg-white pl-3 pr-1.5 text-sm text-ink">
       {children}
       {onRemove && (
         <button

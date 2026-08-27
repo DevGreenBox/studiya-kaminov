@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
+import { Golos_Text, Lora } from 'next/font/google';
 import './globals.css';
 import { site } from '@/config/site';
 import { Header } from '@/components/layout/Header';
@@ -7,12 +7,30 @@ import { Footer } from '@/components/layout/Footer';
 import { CookieBanner } from '@/components/layout/CookieBanner';
 import { ToastProvider } from '@/components/ui/Toast';
 
-const manrope = Manrope({
+/**
+ * Две гарнитуры вместо одной — основной инструмент характера.
+ *
+ * Golos Text — русская гарнитура «Паратайпа»: кириллица здесь родная, а не
+ * достроенная к латинице, и текст интерфейса не выглядит переводным.
+ * Lora — тёплая книжная антиква с настоящим курсивом, для крупных заголовков.
+ * Пара «антиква для эмоции, гротеск для дела» даёт контраст, которого не было,
+ * когда весь сайт был набран одним гротеском.
+ */
+const golos = Golos_Text({
   subsets: ['latin', 'cyrillic'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-manrope',
+  variable: '--font-golos',
   // Метрики fallback-шрифта подгоняются автоматически — это убирает скачок при загрузке.
+  adjustFontFallback: true,
+});
+
+const lora = Lora({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-lora',
   adjustFontFallback: true,
 });
 
@@ -43,7 +61,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" data-scroll-behavior="smooth" className={manrope.variable}>
+    <html lang="ru" data-scroll-behavior="smooth" className={`${golos.variable} ${lora.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <ToastProvider>
           <Header />

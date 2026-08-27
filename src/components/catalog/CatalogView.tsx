@@ -177,8 +177,8 @@ export function CatalogView() {
             aria-pressed={filters.categories.length === 0}
             className={
               filters.categories.length === 0
-                ? 'inline-flex h-9 items-center rounded-full bg-ink px-4 text-sm font-medium text-white'
-                : 'inline-flex h-9 items-center rounded-full border border-line-strong bg-white px-4 text-sm font-medium text-ink-soft transition-colors hover:border-ink-muted hover:text-ink'
+                ? 'inline-flex h-9 items-center rounded-[var(--radius-sm)] bg-ink px-4 text-sm font-medium text-white'
+                : 'inline-flex h-9 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-4 text-sm font-medium text-ink-soft transition-colors hover:border-ink-muted hover:text-ink'
             }
           >
             Все модели
@@ -204,8 +204,8 @@ export function CatalogView() {
                 }
                 className={
                   active
-                    ? 'inline-flex h-9 items-center rounded-full bg-primary px-4 text-sm font-medium text-white'
-                    : 'inline-flex h-9 items-center rounded-full border border-line-strong bg-white px-4 text-sm font-medium text-ink-soft transition-colors hover:border-ink-muted hover:text-ink'
+                    ? 'inline-flex h-9 items-center rounded-[var(--radius-sm)] bg-primary px-4 text-sm font-medium text-white'
+                    : 'inline-flex h-9 items-center rounded-[var(--radius-sm)] border border-line-strong bg-white px-4 text-sm font-medium text-ink-soft transition-colors hover:border-ink-muted hover:text-ink'
                 }
               >
                 {category.name}

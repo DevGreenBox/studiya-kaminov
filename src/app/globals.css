@@ -7,28 +7,37 @@
    hex-коды по проекту не разбрасываются.
    ========================================================================== */
 @theme {
-  /* Фон и поверхности — светлые, тёплые */
-  --color-canvas: #ffffff;
-  --color-surface: #fbf8f4;
-  --color-surface-strong: #f3ede4;
-  --color-surface-warm: #fdf3e9;
+  /* --------------------------------------------------------------------
+     Фон и поверхности.
+     Чистого #ffffff как основного фона нет: страница набрана на молочном,
+     а белый оставлен на карточки, которые должны подниматься над ним.
+     -------------------------------------------------------------------- */
+  --color-canvas: #fbf7f0;
+  --color-paper: #ffffff;
+  --color-surface: #f4ede2;
+  --color-surface-strong: #ebe1d2;
+  --color-surface-warm: #f7ece0;
 
   /* Текст */
-  --color-ink: #1c1917;
-  --color-ink-soft: #57534e;
-  --color-ink-muted: #8a827a;
-  --color-ink-inverse: #ffffff;
+  --color-ink: #221f1b;
+  --color-ink-soft: #5b534b;
+  --color-ink-muted: #8a8078;
+  --color-ink-inverse: #fbf7f0;
 
   /* Границы */
-  --color-line: #e9e2d8;
-  --color-line-strong: #d8cec0;
+  --color-line: #e5dbcb;
+  --color-line-strong: #d3c6b2;
 
-  /* Акцент — тёплый огонь */
-  --color-primary: #e97821;
-  --color-primary-hover: #d2650f;
-  --color-primary-active: #b95709;
-  --color-primary-soft: #fdefe1;
-  --color-primary-ring: #f6b47a;
+  /* --------------------------------------------------------------------
+     Акцент взят от огня, но приглушён до терракоты: прежний оранжевый
+     спорил с красным в логотипе и звучал как «кнопка», а не как материал.
+     -------------------------------------------------------------------- */
+  --color-primary: #b9541f;
+  --color-primary-hover: #9e4517;
+  --color-primary-active: #85390f;
+  --color-primary-soft: #f6e7da;
+  --color-primary-ring: #dc9c6e;
+  --color-ember: #d98e3e;
 
   /* Фирменные цвета логотипа «Студия каминов» */
   --color-brand-red: #a23131;
@@ -41,27 +50,34 @@
   --color-danger-soft: #fdecea;
   --color-info-soft: #eef2f6;
 
-  /* Скругления */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* --------------------------------------------------------------------
+     Скругления. Радиусы намеренно маленькие: крупные скругления на каждом
+     элементе — первое, что выдаёт сборку по шаблону. Фотографии чаще
+     оставляем с прямыми углами.
+     -------------------------------------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
 
-  /* Тени — мягкие, тёплые */
-  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
-  --shadow-raised: 0 2px 4px rgb(28 25 23 / 0.05), 0 16px 40px -16px rgb(28 25 23 / 0.18);
-  --shadow-header: 0 1px 0 rgb(233 226 216 / 1), 0 6px 20px -14px rgb(28 25 23 / 0.25);
+  /* Тени почти не используются: глубину даёт фотография, а не подложка */
+  --shadow-card: 0 1px 2px rgb(34 31 27 / 0.04), 0 10px 30px -18px rgb(34 31 27 / 0.18);
+  --shadow-raised: 0 2px 6px rgb(34 31 27 / 0.06), 0 24px 60px -28px rgb(34 31 27 / 0.28);
+  --shadow-header: 0 1px 0 rgb(229 219 203 / 1);
 
-  /* Типографика */
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  /* Типографика: антиква для заголовков, гротеск для интерфейса */
+  --font-sans: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-lora), ui-serif, Georgia, serif;
 
   /* Ширина контейнера */
   --container-site: 1320px;
+  --container-text: 720px;
 
   /* Тайминги анимаций */
   --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
+
 
 /* --------------------------------------------------------------------------
    База
@@ -95,13 +111,25 @@
     border-radius: var(--radius-xs);
   }
 
+  /*
+     Заголовки набираются антиквой и не жирным: у Lora достаточно контраста,
+     а 700 в крупном кегле выглядит крикливо. Отрицательный трекинг убран —
+     он нужен гротеску, антикву он портит.
+  */
   h1,
   h2,
-  h3,
-  h4 {
-    font-weight: 700;
-    letter-spacing: -0.02em;
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.005em;
     text-wrap: balance;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   /* Резервируем место под скроллбар, чтобы при открытии модалок не было сдвига */
@@ -216,6 +244,81 @@
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Типографическая шкала
+   --------------------------------------------------------------------------
+   Разница масштабов задана крупно и намеренно: в прежней версии все
+   заголовки уровня секции были одного размера, и страница читалась как
+   список одинаковых блоков.
+   -------------------------------------------------------------------------- */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  /* Потолок подобран по самому длинному слову заголовка: «Электрокамины»
+     должно помещаться в колонку первого экрана целиком. Переносов по слогам
+     здесь нет намеренно — разорванное пополам название читается как опечатка. */
+  font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.125rem);
+  line-height: 1.15;
+}
+
+/* Подпись-надзаголовок: капитель с разрядкой. Заменяет цветные бейджи-пилюли */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* Узкая колонка для читаемого текста — 60–70 знаков в строке */
+@utility text-column {
+  max-width: var(--container-text);
+}
+
+/* --------------------------------------------------------------------------
+   Спокойное появление блоков при прокрутке
+   --------------------------------------------------------------------------
+   Только прозрачность и небольшой сдвиг: элемент остаётся в потоке, поэтому
+   макет не дёргается. Выключается системной настройкой «меньше движения».
+   -------------------------------------------------------------------------- */
+@utility ef-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 700ms var(--ease-out-soft),
+    transform 700ms var(--ease-out-soft);
+}
+
+@utility ef-reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ef-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
