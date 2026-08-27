@@ -82,7 +82,9 @@ export function ProductionBlock() {
 
         {/* Один широкий кадр вместо мозаики: огонь крупно и без соседей */}
         <Reveal className="mt-14 lg:mt-20">
-          <div className="relative aspect-[16/9] overflow-hidden bg-white/5 sm:aspect-[21/9]">
+          {/* Пропорция совпадает с присланным кадром: при 21:9 верх с пламенем
+              срезался, оставались одни угли */}
+          <div className="relative aspect-[16/9] overflow-hidden bg-white/5">
             <Image
               src="/images/production/hearth-wide.webp"
               alt="Горящие дрова в очаге крупным планом"

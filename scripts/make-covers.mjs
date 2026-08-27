@@ -16,14 +16,11 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(fileURLToPath(import.meta.url), '../..');
 
-/**
- * focusX / focusY — центр окна кадрирования (доли от размера кадра),
- * zoom — какая часть ширины исходника попадает в обложку (1 — вся ширина).
- * Значения подобраны по кадрам: камин стоит по центру, надписи остаются за
- * рамкой, масштаб между категориями примерно одинаковый.
- */
 /*
  * Обложки категорий.
+ *
+ * focusX / focusY — центр окна кадрирования (доли от размера кадра),
+ * zoom — какая часть ширины исходника попадает в обложку.
  *
  * `zoom` меньше единицы у всех намеренно. При zoom: 1 окно кадрирования равно
  * полной ширине исходника, сдвигать его некуда — и `focusX` не работал вовсе.
@@ -61,7 +58,12 @@ const COVERS = {
  */
 const PROMOS = {
   'sale-dublin-ivory': { src: 'dublin-ivory/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
-  'new-dublin-premium': { src: 'dublin-premium-white-grey/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
+  'new-dublin-premium': {
+    src: 'dublin-premium-white-grey/01.webp',
+    focusX: 0.5,
+    focusY: 0.5,
+    zoom: 1,
+  },
   'sale-chester': { src: 'chester-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
   'new-modern': { src: 'modern-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
   'news-promo': { src: 'malta-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
@@ -74,10 +76,23 @@ const PROMOS = {
  * детальные снимки: горящие дрова, фактура камня, край топки.
  */
 const PRODUCTION = {
-  'hearth-wide': { src: 'malta-wenge/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1, out: { width: 1200, height: 750 } },
-  'stone-detail': { src: 'dublin-ivory/02.webp', focusX: 0.5, focusY: 0.45, zoom: 1, out: { width: 700, height: 700 } },
-  'firebox-detail': { src: 'dublin-ivory/03.webp', focusX: 0.5, focusY: 0.5, zoom: 1, out: { width: 700, height: 700 } },
-  'hearth-square': { src: 'malta-wenge/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1, out: { width: 700, height: 700 } },
+  // Заказчик прислал эти два кадра отдельно, в хорошем качестве: у прежних,
+  // вырезанных из фотографий товара, не хватало разрешения и они смотрелись
+  // мыльными. Размер вывода поднят под новые исходники.
+  'hearth-wide': {
+    src: 'malta-wenge/01.webp',
+    focusX: 0.5,
+    focusY: 0.5,
+    zoom: 1,
+    out: { width: 1600, height: 900 },
+  },
+  'stone-detail': {
+    src: 'dublin-ivory/02.webp',
+    focusX: 0.5,
+    focusY: 0.45,
+    zoom: 1,
+    out: { width: 1050, height: 1312 },
+  },
 };
 
 /**
@@ -89,7 +104,12 @@ const PRODUCTION = {
  * инфографика с габаритами и характеристиками.
  */
 const CARDS = {
-  'malta-corner-votan': { src: 'malta-corner-votan/01.webp', focusX: 0.5, focusY: 0.49, zoom: 0.56 },
+  'malta-corner-votan': {
+    src: 'malta-corner-votan/01.webp',
+    focusX: 0.5,
+    focusY: 0.49,
+    zoom: 0.56,
+  },
   'verona-white': { src: 'verona-white/01.webp', focusX: 0.5, focusY: 0.4, zoom: 0.81 },
   'malta-wenge': { src: 'malta-wenge/02.webp', focusX: 0.5, focusY: 0.47, zoom: 0.6 },
 };
@@ -104,6 +124,20 @@ const CARDS = {
  */
 const OUT = { width: 900, height: 1125 }; // 4:5 — плитки категорий
 const CARD_OUT = { width: 1050, height: 1400 }; // 3:4 — как остальные фото товаров
+
+/**
+ * Кадры, присланные заказчиком отдельно от архива: `incoming/content/<ключ>`.
+ * Подменяют источник для блоков о производстве. Нужно по той же причине, что
+ * и подмена фотографий товара: пересборка не должна возвращать архивный кадр.
+ */
+const incomingContent = path.join(root, 'incoming/content');
+function contentOverride(key) {
+  for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) {
+    const file = path.join(incomingContent, key + ext);
+    if (fs.existsSync(file)) return file;
+  }
+  return null;
+}
 const PROMO_OUT = { width: 760, height: 950 }; // 4:5 — баннеры карусели
 
 /**
@@ -123,8 +157,14 @@ async function crop(file, dest, out, cfg, { noEnlarge = false } = {}) {
     cropW = Math.round(cropH / ratio);
   }
 
-  const left = Math.max(0, Math.min(meta.width - cropW, Math.round(meta.width * cfg.focusX - cropW / 2)));
-  const top = Math.max(0, Math.min(meta.height - cropH, Math.round(meta.height * cfg.focusY - cropH / 2)));
+  const left = Math.max(
+    0,
+    Math.min(meta.width - cropW, Math.round(meta.width * cfg.focusX - cropW / 2)),
+  );
+  const top = Math.max(
+    0,
+    Math.min(meta.height - cropH, Math.round(meta.height * cfg.focusY - cropH / 2)),
+  );
 
   const width = noEnlarge ? Math.min(out.width, cropW) : out.width;
   const height = Math.round(width * ratio);
@@ -145,7 +185,9 @@ for (const [slug, cfg] of Object.entries(COVERS)) {
     continue;
   }
 
-  await crop(file, path.join(root, 'public/images/categories', `${slug}.webp`), OUT, cfg);
+  await crop(file, path.join(root, 'public/images/categories', `${slug}.webp`), OUT, cfg, {
+    noEnlarge: true,
+  });
   written++;
   console.log(`${slug} ← ${cfg.src}`);
 }
@@ -156,20 +198,26 @@ for (const [id, cfg] of Object.entries(PROMOS)) {
     console.warn(`  ! нет исходника: ${cfg.src}`);
     continue;
   }
-  await crop(file, path.join(root, 'public/images/promos', `${id}.webp`), PROMO_OUT, cfg);
+  await crop(file, path.join(root, 'public/images/promos', `${id}.webp`), PROMO_OUT, cfg, {
+    noEnlarge: true,
+  });
   written++;
   console.log(`баннер ${id} ← ${cfg.src}`);
 }
 
 for (const [id, cfg] of Object.entries(PRODUCTION)) {
-  const file = path.join(root, 'public/images/products', cfg.src);
+  const custom = contentOverride(id);
+  const file = custom ?? path.join(root, 'public/images/products', cfg.src);
   if (!fs.existsSync(file)) {
     console.warn(`  ! нет исходника: ${cfg.src}`);
     continue;
   }
-  await crop(file, path.join(root, 'public/images/production', `${id}.webp`), cfg.out, cfg);
+  // noEnlarge: присланный кадр может быть мельче цели, растягивать его нельзя
+  await crop(file, path.join(root, 'public/images/production', `${id}.webp`), cfg.out, cfg, {
+    noEnlarge: true,
+  });
   written++;
-  console.log(`производство ${id} ← ${cfg.src}`);
+  console.log(`производство ${id} ← ${custom ? 'incoming/content' : cfg.src}`);
 }
 
 const cardIndex = {};
