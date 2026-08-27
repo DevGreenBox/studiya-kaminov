@@ -26,9 +26,7 @@ const COVERS = {
   'kaminy-s-kamnem': { src: 'dublin-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 1 },
   klassicheskie: { src: 'versal-ivory/01.webp', focusX: 0.56, focusY: 0.56, zoom: 1 },
   sovremennye: { src: 'modern-white/01.webp', focusX: 0.45, focusY: 0.6, zoom: 1 },
-  // 01 — самый мягкий кадр модели (резкость 97 против 640 у 02). У 02
-  // маркетплейс-надписи сверху и снизу, поэтому берём чистую середину.
-  's-bokovymi-tumbami': { src: 'dublin-premium-white-grey/02.webp', focusX: 0.5, focusY: 0.535, zoom: 1 },
+  's-bokovymi-tumbami': { src: 'dublin-premium-white-grey/01.webp', focusX: 0.5, focusY: 0.55, zoom: 1 },
   uglovye: { src: 'malta-corner-votan/02.webp', focusX: 0.5, focusY: 0.48, zoom: 1 },
   'tumby-pod-tv': { src: 'chester-white/01.webp', focusX: 0.47, focusY: 0.56, zoom: 1 },
 };
@@ -43,7 +41,7 @@ const COVERS = {
 const PROMOS = {
   'sale-dublin-ivory': { src: 'dublin-ivory/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
   'new-dublin-premium': { src: 'dublin-premium-white-grey/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
-  'sale-chester': { src: 'chester-white/02.webp', focusX: 0.5, focusY: 0.4, zoom: 0.92 },
+  'sale-chester': { src: 'chester-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
   'new-modern': { src: 'modern-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
   'news-promo': { src: 'malta-white/01.webp', focusX: 0.5, focusY: 0.5, zoom: 1 },
 };
@@ -70,18 +68,8 @@ const PRODUCTION = {
  * инфографика с габаритами и характеристиками.
  */
 const CARDS = {
-  'chester-white': { src: 'chester-white/01.webp', focusX: 0.5, focusY: 0.6, zoom: 0.6 },
   'malta-corner-votan': { src: 'malta-corner-votan/01.webp', focusX: 0.5, focusY: 0.49, zoom: 0.56 },
   'verona-white': { src: 'verona-white/01.webp', focusX: 0.5, focusY: 0.4, zoom: 0.81 },
-  // Штатное первое фото модели — единственный кадр без надписей, но он
-  // всего 550×733 и на карточке выглядит мыльным. Берём чистую середину
-  // резкого снимка: надписи сверху и снизу остаются за рамкой.
-  'dublin-premium-white-grey': {
-    src: 'dublin-premium-white-grey/02.webp',
-    focusX: 0.5,
-    focusY: 0.57,
-    zoom: 0.7,
-  },
   'malta-wenge': { src: 'malta-wenge/02.webp', focusX: 0.5, focusY: 0.47, zoom: 0.6 },
 };
 
