@@ -15,7 +15,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(fileURLToPath(import.meta.url), '../..');
-const manifest = JSON.parse(fs.readFileSync(path.join(root, 'scripts/image-manifest.json'), 'utf8'));
+const manifest = JSON.parse(
+  fs.readFileSync(path.join(root, 'scripts/image-manifest.json'), 'utf8'),
+);
 
 const srcRoot = path.join(process.argv[2] ?? '', 'Для сайта');
 if (!fs.existsSync(srcRoot)) {
@@ -25,6 +27,30 @@ if (!fs.existsSync(srcRoot)) {
 }
 
 const out = (...p) => path.join(root, 'public/images', ...p);
+
+/**
+ * Файлы, присланные заказчиком отдельно от архива.
+ *
+ * `incoming/products/<slug>/<NN>.<ext>` подменяет кадр с этим номером из
+ * манифеста. Нужно, чтобы улучшенные фотографии не затирались обратно
+ * архивными при следующей пересборке: архив остаётся источником по умолчанию,
+ * а присланное заказчиком имеет приоритет.
+ */
+const incoming = path.join(root, 'incoming/products');
+const EXT = ['.jpg', '.jpeg', '.png', '.webp'];
+
+function override(slug, index) {
+  const dir = path.join(incoming, slug);
+  if (!fs.existsSync(dir)) return null;
+  const stem = String(index + 1).padStart(2, '0');
+  for (const ext of EXT) {
+    const file = path.join(dir, stem + ext);
+    if (fs.existsSync(file)) return file;
+  }
+  return null;
+}
+
+let overridden = 0;
 // Потолок, а не жёсткий размер: часть исходников крупнее (до 2030×2707) и
 // теперь отдаёт больше деталей, мелкие остаются как есть.
 const PRODUCT = { width: 1400, height: 1867 }; // 3:4 — все исходники вертикальные
@@ -68,7 +94,10 @@ for (const [slug, cfg] of Object.entries(manifest.products)) {
   const list = [];
   for (let i = 0; i < cfg.files.length; i++) {
     const rel = `products/${slug}/${String(i + 1).padStart(2, '0')}.webp`;
-    if (await emit(path.join(dir, cfg.files[i]), out(rel), PRODUCT)) list.push(`/images/${rel}`);
+    const custom = override(slug, i);
+    if (custom) overridden++;
+    const src = custom ?? path.join(dir, cfg.files[i]);
+    if (await emit(src, out(rel), PRODUCT)) list.push(`/images/${rel}`);
   }
   index.products[slug] = list;
   console.log(`${slug}: ${list.length} фото`);
@@ -89,10 +118,16 @@ for (const [name, [dir, file]] of Object.entries(manifest.shared)) {
 }
 
 const [heroDir, heroFile] = manifest.hero;
-if (await emit(path.join(srcRoot, heroDir, heroFile), out('hero/hero.webp'), HERO, { quality: 86 })) {
+if (
+  await emit(path.join(srcRoot, heroDir, heroFile), out('hero/hero.webp'), HERO, { quality: 86 })
+) {
   index.hero = '/images/hero/hero.webp';
 }
 
-fs.writeFileSync(path.join(root, 'src/data/image-index.json'), JSON.stringify(index, null, 2) + '\n');
+fs.writeFileSync(
+  path.join(root, 'src/data/image-index.json'),
+  JSON.stringify(index, null, 2) + '\n',
+);
 console.log(`\nГотово. Записано файлов: ${written}. Индекс: src/data/image-index.json`);
+if (overridden) console.log(`Из них взято из incoming/products: ${overridden}`);
 console.log('Дальше: node scripts/make-covers.mjs — обложки категорий.');
